@@ -1,0 +1,257 @@
+- A core brand identity with just six colors, which will then automatically generate a comprehensive and adaptable design system
+- The package will be built on a three-layer token architecture:
+- **Layer 1: Reference Tokens (The Seeds)**
+    - The user will provide **six fixed seed colors** to define the brand: `primary`, `secondary`, `tertiary`, `neutral`, `neutralVariant`, and `error`.
+    - These seeds are the immutable "single source of truth" for generating a theme.
+- **Layer 2: System Tokens (Semantic Roles)**
+    - The engine will automatically generate a full tonal palette (13 tones for each of the 6 seeds, totaling 78 colors) using the **`material_color_utilities`** package.
+    - An algorithm will map these tones to a standard set of semantic roles (e.g., `primary`, `onPrimary`, `surface`, `background`, `outline`).
+    - This layer is **extensible**. We can add custom, project-specific semantic tokens (e.g., `highlightColor`) that are not part of the standard set.
+    - **System Tokens**: You add a custom token here when you need a value (like a specific color or spacing) to be **reused across multiple different components**. For example, a `highlightBackgroundColor` could be used on Cards, Banners, and List Tiles. This ensures consistency.
+- **Layer 3: Component Tokens (Widget-Specific Styles)**
+    - These tokens will define the default styles for specific UI components (e.g., `fab.backgroundColor`, `appBar.textColor`).
+    - They are derived from System Tokens to ensure consistency.
+    - This layer is also **extensible** to accommodate styles for unique, project-specific components (e.g., `sidebar.borderColor`).
+    - **Component Tokens**: You add a custom token here when the value is **unique to a single component** and won't be used anywhere else. For example, `sidebar.borderColor` only applies to the sidebar. This keeps the global system tokens clean.
+
+## Override
+
+**System-Level Override**
+
+- You decide you want a bolder theme. You override `system.primaryContainer` to be a more vibrant tone.
+- **Result:** The `FloatingActionButton`, `Chip`, and any other component that uses `system.primaryContainer` will **all update automatically**. You changed one rule, and the entire UI responded consistently.
+
+**Component-Level Override**
+
+- You have a special promotional screen where you want the `FloatingActionButton` to be yellow, but all other components should remain normal.
+- You override only `component.fab.backgroundColor`.
+- **Result:** Only the FAB on that screen becomes yellow. All other FABs in the app, and all other components, are unaffected.
+
+### **Platform & Responsiveness**
+
+- The design system must be **platform-agnostic**, providing a consistent experience across both **mobile and desktop** applications.
+- It will use responsive tokens for properties like spacing and padding, allowing components to adapt gracefully to different screen sizes.
+
+### 
+
+### **Extended Color System & ThemeExtensions**
+
+- The system will automatically generate additional universal semantic colors like **`success`**, **`warning`**, and **`info`** using its own internal, fixed color seeds.
+- These extended colors will be integrated into Flutter's `ThemeData` using a `ThemeExtension`, making them accessible in a standard, type-safe way (`Theme.of(context).extension<CustomColors>()`).
+
+# Implement
+
+- Build an `InheritedWidget` (e.g., `BrandTheme`) that will hold the generated `SystemTokens` and `ComponentTokens`.
+- This will make the tokens available to any widget down the tree, using a familiar syntax like `BrandTheme.of(context).system.primary`.
+
+- **Implement a `ThemeData` Converter**
+    - Create a utility function that takes your `SystemTokens` and converts them into a standard Flutter `ThemeData` object.
+    - This is crucial for ensuring that default Flutter widgets (like `TextField`, `Dialog`, `PopupMenuButton`) are automatically styled correctly, providing maximum compatibility.
+
+## Examples
+
+**Create a Showcase/Example App**
+
+- Inside your package's `example/` folder, build an app that serves as a visual catalog.
+- This app should display every component you build, in all its variants, for both light and dark themes. This is essential for testing and documentation.
+
+### **Developer Experience & Governance (The "Guardrails")**
+
+A package is only as good as it is easy and safe to use. This phase makes it professional.
+
+- **Step 1: Write Comprehensive Documentation**
+    - **`README.md`**: A clear guide on how to install and use the package with a simple "Hello World" example.
+    - **API Documentation**: Add `///` doc comments to all public classes and methods.
+    - **Architectural Guide**: A separate document explaining the `Reference -> System -> Component` model and how to use overrides effectively.
+- **Add Custom Lint Rules**
+    - Provide an `analysis_options.yaml` file that consumers of your package can use.
+    - This file can include rules that forbid the direct use of `Color` or `TextStyle`, forcing developers to use your design system tokens and ensuring consistency.
+
+### System and Component Layers are Extensible for Project Needs
+
+You will introduce the ability to add **custom, project-specific tokens** at two different levels:
+
+- **System Token Extensions**: If a project needs a new, reusable semantic color that isn't covered by the standard set (e.g., a special `highlight` color for promotions), you can add it directly to the system token layer. This makes it available for use across multiple components.
+- **Component Token Extensions**: For styles that apply only to a single, specific widget, you can add a custom token directly at the component level.
+- **Example**: If you need a unique, fixed background color for the main application `Sidebar`, you would add a `sidebarBackground` token to your component tokens. This keeps the style scoped and prevents cluttering the global system tokens.
+
+## Custom Tokens Require Explicit Light & Dark Mode Values
+
+Unlike the automatically generated tokens, any **custom token** you add (whether at the system or component level) will require you to manually define its color for both **light mode** and **dark mode**.
+
+- **How it works**: When you define a custom token like `sidebarBackground`, you won't provide a single color. Instead, you'll provide a pair of colors—one for the light theme and one for the dark theme. The design system will then automatically select the correct color based on the current theme.
+
+---
+
+### ## Option 1: Full Automation (The Default)
+
+This is the simplest path. The user provides the **6 seed colors**, and our algorithm does all the work. It generates the complete set of system tokens (`primary`, `surface`, etc.) automatically. This is the "hands-off" approach for maximum speed and consistency.
+
+**Analogy**: It's like buying a pre-built computer. You pick the case color, and the manufacturer chooses all the best-performing, compatible parts for you.
+
+---
+
+### ## Option 2: Full Manual Control (The "From Scratch" Approach)
+
+In this scenario, the user **completely ignores our algorithm**. Instead of providing 6 seed colors, they create their own entire set of system tokens from scratch. They would define the exact color for `primary`, `onPrimary`, `surface`, `background`, and every other token for both light and dark modes. Our package would simply take their manually-defined system tokens and use them to style the components.
+
+**Analogy**: This is like building a custom PC from scratch. You choose every single component yourself—the motherboard, CPU, RAM, etc.—for complete control over the final product.
+
+---
+
+### ## Option 3: Surgical Overrides (The Hybrid Approach)
+
+This is the middle ground. The user starts by letting our algorithm **generate the full set of system tokens** (Option 1). However, they might dislike one or two of the generated colors. They can then use the `.override()` function to change just those specific tokens while keeping the rest of the automatically generated theme intact.
+
+**Analogy**: This is like buying a pre-built computer but swapping out the graphics card for a different one you prefer. 95% of it is standard, but you've customized the one part that matters most to you.
+
+This three-pronged strategy offers the ultimate flexibility. It allows a project to choose its level of engagement: fully automated, fully manual, or a simple hybrid. This is a very robust and user-friendly architecture.
+
+### How the Problem is Solved
+
+A user who is unhappy with a generated color now has three clear options:
+
+1. **Surgical Override (The Quick Fix)**: If they dislike only a few colors like `primaryContainer`, they can use the `.override()` function to change just those specific values. This is the most direct and common solution.
+2. **Full Manual Control (The Power User Escape Hatch)**: If they dislike the entire aesthetic generated by the algorithm, they can bypass it completely and provide their own hand-crafted set of system tokens.
+3. **Full Automation (The "Accept the Default" Path)**: If the generated theme is acceptable, they don't have to do anything.
+
+The core of the discussion addresses **The Manual Labor of Theming Extensions**, an issue where developers had to manually define both light and dark mode colors for every custom token, which was deemed **inefficient** and **error-prone** (risking accessibility issues).
+
+The proposed solution involves a two-part design philosophy:
+
+1. **The "Escape Hatch" for Flexibility:** Acknowledging that the automated system won't cover every scenario, a manual extension mechanism is provided. This allows advanced developers to add **any custom value** (color, elevation, etc.), prioritizing **ultimate flexibility** over guaranteed safety. The risk of manual error is accepted as a necessary trade-off for the system to never be a "dead end."
+2. **Graceful Degradation for Stability:** To mitigate the risks of the manual extension, the system will implement **sensible default fallback values**. If a developer forgets a required value (e.g., the dark mode color), the system will default to the existing light mode value. This is a crucial safety feature that:
+    - **Prevents crashes** (null errors).
+    - **Provides a clear visual cue** to the developer that a value is missing.
+
+This approach perfectly balances **power** (manual flexibility) with **stability** (safe fallbacks).
+
+## **Context-Driven Responsiveness**
+
+**The team decided on the Context-Driven Approach as the most elegant, intuitive, and clean solution for managing responsive tokens.**
+
+### **The Rule**
+
+**Responsiveness is enabled *only* when the `BuildContext` is passed to the token function.**
+
+- **Responsive Usage: If the `BuildContext` is provided (e.g., `spacing.cardPadding(context)`), the token will look up the current screen size (mobile, tablet, desktop) and return the appropriate, responsive value.**
+- **Static Usage: If the `BuildContext` is *not* provided (e.g., `spacing.cardMargin()`), the token will return its default, static value (typically the mobile size), regardless of the actual screen size.**
+
+### **API Example**
+
+**Dart**
+
+**`// --- RESPONSIVE USAGE --- (Context provided)
+Container(
+  // This will change based on screen size (mobile, tablet, desktop)
+  padding: BrandTheme.of(context).spacing.cardPadding(context), 
+); 
+
+// --- STATIC USAGE --- (No Context provided)
+Container(
+  // This will always use the default (mobile) value
+  margin: BrandTheme.of(context).spacing.cardMargin(), 
+);`**
+
+### ## Overriding Breakpoints is Essential
+
+Your idea to allow overriding the responsive rule is crucial for making the package truly reusable. Different applications have different definitions of "mobile," "tablet," and "desktop."
+
+We will implement this by allowing the user to provide their own **breakpoint configuration** when they set up the theme.
+
+We can override in the intial of the app if we need and make a simple api so that we pass it to the layout builder
+
+For example:
+
+Dart
+
+`// The developer can define their own breakpoints
+final myBreakpoints = BreakpointConfiguration(
+  small: 600,  // Anything under 600 is mobile
+  medium: 1200, // Anything under 1200 is tablet
+);
+
+// They pass this config when creating the theme
+final myTheme = BrandTheme.fromSeeds(
+  primary: Colors.blue,
+  // ...
+  breakpoints: myBreakpoints,
+);`
+
+If they don't provide this, the system will use a set of sensible defaults.
+
+This gives projects complete control over how the responsive logic behaves, making our design system far more adaptable.
+
+### **Multi-Dimensional Token System**
+
+The package will provide a comprehensive set of token classes, not just colors.
+
+- **Token Types**: `ColorTokens`, `SpacingTokens`, `TypographyTokens`, `ShapeTokens`, `ElevationTokens`, etc.
+- **Access**: All tokens will be accessible through a clean, inherited widget API (e.g., `BrandTheme.of(context).spacing.medium`).
+
+# TYPES OF DATA
+
+a complete design system also needs to manage other critical design elements like:
+
+- **Spacing** (paddings, gaps)
+- **Typography** (font sizes, weights)
+- **Shape** (corner radii)
+- **Elevation** (shadows)
+
+### Figma
+
+You’ve identified the root cause: *manual copy/paste of design tokens -> code drift*. The durable solution is a **symmetrical system** where Figma and Flutter share a single, version-controlled tokens.json (the 6 seeds + future tokens) and both Figma and the Flutter package generate the full palette from that single source using identical logic. Add a small CLI + CI + governance layer and drift disappears.
+
+---
+
+## Problem (one line)
+
+Design and code drift because tokens are copied by hand; today 6 seed colors are easy, but the system will scale (100+ tokens) and mistakes + missed updates become costly.
+
+---
+
+## Proposed solution (high level)
+
+1. **Single Source of Truth** — `tokens.json` in its *own Git repo* (seeds + token definitions + metadata).
+2. **Symmetrical generators** — same algorithm in Figma (plugin) and Flutter (Dart generator) that derive full palettes from the 6 seeds.
+3. **CLI + Figma API bridge** — `brand_tokens build` (generate Dart), `brand_tokens sync` (push to Figma plugin).
+4. **Governance & CI** — PRs for token changes, semantic versioning of the token repo, CI validation + snapshot tests.
+
+### **2.4. Theme Generation & Customization**
+
+The framework offers a powerful three-tiered model for theme creation:
+
+1. **Full Automation (Default)**: Provide 6 seed colors and the engine generates a complete, cohesive, and accessible theme for both light and dark modes.
+2. **Full Manual Control**: Bypass the generation algorithm entirely by providing a complete, hand-crafted set of system tokens. This is the "escape hatch" for ultimate control.
+3. **Surgical Overrides**: Use the fully automated theme as a base, but override specific system or component tokens as needed.
+
+### **. Responsive Design Engine**
+
+The system will have a sophisticated, built-in responsive engine.
+
+- **Context-Driven API**: The API for accessing tokens is simple and intuitive.
+    - `token(context)`: Providing the `BuildContext` returns the **responsive** value (for mobile, tablet, or desktop).
+    - `token()`: Providing no context returns the **static**, default (mobile) value.
+- **Configurable Breakpoints**: The screen width breakpoints (e.g., what defines a "tablet") can be configured and overridden at the start of the app, ensuring the responsive behavior matches project requirements.
+
+### Tooling & Workflow
+
+- **Single Source of Truth (`tokens.json`)**: All design decisions will be stored in a central, version-controlled `tokens.json` file.
+- **Automated CLI Tool**: A command-line tool will read the `tokens.json` file and automatically generate all the necessary Dart code, eliminating manual sync errors.
+- **Governance Protocol**: A clear workflow for managing changes through **pull requests** and **semantic versioning** will ensure the system evolves in a stable and predictable way
+
+### **Multi-Dimensional Tokens**
+
+The system is not just for colors. It provides a complete, centralized, and consistent definition for the entire visual language of an application.
+
+- **Mechanics**: We will create a hierarchy of token classes in Dart, such as `ColorTokens`, `SpacingTokens` (for padding, margins, gaps), `TypographyTokens` (for font sizes, weights, and families), `ShapeTokens` (for corner radii), and `ElevationTokens` (for shadows).
+- **Benefit**: This prevents developers from ever using hardcoded "magic numbers" (e.g., `SizedBox(height: 16)`). Instead, they use semantic tokens (e.g., `SizedBox(height: theme.spacing.medium)`), which makes the UI consistent and incredibly easy to update.
+
+### 
+
+### **Extended Semantic Colors & `ThemeExtension`**
+
+The system goes beyond the standard Material Design color roles to provide a more complete palette for real-world applications.
+
+- **Mechanics**: The engine will use its own internal, fixed seeds to generate additional, universally understood color roles like `success`, `warning`, and `info`. These colors are then bundled into a `ThemeExtension` class, which is the modern, type-safe way to add custom values to Flutter's `ThemeData`.
+- **Benefit**: Developers get access to a richer, theme-aware color palette (`Theme.of(context).extension<CustomColors>().success`) without having to define these common colors themselves.

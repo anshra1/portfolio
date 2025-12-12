@@ -1,12 +1,13 @@
 # Theme Generator
 
-A Material 3 theme generator for Flutter that converts 9 seed colors into a complete 45+ semantic color palette using Material Color Utilities.
+A foundational UI kit for Flutter that includes a Material 3 theme generator and a robust responsive design system.
 
 ## Features
 
 - 🎨 **9 Seed Colors** → **45+ Semantic Colors**
 - 🌗 **Light & Dark Theme** generation
-- 🔄 **ColorScheme Converter** - one-line theme creation
+- 📱 **Responsive Design System** - M3 compliant breakpoints
+- 🔠 **Responsive Typography** - Auto-scaling text styles
 - 📦 **Zero configuration** - just provide your brand colors
 - 🔧 **Material 3 compliant** tonal palettes
 
@@ -52,8 +53,55 @@ MaterialApp(
     darkTheme,
     brightness: Brightness.dark,
   ),
+
+```
+
+);
+
+// 4. Responsive System Usage
+// Wrap your app with the provider
+ResponsiveTypographyProvider(
+  tokens: ResponsiveTokens.m3(),
+  child: MyApp(),
+);
+
+// Use responsive values in your widgets
+final padding = ResponsiveValue<EdgeInsets>(
+  compact: EdgeInsets.all(16),
+  medium: EdgeInsets.all(24),
+  expanded: EdgeInsets.all(32),
+).resolve(context);
+
+// Use responsive typography
+Text(
+  'Responsive H2', 
+  style: context.responsiveTypography.headlineMedium.resolve(context),
 );
 ```
+
+## Responsive System
+
+The package includes a comprehensive responsive system based on Material Design 3 guidelines.
+
+### Breakpoints
+- **Compact**: < 600dp (Phone)
+- **Medium**: 600-839dp (Tablet)
+- **Expanded**: 840-1199dp (Large Tablet/Laptop)
+- **Large**: 1200-1535dp (Desktop)
+- **ExtraLarge**: >= 1536dp (TV/Large Monitor)
+
+### Components
+
+1. **ResponsiveValue**
+   - Generic class for values that change based on screen size
+   - Intelligent fallback logic (e.g., defines `compact`, system infers `medium`+)
+
+2. **ResponsiveTokens**
+   - Complete M3 typography scale (display, headline, title, body, label)
+   - Auto-scales font sizes based on window class using `FontScalingConfiguration`
+
+3. **WindowSizeClass**
+   - Extensions for easy checking: `context.windowSizeClass.isMobile`, `isDesktop`, etc.
 
 ## Files
 

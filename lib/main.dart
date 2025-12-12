@@ -44,23 +44,26 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Theme Generator Demo',
-      themeMode: _themeMode,
-      // Using SystemTokensConverter for clean theme creation
-      theme: SystemTokensConverter.toThemeData(
-        lightTheme,
-        brightness: Brightness.light,
-      ),
-      darkTheme: SystemTokensConverter.toThemeData(
-        darkTheme,
-        brightness: Brightness.dark,
-      ),
-      home: ThemeDemoPage(
-        onToggleTheme: _toggleTheme,
-        isDarkMode: _themeMode == ThemeMode.dark,
-        lightTheme: lightTheme,
-        darkTheme: darkTheme,
+    return ResponsiveTypographyProvider(
+      tokens: ResponsiveTokens.m3(),
+      child: MaterialApp(
+        title: 'Theme Generator Demo',
+        themeMode: _themeMode,
+        // Using SystemTokensConverter for clean theme creation
+        theme: SystemTokensConverter.toThemeData(
+          lightTheme,
+          brightness: Brightness.light,
+        ),
+        darkTheme: SystemTokensConverter.toThemeData(
+          darkTheme,
+          brightness: Brightness.dark,
+        ),
+        home: ThemeDemoPage(
+          onToggleTheme: _toggleTheme,
+          isDarkMode: _themeMode == ThemeMode.dark,
+          lightTheme: lightTheme,
+          darkTheme: darkTheme,
+        ),
       ),
     );
   }
@@ -167,6 +170,15 @@ class ThemeDemoPage extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 32),
+            const Divider(),
+            const SizedBox(height: 16),
+            Text(
+              'Responsive System',
+              style: theme.textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 16),
+            _ResponsiveDemo(),
           ],
         ),
       ),
@@ -225,4 +237,57 @@ class _ColorItem {
   _ColorItem(this.name, this.color);
   final String name;
   final Color color;
+}
+
+class _ResponsiveDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // 1. Responsive Value Example: Different padding based on screen size
+    final responsivePadding = const ResponsiveValue<EdgeInsets>(
+      compact: EdgeInsets.all(16), // Mobile standard
+      medium: EdgeInsets.all(24), // Tablet comfortable
+      expanded: EdgeInsets.all(32), // Desktop spacious
+    ).resolve(context);
+
+    // 2. Responsive Text Style Example: Auto-scaling text
+    // Using the pre-defined M3 responsive tokens
+    final responsiveTitleStyle = context.responsiveTypography.headlineMedium
+        .resolve(context)
+        .copyWith(
+          color: Theme.of(context).colorScheme.primary,
+        );
+
+    return Container(
+      width: double.infinity,
+      padding: responsivePadding,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Resize window to see changes!',
+            style: responsiveTitleStyle,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Current Window Class: ${ScreenSizeDetector.of(context).name}',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Padding: ${responsivePadding.left}',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'The blue text above uses ResponsiveTextStyle to scale automatically or change properties completely on larger screens.',
+          ),
+        ],
+      ),
+    );
+  }
 }

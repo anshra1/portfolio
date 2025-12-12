@@ -11,6 +11,14 @@ export 'src/foundation/app_radius.dart';
 export 'src/foundation/app_shadows.dart';
 // Foundation
 export 'src/foundation/app_spacing.dart';
+// Responsive
+export 'src/responsive_text/breakpoint_configuration.dart';
+export 'src/responsive_text/font_scaling_configuration.dart';
+export 'src/responsive_text/responsive_text_style.dart';
+export 'src/responsive_text/responsive_tokens.dart';
+export 'src/responsive_text/responsive_value.dart';
+export 'src/responsive_text/screen_size_detector.dart';
+export 'src/responsive_text/window_size_class.dart';
 // Converters
 export 'src/themes/converters/system_tokens_converter.dart';
 // Generators

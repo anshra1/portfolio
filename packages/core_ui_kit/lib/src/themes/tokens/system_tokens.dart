@@ -37,6 +37,7 @@ class SystemTokens extends Equatable {
   // Surface container colors
   final Color surfaceContainer;
   final Color surfaceContainerLow;
+  final Color surfaceContainerLowest;
   final Color surfaceContainerHigh;
   final Color surfaceContainerHighest;
 
@@ -98,6 +99,7 @@ class SystemTokens extends Equatable {
     // Surface container roles
     required this.surfaceContainer,
     required this.surfaceContainerLow,
+    required this.surfaceContainerLowest,
     required this.surfaceContainerHigh,
     required this.surfaceContainerHighest,
     // Outline roles
@@ -151,6 +153,7 @@ class SystemTokens extends Equatable {
     Color? surfaceTint,
     Color? surfaceContainer,
     Color? surfaceContainerLow,
+    Color? surfaceContainerLowest,
     Color? surfaceContainerHigh,
     Color? surfaceContainerHighest,
     Color? outline,
@@ -198,6 +201,7 @@ class SystemTokens extends Equatable {
       surfaceTint: surfaceTint ?? this.surfaceTint,
       surfaceContainer: surfaceContainer ?? this.surfaceContainer,
       surfaceContainerLow: surfaceContainerLow ?? this.surfaceContainerLow,
+      surfaceContainerLowest: surfaceContainerLowest ?? this.surfaceContainerLowest,
       surfaceContainerHigh: surfaceContainerHigh ?? this.surfaceContainerHigh,
       surfaceContainerHighest: surfaceContainerHighest ?? this.surfaceContainerHighest,
       outline: outline ?? this.outline,
@@ -248,6 +252,7 @@ class SystemTokens extends Equatable {
     surfaceTint,
     surfaceContainer,
     surfaceContainerLow,
+    surfaceContainerLowest,
     surfaceContainerHigh,
     surfaceContainerHighest,
     outline,
@@ -326,6 +331,11 @@ class SystemTokens extends Equatable {
       onInfoContainer: Color.lerp(a.onInfoContainer, b.onInfoContainer, t)!,
       surfaceContainer: Color.lerp(a.surfaceContainer, b.surfaceContainer, t)!,
       surfaceContainerLow: Color.lerp(a.surfaceContainerLow, b.surfaceContainerLow, t)!,
+      surfaceContainerLowest: Color.lerp(
+        a.surfaceContainerLowest,
+        b.surfaceContainerLowest,
+        t,
+      )!,
       surfaceContainerHigh: Color.lerp(
         a.surfaceContainerHigh,
         b.surfaceContainerHigh,

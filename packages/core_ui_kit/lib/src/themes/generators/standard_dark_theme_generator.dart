@@ -69,6 +69,7 @@ class StandardDarkThemeGenerator implements ThemeGenerator {
       inversePrimary: Color(primaryPalette.get(40)),
       surfaceContainer: Color(neutralPalette.get(12)),
       surfaceContainerLow: Color(neutralPalette.get(6)),
+      surfaceContainerLowest: Color(neutralPalette.get(4)),
       surfaceContainerHigh: Color(neutralPalette.get(17)),
       surfaceContainerHighest: Color(neutralPalette.get(22)),
     );

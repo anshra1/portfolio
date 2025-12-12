@@ -69,6 +69,7 @@ class StandardLightThemeGenerator implements ThemeGenerator {
       inversePrimary: Color(primaryPalette.get(80)),
       surfaceContainer: Color(neutralPalette.get(94)),
       surfaceContainerLow: Color(neutralPalette.get(96)),
+      surfaceContainerLowest: Color(neutralPalette.get(100)),
       surfaceContainerHigh: Color(neutralPalette.get(92)),
       surfaceContainerHighest: Color(neutralPalette.get(90)),
     );

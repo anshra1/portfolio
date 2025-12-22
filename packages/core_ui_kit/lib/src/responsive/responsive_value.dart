@@ -1,7 +1,8 @@
-import 'package:core_ui_kit/src/responsive_text/breakpoint_configuration.dart';
-import 'package:core_ui_kit/src/responsive_text/screen_size_detector.dart';
-import 'package:core_ui_kit/src/responsive_text/window_size_class.dart';
 import 'package:flutter/widgets.dart';
+
+import 'breakpoint_configuration.dart';
+import 'screen_size_detector.dart';
+import 'window_size_class.dart';
 
 /// A generic class to hold a value that changes based on screen size.
 ///
@@ -24,7 +25,7 @@ import 'package:flutter/widgets.dart';
 /// // Static (returns compact)
 /// Container(padding: padding.value);
 /// ```
-@immutable
+
 class ResponsiveValue<T> {
   /// Creates a responsive value with the given values per window class.
   ///

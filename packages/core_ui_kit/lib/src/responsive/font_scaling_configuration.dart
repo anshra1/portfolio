@@ -1,6 +1,6 @@
-import 'package:core_ui_kit/src/responsive_text/window_size_class.dart';
 import 'package:equatable/equatable.dart';
 
+import 'window_size_class.dart';
 
 /// Typography categories as defined by Material Design 3.
 enum TypographyCategory {
@@ -95,11 +95,7 @@ class FontScalingConfiguration extends Equatable {
       large: 1.15,
       extraLarge: 1.18,
     ),
-    this.body = const CategoryScaleFactors(
-      expanded: 1.05,
-      large: 1.08,
-      extraLarge: 1.10,
-    ),
+    this.body = const CategoryScaleFactors(expanded: 1.05, large: 1.08, extraLarge: 1.10),
     this.label = const CategoryScaleFactors(),
   });
 
@@ -180,10 +176,7 @@ class FontScalingConfiguration extends Equatable {
   }
 
   /// Gets the scale factor for a specific category and window class.
-  double getScaleFactor(
-    TypographyCategory category,
-    WindowSizeClass windowClass,
-  ) {
+  double getScaleFactor(TypographyCategory category, WindowSizeClass windowClass) {
     return forCategory(category).forWindowClass(windowClass);
   }
 

@@ -1,5 +1,7 @@
-import 'package:core_ui_kit/src/responsive_text/window_size_class.dart';
+import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:equatable/equatable.dart';
+
+import 'window_size_class.dart';
 
 /// Material Design 3 compliant breakpoint configuration.
 ///

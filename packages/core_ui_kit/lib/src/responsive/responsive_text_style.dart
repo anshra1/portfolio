@@ -1,9 +1,9 @@
-import 'package:core_ui_kit/src/responsive_text/breakpoint_configuration.dart';
-import 'package:core_ui_kit/src/responsive_text/font_scaling_configuration.dart';
-import 'package:core_ui_kit/src/responsive_text/screen_size_detector.dart';
-import 'package:core_ui_kit/src/responsive_text/window_size_class.dart';
 import 'package:flutter/widgets.dart';
 
+import 'breakpoint_configuration.dart';
+import 'font_scaling_configuration.dart';
+import 'screen_size_detector.dart';
+import 'window_size_class.dart';
 
 /// A text style that adapts based on screen size.
 ///
@@ -36,7 +36,7 @@ import 'package:flutter/widgets.dart';
 ///   category: TypographyCategory.display,
 /// );
 /// ```
-@immutable
+
 class ResponsiveTextStyle {
   /// Creates a responsive text style.
   ///

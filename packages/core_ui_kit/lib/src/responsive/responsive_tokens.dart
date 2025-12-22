@@ -1,8 +1,8 @@
-import 'package:core_ui_kit/src/responsive_text/font_scaling_configuration.dart';
-import 'package:core_ui_kit/src/responsive_text/responsive_text_style.dart';
 import 'package:flutter/material.dart' show TextTheme;
 import 'package:flutter/widgets.dart';
 
+import 'font_scaling_configuration.dart';
+import 'responsive_text_style.dart';
 
 /// Material Design 3 responsive typography tokens.
 ///
@@ -383,18 +383,12 @@ class ResponsiveTypographyProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _ResponsiveTypographyInherited(
-      tokens: tokens,
-      child: child,
-    );
+    return _ResponsiveTypographyInherited(tokens: tokens, child: child);
   }
 }
 
 class _ResponsiveTypographyInherited extends InheritedWidget {
-  const _ResponsiveTypographyInherited({
-    required this.tokens,
-    required super.child,
-  });
+  const _ResponsiveTypographyInherited({required this.tokens, required super.child});
   final ResponsiveTokens tokens;
 
   @override

@@ -18,8 +18,8 @@ This document defines the technical boundaries and stack of the project. **AI ag
 AI should prioritize using these existing packages over introducing new ones.
 
 ### **State Management & Logic**
-*   **`bloc`**: `^9.1.0` (Core state management logic).
-*   **`equatable`**: `^2.0.7` (Via `core_ui_kit` - For value equality).
+*   **`bloc`**: ` (Core state management logic).
+*   **`equatable`**:` (Via `core_ui_kit` - For value equality).
 *   *Note*: `flutter_bloc` is mandated by `system_patterns.md` but is currently missing from `pubspec.yaml`.
 
 ### **Navigation & Routing**

@@ -39,10 +39,10 @@ Imports must be sorted and grouped to prevent merge conflicts and improve readab
 1.  `dart:` imports.
 2.  `package:flutter` imports.
 3.  Third-party `package:` imports.
-4.  Project-specific `package:my_app` imports.
-5.  Relative imports (use only when necessary).
+4.  Project-specific `package:portfolio` (absolute) imports.
+5.  Relative imports (**allowed ONLY within the same directory**).
 
-*Rule*: Leave one blank line between groups.
+*Rule*: Leave one blank line between groups. Traverse-up imports (`import '../../...`) are strictly forbidden.
 
 ---
 
@@ -62,17 +62,20 @@ Maintain a consistent order for class members:
 ## 5. UI Structure (Widget Trees)
 
 *   **Nested Ternaries**: **FORBIDDEN**. If a UI logic requires more than a simple `condition ? true : false`, extract the logic into a separate private method or use an `if/else` block outside the `return` statement.
-*   **Deep Nesting**: If a widget tree is nested more than 4 levels deep, the AI **MUST** extract a sub-component into a private method (`_buildSection`).
+*   **Deep Nesting**: If a widget tree is nested more than 4 levels deep, the AI **MUST** extract a sub-component.
+    *   Extract to **Private Method** (`_buildSection`) for non-reusable logic.
+    *   Extract to **New Widget Class** (in `widgets/` folder) if logic exceeds 50 lines or is reusable.
 
 ---
 
-## 6. Linter Rules
+## 6. Linter & Quality Rules
 
-We strictly follow `very_good_analysis` or `flutter_lints`. Key rules include:
+We strictly follow **both** `very_good_analysis` and `flutter_lints`. Key rules include:
 
-*   **No Print Statements**: Use a proper logging package or `debugPrint`.
+*   **No Print Statements**: Use the **Talker** ecosystem for all logging.
 *   **Prefer Const**: AI must identify and apply `const` to all possible constructors and literals.
 *   **Sort Constructors First**: Always place the constructor before any other methods.
+*   **No Unused Imports**: All imports must be used.
 
 ---
 
@@ -80,5 +83,5 @@ We strictly follow `very_good_analysis` or `flutter_lints`. Key rules include:
 
 *   **Vertical Spacing**: One blank line between methods. No blank lines at the start or end of a class body.
 *   **Documentation**:
-    *   Use `///` for public API documentation.
+    *   Use `///` for public API documentation (Domain entities, Use Cases, Public Widgets).
     *   Use `//` for internal implementation notes.

@@ -128,8 +128,9 @@ Responsibilities:
 
 ### Pagination Policy
 
-* Fake pagination: the complete dataset is returned in one request
-* Paging parameters exist only to preserve API shape
+* Infinite Scroll: Data is loaded in chunks
+* The API returns a subset of items based on `page` and `limit`
+* An empty list signifies the end of the dataset
 
 ### Filtering & Sorting Policy
 
@@ -184,6 +185,8 @@ It ensures that the UI receives a fully-prepared list suitable for direct render
 
 **Input**
 
+* `page` (int)
+* `limit` (int, optional)
 * `filter` (ProjectFilter)
 
 **Output**
@@ -194,9 +197,23 @@ It ensures that the UI receives a fully-prepared list suitable for direct render
 
 **Inherited Feature Decisions**
 
-* Fake pagination
+* Infinite Scroll (Chunk-based loading)
 * No cache
 * Fail-fast offline
+
+---
+
+**Data**
+
+* Retrieve the complete project dataset from the local JSON asset
+* Parse the raw JSON into domain entities
+
+**Data Repository**
+
+* **Role:** Logic & Pagination
+* Applies filtering and sorting to the raw dataset
+* Slices the list based on `page` and `limit` to simulate infinite scrolling
+* Returns the specific chunk of projects to the Domain layer
 
 ---
 
@@ -208,7 +225,8 @@ It ensures that the UI receives a fully-prepared list suitable for direct render
 4. Apply technology filtering if selected
 5. Apply featured filtering if requested
 6. Apply sorting based on the selected order
-7. Return the resulting project list to the caller
+7. Apply pagination (slice the list based on page and limit)
+8. Return the resulting project list to the caller
 
 ---
 
@@ -260,6 +278,19 @@ It guarantees that the UI receives a fully-formed project object that can be ren
 
 ---
 
+**Data**
+
+* Locate the specific project in the local JSON dataset
+* Parse the raw JSON into the detailed domain entity
+
+**Data Repository**
+
+* **Role:** None (Pass-through)
+* No additional business logic or transformation is applied in this repository
+* It acts as a direct bridge to the Data Source
+
+---
+
 **High-Level Functional Flow**
 
 1. Validate the project identifier
@@ -283,6 +314,8 @@ It guarantees that the UI receives a fully-formed project object that can be ren
 * NotFoundFailure
 * NetworkFailure
 * DataParsingFailure
+
+
 
 ---
 

@@ -3,6 +3,10 @@ import 'package:portfolio/features/projects/domain/entities/project.dart';
 import 'package:portfolio/features/projects/domain/entities/project_filter.dart';
 
 abstract interface class ProjectRepository {
-  ResultFuture<List<Project>> getProjects({required ProjectFilter filter});
+  ResultFuture<List<Project>> getProjects({
+    required int page,
+    required ProjectFilter filter,
+    int? limit,
+  });
   ResultFuture<Project> getProjectDetail(String projectId);
 }

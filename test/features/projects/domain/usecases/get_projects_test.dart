@@ -52,38 +52,60 @@ void main() {
     searchQuery: faker.lorem.word(),
     isFeatured: true,
   );
+  final tParams = GetProjectsParams(page: 1, filter: tFilter, limit: 10);
 
   setUp(() {
     mockRepository = MockProjectRepository();
     useCase = GetProjects(mockRepository);
   });
 
-  test('should return List<Project> when repository call is successful', () async {
+  test('should return List<Project> when repository call is successful',
+      () async {
     // Arrange
     when(
-      () => mockRepository.getProjects(filter: tFilter),
+      () => mockRepository.getProjects(
+        page: any(named: 'page'),
+        filter: tFilter,
+        limit: any(named: 'limit'),
+      ),
     ).thenAnswer((_) async => Right(tProjects));
 
     // Act
-    final result = await useCase(tFilter);
+    final result = await useCase(tParams);
 
     // Assert
     expect(result, Right(tProjects));
-    verify(() => mockRepository.getProjects(filter: tFilter)).called(1);
+    verify(
+      () => mockRepository.getProjects(
+        page: tParams.page,
+        filter: tParams.filter,
+        limit: tParams.limit,
+      ),
+    ).called(1);
   });
 
   test('should return Failure when repository call is unsuccessful', () async {
     // Arrange
     const tFailure = ServerFailure(message: 'Server Error', title: '');
     when(
-      () => mockRepository.getProjects(filter: tFilter),
+      () => mockRepository.getProjects(
+        page: any(named: 'page'),
+        filter: tFilter,
+        limit: any(named: 'limit'),
+      ),
     ).thenAnswer((_) async => const Left(tFailure));
 
     // Act
-    final result = await useCase(tFilter);
+    final result = await useCase(tParams);
 
     // Assert
     expect(result, const Left(tFailure));
-    verify(() => mockRepository.getProjects(filter: tFilter)).called(1);
+    verify(
+      () => mockRepository.getProjects(
+        page: tParams.page,
+        filter: tParams.filter,
+        limit: tParams.limit,
+      ),
+    ).called(1);
   });
 }

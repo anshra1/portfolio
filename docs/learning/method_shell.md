@@ -55,10 +55,7 @@ Identifies abnormal or failure scenarios the datasource may encounter (e.g., Net
 Role:
 Records constraints governing datasource behavior. Prevents logic creep and enforces separation of concerns (e.g., "Datasource returns raw DTOs, does not parse to Domain Models").
 
-4.5 Test Cases
 
-Role:
-Defines the minimum set of tests validating datasource behavior. Tests must align strictly with the Full Method Working section.
 
 5. Repository (The Policy)
 

@@ -164,14 +164,7 @@ Responsibilities:
 
 ---
 
-## Feature-Level Failures
 
-* NetworkFailure
-* ServerFailure
-* DataParsingFailure
-* NotFoundFailure
-* PlatformFailure
-* ValidationFailure
 
 ---
 

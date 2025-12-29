@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'project_filter_model.dart';
+part of 'article_filter_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ProjectFilterModel _$ProjectFilterModelFromJson(Map<String, dynamic> json) =>
-    _ProjectFilterModel(
+_ArticleFilterModel _$ArticleFilterModelFromJson(Map<String, dynamic> json) =>
+    _ArticleFilterModel(
       searchQuery: json['searchQuery'] as String?,
-      technology: json['technology'] as String?,
+      tag: json['tag'] as String?,
       sortOrder: $enumDecodeNullable(_$SortOrderEnumMap, json['sortOrder']),
     );
 
-Map<String, dynamic> _$ProjectFilterModelToJson(_ProjectFilterModel instance) =>
+Map<String, dynamic> _$ArticleFilterModelToJson(_ArticleFilterModel instance) =>
     <String, dynamic>{
       'searchQuery': instance.searchQuery,
-      'technology': instance.technology,
+      'tag': instance.tag,
       'sortOrder': _$SortOrderEnumMap[instance.sortOrder],
     };
 

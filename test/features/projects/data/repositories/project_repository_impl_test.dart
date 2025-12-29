@@ -7,13 +7,12 @@ import 'package:portfolio/features/projects/data/datasources/projects_remote_dat
 import 'package:portfolio/features/projects/data/models/project_filter_model.dart';
 import 'package:portfolio/features/projects/data/models/project_model.dart';
 import 'package:portfolio/features/projects/data/repositories/project_repository_impl.dart';
+import 'package:portfolio/features/projects/domain/entities/display_tier.dart';
 import 'package:portfolio/features/projects/domain/entities/project.dart';
 import 'package:portfolio/features/projects/domain/entities/project_filter.dart';
 
 class MockProjectsRemoteDataSource extends Mock
-        //
-        implements
-        ProjectsRemoteDataSource {}
+    implements ProjectsRemoteDataSource {}
 
 void main() {
   late ProjectRepositoryImpl repository;
@@ -21,7 +20,7 @@ void main() {
 
   setUp(() {
     mockRemoteDataSource = MockProjectsRemoteDataSource();
-    repository = ProjectRepositoryImpl(remoteDataSource: mockRemoteDataSource);
+    repository = ProjectRepositoryImpl(mockRemoteDataSource);
     registerFallbackValue(
       const ProjectFilterModel(),
     );
@@ -29,11 +28,15 @@ void main() {
 
   const tProjectId = 'p1';
   const tProjectFilter = ProjectFilter(searchQuery: 'test');
-  const tProjectFilterModel = ProjectFilterModel(searchQuery: 'test');
 
-  const tProjectModel = ProjectModel(
+  // Note: The repository ignores the passed filter for the data source call
+  // and fetches everything using an empty filter.
+  const tDataSourceFilterModel = ProjectFilterModel();
+
+  final tProjectModel = ProjectModel(
     id: tProjectId,
-    isFeatured: true,
+    displayTier: DisplayTier.hero,
+    publishedAt: DateTime(2024, 1, 1),
     title: 'Test Project',
     tagline: 'Test Tagline',
     typeIcon: 'smartphone',
@@ -61,10 +64,11 @@ void main() {
 
   group('getProjects', () {
     test(
-      'should return List<Project> when call to data source is successful (Transformation)',
+      'should return List<Project> when call to data source is successful '
+      '(Transformation)',
       () async {
         // Arrange
-        when( 
+        when(
           () => mockRemoteDataSource.getProjects(
             page: any(named: 'page'),
             filter: any(named: 'filter'),
@@ -80,18 +84,20 @@ void main() {
         );
 
         // Assert
-        expect(result, Right<Failure,List<Project>>(tProjectList));
+        expect(result, Right<Failure, List<Project>>(tProjectList));
         verify(
           () => mockRemoteDataSource.getProjects(
             page: 1,
-            filter: tProjectFilterModel,
+            filter: tDataSourceFilterModel,
+            limit: 1000,
           ),
         ).called(1);
       },
     );
 
     test(
-      'should return ServerFailure when call to data source throws ServerException (Error Mapping)',
+      'should return ServerFailure when call to data source throws '
+      'ServerException (Error Mapping)',
       () async {
         // Arrange
         when(
@@ -109,11 +115,12 @@ void main() {
         );
 
         // Assert
-        expect(result, const Left(tServerFailure));
+        expect(result, const Left<Failure, List<Project>>(tServerFailure));
         verify(
           () => mockRemoteDataSource.getProjects(
             page: 1,
-            filter: tProjectFilterModel,
+            filter: tDataSourceFilterModel,
+            limit: 1000,
           ),
         ).called(1);
       },
@@ -122,7 +129,8 @@ void main() {
 
   group('getProjectDetail', () {
     test(
-      'should return Project when call to data source is successful (Transformation)',
+      'should return Project when call to data source is successful '
+      '(Transformation)',
       () async {
         // Arrange
         when(
@@ -133,13 +141,15 @@ void main() {
         final result = await repository.getProjectDetail(tProjectId);
 
         // Assert
-        expect(result, Right(tProject));
-        verify(() => mockRemoteDataSource.getProjectDetail(tProjectId)).called(1);
+        expect(result, Right<Failure, Project>(tProject));
+        verify(() => mockRemoteDataSource.getProjectDetail(tProjectId))
+            .called(1);
       },
     );
 
     test(
-      'should return ServerFailure when call to data source throws ServerException (Error Mapping)',
+      'should return ServerFailure when call to data source throws '
+      'ServerException (Error Mapping)',
       () async {
         // Arrange
         when(
@@ -150,8 +160,9 @@ void main() {
         final result = await repository.getProjectDetail(tProjectId);
 
         // Assert
-        expect(result, const Left(tServerFailure));
-        verify(() => mockRemoteDataSource.getProjectDetail(tProjectId)).called(1);
+        expect(result, const Left<Failure, Project>(tServerFailure));
+        verify(() => mockRemoteDataSource.getProjectDetail(tProjectId))
+            .called(1);
       },
     );
   });

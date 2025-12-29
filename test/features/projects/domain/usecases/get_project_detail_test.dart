@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/features/projects/domain/entities/architecture_feature.dart';
+import 'package:portfolio/features/projects/domain/entities/display_tier.dart';
 import 'package:portfolio/features/projects/domain/entities/downloadable_artifact.dart';
 import 'package:portfolio/features/projects/domain/entities/project.dart';
 import 'package:portfolio/features/projects/domain/repositories/project_repository.dart';
@@ -20,7 +21,8 @@ void main() {
 
   final tProject = Project(
     id: faker.guid.guid(),
-    isFeatured: faker.randomGenerator.boolean(),
+    displayTier: DisplayTier.hero,
+    publishedAt: DateTime.now(),
     title: faker.lorem.words(3).join(' '),
     tagline: faker.lorem.sentence(),
     typeIcon: faker.lorem.word(),
@@ -63,7 +65,7 @@ void main() {
     final result = await useCase(tId);
 
     // Assert
-    expect(result, Right(tProject));
+    expect(result, Right<Failure, Project>(tProject));
     verify(() => mockRepository.getProjectDetail(tId)).called(1);
   });
 
@@ -78,7 +80,7 @@ void main() {
     final result = await useCase(tId);
 
     // Assert
-    expect(result, const Left(tFailure));
+    expect(result, const Left<Failure, Project>(tFailure));
     verify(() => mockRepository.getProjectDetail(tId)).called(1);
   });
 }

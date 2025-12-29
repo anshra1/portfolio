@@ -16,7 +16,8 @@ The core portfolio entity. Represents a specific work item (App, Library, Proof-
 **1. Core Fields (Traceability)**
 
 - `id`: String — **Logic:** Unique identifier for routing.
-- `isFeatured`: Boolean — **Logic:** Controls visibility on `HomeScreen` (Featured vs Archive).
+- `displayTier`: Enum (Hero, Showcase, Standard, Hidden) — **Logic:** Controls ranking and visibility hierarchy.
+- `publishedAt`: DateTime — **Logic:** Used for chronological sorting and secondary ranking.
 - `title`: String — **UI:** Displayed on Card and Header.
 - `tagline`: String — **UI:** Short subtitle for the Detail Screen hero section.
 - `typeIcon`: String — **UI:** Material Symbol name (e.g., 'smartphone', 'groups').
@@ -32,13 +33,11 @@ The core portfolio entity. Represents a specific work item (App, Library, Proof-
 
 **3. Mock Data Structure (JSON)**
 
-JSON
-
-# 
-
-`{
+```json
+{
   "id": "p1",
-  "isFeatured": true,
+  "displayTier": "hero",
+  "publishedAt": "2024-01-15T10:00:00Z",
   "title": "SyncFlow",
   "tagline": "Real-time task synchronization engine.",
   "typeIcon": "smartphone",
@@ -62,14 +61,15 @@ JSON
       "icon": "assets/icons/websocket.svg"
     }
   ]
-}`
+}
+```
 
 ## Scope
 
 ### In Scope
 
-* Display featured projects on the homepage
-* Display the full archive of projects
+* Display featured projects (Hero/Showcase tiers) on the homepage
+* Display the full archive of projects with ranked sorting
 * Load detailed technical information for a single project
 * Allow users to open source repositories
 * Allow users to download binaries or open app store listings
@@ -95,6 +95,7 @@ Responsibilities:
 * Provide identity for routing and lookup
 * Expose metadata for discovery and overview
 * Support lightweight rendering in grids and cards
+* **Computed Logic:** Expose `isFeatured` getter (Hero || Showcase) for UI convenience.
 
 ---
 
@@ -134,11 +135,13 @@ Responsibilities:
 
 ### Filtering & Sorting Policy
 
-* Supported filters:
+* **Ranked Search Algorithm:**
+  1.  **Primary Sort:** `DisplayTier` (Hero > Showcase > Standard)
+  2.  **Secondary Sort:** `publishedAt` (Newest > Oldest)
+* **Supported Filters:**
   * Search query (title + tagline + description)
   * Technology selection
-  * Sort order (Enum: Newest, Oldest, Popular)
-  * Featured selection (isFeatured)
+  * **Featured Request:** (Logic: Maps `filter.isFeatured` to `Hero` & `Showcase` tiers)
 
 ### Caching Policy
 
@@ -177,9 +180,9 @@ Responsibilities:
 ### Method: getProjects
 
 **Purpose (Detailed)**
-Provide a discoverable list of projects that communicates the breadth and nature of the work. This method serves as the single entry point for all project list contexts, including featured projects and the full archive.
+Provide a discoverable list of projects that communicates the breadth and nature of the work. This method serves as the single entry point for all project list contexts.
 
-It ensures that the UI receives a fully-prepared list suitable for direct rendering without additional business logic.
+It guarantees a **Ranked List** where the most important work (Hero Tier) is always presented first, regardless of search queries or date, unless specifically sorted otherwise.
 
 ---
 
@@ -210,10 +213,10 @@ It ensures that the UI receives a fully-prepared list suitable for direct render
 
 **Data Repository**
 
-* **Role:** Logic & Pagination
-* Applies filtering and sorting to the raw dataset
-* Slices the list based on `page` and `limit` to simulate infinite scrolling
-* Returns the specific chunk of projects to the Domain layer
+* **Role:** Logic Engine & Pagination
+* Applies **Ranked Sorting** logic in-memory.
+* Maps high-level filter requests (like `isFeatured`) to specific semantic tiers.
+* Slices the list based on `page` and `limit`.
 
 ---
 
@@ -223,8 +226,10 @@ It ensures that the UI receives a fully-prepared list suitable for direct render
 2. Retrieve the complete project dataset
 3. Apply search filtering if a query is present
 4. Apply technology filtering if selected
-5. Apply featured filtering if requested
-6. Apply sorting based on the selected order
+5. **Apply Tier Filtering:** If `filter.isFeatured` is true, restrict to `Hero` and `Showcase` tiers.
+6. **Apply Ranked Sorting:**
+    *   Sort by Tier Index (Hero first)
+    *   Sort by Date (Newest first)
 7. Apply pagination (slice the list based on page and limit)
 8. Return the resulting project list to the caller
 
@@ -247,8 +252,7 @@ It ensures that the UI receives a fully-prepared list suitable for direct render
 
 **Non-Goals**
 
-* Sorting or ranking projects
-* Tag-based filtering
+* Tag-based filtering (beyond technology)
 
 ---
 
@@ -315,8 +319,6 @@ It guarantees that the UI receives a fully-formed project object that can be ren
 * NetworkFailure
 * DataParsingFailure
 
-
-
 ---
 
 **Non-Goals**
@@ -331,4 +333,3 @@ It guarantees that the UI receives a fully-formed project object that can be ren
 
 * This feature must not depend on Articles or Home feature logic
 * All business logic must remain outside the UI layer
-

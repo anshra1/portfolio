@@ -2,6 +2,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:portfolio/features/projects/data/models/architecture_feature_model.dart';
 import 'package:portfolio/features/projects/data/models/downloadable_artifact_model.dart';
+import 'package:portfolio/features/projects/domain/entities/display_tier.dart';
 import 'package:portfolio/features/projects/domain/entities/project.dart';
 
 part 'project_model.freezed.dart';
@@ -11,7 +12,8 @@ part 'project_model.g.dart';
 abstract class ProjectModel with _$ProjectModel {
   const factory ProjectModel({
     required String id,
-    required bool isFeatured,
+    required DisplayTier displayTier,
+    required DateTime publishedAt,
     required String title,
     required String tagline,
     required String typeIcon,
@@ -31,7 +33,8 @@ abstract class ProjectModel with _$ProjectModel {
   factory ProjectModel.fromEntity(Project entity) {
     return ProjectModel(
       id: entity.id,
-      isFeatured: entity.isFeatured,
+      displayTier: entity.displayTier,
+      publishedAt: entity.publishedAt,
       title: entity.title,
       tagline: entity.tagline,
       typeIcon: entity.typeIcon,
@@ -51,7 +54,8 @@ abstract class ProjectModel with _$ProjectModel {
   Project toEntity() {
     return Project(
       id: id,
-      isFeatured: isFeatured,
+      displayTier: displayTier,
+      publishedAt: publishedAt,
       title: title,
       tagline: tagline,
       typeIcon: typeIcon,

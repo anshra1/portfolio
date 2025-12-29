@@ -10,7 +10,8 @@ _ProjectModel _$ProjectModelFromJson(
   Map<String, dynamic> json,
 ) => _ProjectModel(
   id: json['id'] as String,
-  isFeatured: json['isFeatured'] as bool,
+  displayTier: $enumDecode(_$DisplayTierEnumMap, json['displayTier']),
+  publishedAt: DateTime.parse(json['publishedAt'] as String),
   title: json['title'] as String,
   tagline: json['tagline'] as String,
   typeIcon: json['typeIcon'] as String,
@@ -40,7 +41,8 @@ _ProjectModel _$ProjectModelFromJson(
 Map<String, dynamic> _$ProjectModelToJson(_ProjectModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'isFeatured': instance.isFeatured,
+      'displayTier': _$DisplayTierEnumMap[instance.displayTier]!,
+      'publishedAt': instance.publishedAt.toIso8601String(),
       'title': instance.title,
       'tagline': instance.tagline,
       'typeIcon': instance.typeIcon,
@@ -51,3 +53,10 @@ Map<String, dynamic> _$ProjectModelToJson(_ProjectModel instance) =>
       'downloads': instance.downloads,
       'features': instance.features,
     };
+
+const _$DisplayTierEnumMap = {
+  DisplayTier.hero: 'hero',
+  DisplayTier.showcase: 'showcase',
+  DisplayTier.standard: 'standard',
+  DisplayTier.hidden: 'hidden',
+};

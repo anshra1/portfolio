@@ -1,4 +1,7 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:dartz/dartz.dart';
+import 'package:portfolio/core/common/enums.dart';
 import 'package:portfolio/core/common/typedefs.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/features/projects/data/datasources/projects_remote_data_source.dart';
@@ -8,8 +11,9 @@ import 'package:portfolio/features/projects/domain/entities/project_filter.dart'
 import 'package:portfolio/features/projects/domain/repositories/project_repository.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
-  ProjectRepositoryImpl({required this.remoteDataSource});
-  final ProjectsRemoteDataSource remoteDataSource;
+  const ProjectRepositoryImpl(this._remoteDataSource);
+
+  final ProjectsRemoteDataSource _remoteDataSource;
 
   @override
   ResultFuture<List<Project>> getProjects({
@@ -18,48 +22,75 @@ class ProjectRepositoryImpl implements ProjectRepository {
     int? limit,
   }) async {
     try {
-      final filterModel = ProjectFilterModel.fromEntity(filter);
-      final projectModels = await remoteDataSource.getProjects(
-        page: page,
-        filter: filterModel,
-        limit: limit,
+      // Logic Injection: Retrieve the complete dataset for in-memory processing.
+      final allModels = await _remoteDataSource.getProjects(
+        page: 1,
+        filter: const ProjectFilterModel(),
+        limit: 1000,
       );
-      final projects = projectModels.map((e) => e.toEntity()).toList();
-      return Right(projects);
-    } on ServerException catch (e) {
-      return Left(
-        ServerFailure(
-          message: e.userMessage,
-          title: e.title,
-          code: e.code,
-          context: e.context ?? {},
-          priority: e.priority,
-          isRecoverable: e.isRecoverable,
-        ),
-      );
+
+      var projects = allModels.map((e) => e.toEntity()).toList();
+
+      // 1. Apply Search Filtering
+      if (filter.searchQuery != null && filter.searchQuery!.isNotEmpty) {
+        final query = filter.searchQuery!.toLowerCase();
+        projects = projects.where((p) {
+          return p.title.toLowerCase().contains(query) ||
+              p.tagline.toLowerCase().contains(query) ||
+              p.description.toLowerCase().contains(query);
+        }).toList();
+      }
+
+      // 2. Apply Technology Filtering
+      if (filter.technology != null && filter.technology!.isNotEmpty) {
+        projects = projects.where((p) {
+          return p.technologies.any(
+            (t) => t.toLowerCase() == filter.technology!.toLowerCase(),
+          );
+        }).toList();
+      }
+
+      // 3. Apply Ranked Sorting (Fundamental Architectural Logic)
+      // Primary: Display Tier (Hero > Showcase > Standard)
+      // Secondary: Date (Newest > Oldest)
+      projects.sort((a, b) {
+        final tierResult = a.displayTier.index.compareTo(b.displayTier.index);
+        if (tierResult != 0) {
+          return tierResult;
+        }
+
+        if (filter.sortOrder == SortOrder.oldest) {
+          return a.publishedAt.compareTo(b.publishedAt);
+        }
+
+        return b.publishedAt.compareTo(a.publishedAt);
+      });
+
+      // 4. Apply Pagination
+      final effectiveLimit = limit ?? 10;
+      final startIndex = (page - 1) * effectiveLimit;
+
+      if (startIndex >= projects.length) {
+        return const Right([]);
+      }
+
+      final endIndex = (startIndex + effectiveLimit) > projects.length
+          ? projects.length
+          : (startIndex + effectiveLimit);
+
+      return Right(projects.sublist(startIndex, endIndex));
     } on Exception catch (e) {
-      return Left(UnknownFailure(message: e.toString()));
+      return Left(ErrorMapper.mapErrorToFailure(e));
     }
   }
 
   @override
   ResultFuture<Project> getProjectDetail(String projectId) async {
     try {
-      final projectModel = await remoteDataSource.getProjectDetail(projectId);
-      return Right(projectModel.toEntity());
-    } on ServerException catch (e) {
-      return Left(
-        ServerFailure(
-          message: e.userMessage,
-          title: e.title,
-          code: e.code,
-          context: e.context ?? {},
-          priority: e.priority,
-          isRecoverable: e.isRecoverable,
-        ),
-      );
-    } catch (e) {
-      return Left(UnknownFailure(message: e.toString()));
+      final model = await _remoteDataSource.getProjectDetail(projectId);
+      return Right(model.toEntity());
+    } on Exception catch (e) {
+      return Left(ErrorMapper.mapErrorToFailure(e));
     }
   }
 }

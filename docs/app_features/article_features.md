@@ -13,7 +13,7 @@ The feature is strictly read-only and optimized for clarity, discoverability, an
 ### In Scope
 
 * Display a list of articles
-* Support searching, filtering, and sorting
+* Support searching, filtering, and sorting (Ranked Results)
 * Load and display full article content
 * Provide a distraction-free reading experience
 
@@ -38,6 +38,7 @@ Responsibilities:
 * Provide identity for routing and lookup
 * Expose metadata required for discovery (title, date, tags, summary)
 * Support lightweight rendering in list and grid views
+* **Computed Logic:** Expose `isFeatured` getter (checks if Tier is `hero`) for UI styling.
 
 ---
 
@@ -55,7 +56,7 @@ Responsibilities:
 
 ## Public Methods (Feature API)
 
-* `getArticles({int page, int limit, FilterState filter})`
+* `getArticles({int page, int limit, ArticleFilter filter})`
 * `getArticleDetail(String articleId)`
 
 ---
@@ -75,13 +76,12 @@ Responsibilities:
 
 ### Filtering & Sorting Policy
 
-* Filtering and sorting are applied in the data layer
-* Supported filters:
-
+* **Ranked Search Algorithm:**
+  1.  **Primary Sort:** `DisplayTier` (Hero > Standard)
+  2.  **Secondary Sort:** `publishedAt` (Newest > Oldest)
+* **Supported Filters:**
   * Search query (title + summary)
   * Tag selection
-  * Sort order (Enum: Newest, Oldest, Popular)
-  * Featured selection (isFeatured)
 
 ### Caching Policy
 
@@ -118,9 +118,9 @@ Represents a blog post or tutorial.
 **1. Core Fields (Traceability)**
 
 - `id`: String — **Logic:** Unique identifier for routing.
-- `isFeatured`: Boolean — **Logic:** If `true`, appears in the "Featured Learnings" section on `HomeScreen`.
+- `displayTier`: Enum (Hero, Standard, Hidden) — **Logic:** Controls ranking and visual prominence.
+- `publishedAt`: DateTime — **Logic:** Used for chronological sorting and secondary ranking.
 - `title`: String — **UI:** Headline on Card and Detail Screen.
-- `publishDate`: String — **UI:** Displayed metadata.
 - `readTime`: String — **UI:** Estimated reading time.
 - `summary`: String — **UI:** Short excerpt for the Card view.
 - `contentBody`: HTML/Markdown — **UI:** Full rich-text content.
@@ -133,42 +133,36 @@ Represents a blog post or tutorial.
 
 **3. Mock Data Structure (JSON)**
 
-JSON
-
-# 
-
-`{
+```json
+{
   "id": "a1",
-  "isFeatured": true,
+  "displayTier": "hero",
+  "publishedAt": "2024-11-25T10:00:00Z",
   "title": "Component-first UI speeds development",
-  "publishDate": "2024-11-25",
   "readTime": "3 min",
   "tags": ["#UI/UX", "#Flutter"],
   "summary": "Build reusable components first, then compose scalable UI.",
   "contentBody": "<p>On a recent project, I began by composing small, reusable widgets...</p>",
   "coverImageAsset": "assets/images/articles/component_ui.jpg"
-}`
+}
+```
 
 ---
-
-### 📦 Data Model: Profile (Singlet
 
 ## Method Specifications
 
 ### Method: getArticles
 
 **Purpose (Detailed)**
-Provide a discoverable list of articles based on the current user intent. This method serves as the single entry point for all article list interactions, including initial load, search, tag filtering, sorting, and list refresh.
-
-It ensures that the UI receives a complete, already-processed list of articles so that no business logic leaks into the presentation layer.
+Provide a discoverable list of articles based on current user intent. This method returns a **Ranked Result Set** where the most significant content (Hero tier) is automatically promoted to the top.
 
 ---
 
 **Input**
 
 * `page` (int, optional)
-* `limit` (int, optional) - Defaults to a fixed batch size (e.g., 10)
-* `filter` (FilterState, optional)
+* `limit` (int, optional)
+* `filter` (ArticleFilter, optional)
 
 **Output**
 
@@ -184,14 +178,27 @@ It ensures that the UI receives a complete, already-processed list of articles s
 
 ---
 
+**Data**
+
+* Retrieve the complete article dataset from the local JSON asset
+* Parse raw JSON into domain entities
+
+**Data Repository**
+
+* **Role:** Logic Engine & Pagination
+* Applies filtering and the **Ranked Sorting** algorithm in-memory.
+* Slices the list based on `page` and `limit`.
+
+---
+
 **High-Level Functional Flow**
 
 1. Validate incoming filter and pagination parameters
 2. Retrieve the full article dataset
 3. Apply search filtering if a query is present
 4. Apply tag-based filtering if a tag is selected
-5. Apply featured status filtering if requested
-6. Apply sorting based on the selected order
+5. **Apply Ranked Sorting:** Sort by Tier (Hero first), then by Date (Newest first).
+6. Apply pagination (slice the list based on page and limit)
 7. Return the processed article list to the caller
 
 ---
@@ -200,7 +207,6 @@ It ensures that the UI receives a complete, already-processed list of articles s
 
 * No articles exist in the dataset
 * Filters produce zero matching results
-* Filter values are empty or partially defined
 
 ---
 
@@ -212,19 +218,10 @@ It ensures that the UI receives a complete, already-processed list of articles s
 
 ---
 
-**Non-Goals**
-
-* Persisting filter state
-* Partial result streaming
-
----
-
 ### Method: getArticleDetail
 
 **Purpose (Detailed)**
-Retrieve the complete reading content for a single article. This method is responsible for loading all data required to render the reader view, including metadata and the full content body.
-
-It guarantees that the UI receives a fully-formed article object suitable for direct rendering without additional processing.
+Retrieve the complete reading content for a single article.
 
 ---
 
@@ -238,27 +235,12 @@ It guarantees that the UI receives a fully-formed article object suitable for di
 
 ---
 
-**Inherited Feature Decisions**
-
-* No cache
-* Fail-fast offline
-
----
-
 **High-Level Functional Flow**
 
 1. Validate the article identifier
 2. Locate the article matching the identifier
 3. Load the full content body and metadata
 4. Return the complete article detail to the caller
-
----
-
-**Edge Cases**
-
-* Empty or malformed article ID
-* Article exists but content body is missing
-* Article content is present but malformed
 
 ---
 
@@ -271,23 +253,7 @@ It guarantees that the UI receives a fully-formed article object suitable for di
 
 ---
 
-**Non-Goals**
-
-* Prefetching adjacent articles
-* Content transformation or sanitization
-
----
-
-## Non-Goals (Feature Level)
-
-* Offline-first reading
-* Editable or interactive content
-* User engagement tracking
-
----
-
 ## Final Notes
 
 * This feature is read-only by design
 * All business logic must live outside the UI layer
-

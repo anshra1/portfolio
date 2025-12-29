@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProjectFilterModel {
 
- String? get searchQuery; String? get technology; SortOrder? get sortOrder; bool? get isFeatured;
+ String? get searchQuery; String? get technology; SortOrder? get sortOrder;
 /// Create a copy of ProjectFilterModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ProjectFilterModelCopyWith<ProjectFilterModel> get copyWith => _$ProjectFilterM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.technology, technology) || other.technology == technology)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder)&&(identical(other.isFeatured, isFeatured) || other.isFeatured == isFeatured));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.technology, technology) || other.technology == technology)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,searchQuery,technology,sortOrder,isFeatured);
+int get hashCode => Object.hash(runtimeType,searchQuery,technology,sortOrder);
 
 @override
 String toString() {
-  return 'ProjectFilterModel(searchQuery: $searchQuery, technology: $technology, sortOrder: $sortOrder, isFeatured: $isFeatured)';
+  return 'ProjectFilterModel(searchQuery: $searchQuery, technology: $technology, sortOrder: $sortOrder)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ProjectFilterModelCopyWith<$Res>  {
   factory $ProjectFilterModelCopyWith(ProjectFilterModel value, $Res Function(ProjectFilterModel) _then) = _$ProjectFilterModelCopyWithImpl;
 @useResult
 $Res call({
- String? searchQuery, String? technology, SortOrder? sortOrder, bool? isFeatured
+ String? searchQuery, String? technology, SortOrder? sortOrder
 });
 
 
@@ -65,13 +65,12 @@ class _$ProjectFilterModelCopyWithImpl<$Res>
 
 /// Create a copy of ProjectFilterModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? searchQuery = freezed,Object? technology = freezed,Object? sortOrder = freezed,Object? isFeatured = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? searchQuery = freezed,Object? technology = freezed,Object? sortOrder = freezed,}) {
   return _then(_self.copyWith(
 searchQuery: freezed == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
 as String?,technology: freezed == technology ? _self.technology : technology // ignore: cast_nullable_to_non_nullable
 as String?,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
-as SortOrder?,isFeatured: freezed == isFeatured ? _self.isFeatured : isFeatured // ignore: cast_nullable_to_non_nullable
-as bool?,
+as SortOrder?,
   ));
 }
 
@@ -156,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? searchQuery,  String? technology,  SortOrder? sortOrder,  bool? isFeatured)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? searchQuery,  String? technology,  SortOrder? sortOrder)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProjectFilterModel() when $default != null:
-return $default(_that.searchQuery,_that.technology,_that.sortOrder,_that.isFeatured);case _:
+return $default(_that.searchQuery,_that.technology,_that.sortOrder);case _:
   return orElse();
 
 }
@@ -177,10 +176,10 @@ return $default(_that.searchQuery,_that.technology,_that.sortOrder,_that.isFeatu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? searchQuery,  String? technology,  SortOrder? sortOrder,  bool? isFeatured)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? searchQuery,  String? technology,  SortOrder? sortOrder)  $default,) {final _that = this;
 switch (_that) {
 case _ProjectFilterModel():
-return $default(_that.searchQuery,_that.technology,_that.sortOrder,_that.isFeatured);case _:
+return $default(_that.searchQuery,_that.technology,_that.sortOrder);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +196,10 @@ return $default(_that.searchQuery,_that.technology,_that.sortOrder,_that.isFeatu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? searchQuery,  String? technology,  SortOrder? sortOrder,  bool? isFeatured)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? searchQuery,  String? technology,  SortOrder? sortOrder)?  $default,) {final _that = this;
 switch (_that) {
 case _ProjectFilterModel() when $default != null:
-return $default(_that.searchQuery,_that.technology,_that.sortOrder,_that.isFeatured);case _:
+return $default(_that.searchQuery,_that.technology,_that.sortOrder);case _:
   return null;
 
 }
@@ -212,13 +211,12 @@ return $default(_that.searchQuery,_that.technology,_that.sortOrder,_that.isFeatu
 @JsonSerializable()
 
 class _ProjectFilterModel extends ProjectFilterModel {
-  const _ProjectFilterModel({this.searchQuery, this.technology, this.sortOrder, this.isFeatured}): super._();
+  const _ProjectFilterModel({this.searchQuery, this.technology, this.sortOrder}): super._();
   factory _ProjectFilterModel.fromJson(Map<String, dynamic> json) => _$ProjectFilterModelFromJson(json);
 
 @override final  String? searchQuery;
 @override final  String? technology;
 @override final  SortOrder? sortOrder;
-@override final  bool? isFeatured;
 
 /// Create a copy of ProjectFilterModel
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProjectFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.technology, technology) || other.technology == technology)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder)&&(identical(other.isFeatured, isFeatured) || other.isFeatured == isFeatured));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProjectFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.technology, technology) || other.technology == technology)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,searchQuery,technology,sortOrder,isFeatured);
+int get hashCode => Object.hash(runtimeType,searchQuery,technology,sortOrder);
 
 @override
 String toString() {
-  return 'ProjectFilterModel(searchQuery: $searchQuery, technology: $technology, sortOrder: $sortOrder, isFeatured: $isFeatured)';
+  return 'ProjectFilterModel(searchQuery: $searchQuery, technology: $technology, sortOrder: $sortOrder)';
 }
 
 
@@ -253,7 +251,7 @@ abstract mixin class _$ProjectFilterModelCopyWith<$Res> implements $ProjectFilte
   factory _$ProjectFilterModelCopyWith(_ProjectFilterModel value, $Res Function(_ProjectFilterModel) _then) = __$ProjectFilterModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? searchQuery, String? technology, SortOrder? sortOrder, bool? isFeatured
+ String? searchQuery, String? technology, SortOrder? sortOrder
 });
 
 
@@ -270,13 +268,12 @@ class __$ProjectFilterModelCopyWithImpl<$Res>
 
 /// Create a copy of ProjectFilterModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? searchQuery = freezed,Object? technology = freezed,Object? sortOrder = freezed,Object? isFeatured = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? searchQuery = freezed,Object? technology = freezed,Object? sortOrder = freezed,}) {
   return _then(_ProjectFilterModel(
 searchQuery: freezed == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
 as String?,technology: freezed == technology ? _self.technology : technology // ignore: cast_nullable_to_non_nullable
 as String?,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
-as SortOrder?,isFeatured: freezed == isFeatured ? _self.isFeatured : isFeatured // ignore: cast_nullable_to_non_nullable
-as bool?,
+as SortOrder?,
   ));
 }
 

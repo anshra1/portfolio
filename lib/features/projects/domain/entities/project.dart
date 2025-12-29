@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:portfolio/features/projects/domain/entities/architecture_feature.dart';
+import 'package:portfolio/features/projects/domain/entities/display_tier.dart';
 import 'package:portfolio/features/projects/domain/entities/downloadable_artifact.dart';
 
 class Project extends Equatable {
   const Project({
     required this.id,
-    required this.isFeatured,
+    required this.displayTier,
+    required this.publishedAt,
     required this.title,
     required this.tagline,
     required this.typeIcon,
@@ -18,7 +20,8 @@ class Project extends Equatable {
   });
 
   final String id;
-  final bool isFeatured;
+  final DisplayTier displayTier;
+  final DateTime publishedAt;
   final String title;
   final String tagline;
   final String typeIcon;
@@ -29,18 +32,24 @@ class Project extends Equatable {
   final List<DownloadableArtifact> downloads;
   final List<ArchitectureFeature> features;
 
+  /// Computed property to determine if a project is considered "featured"
+  /// based on its display tier.
+  bool get isFeatured =>
+      displayTier == DisplayTier.hero || displayTier == DisplayTier.showcase;
+
   @override
   List<Object?> get props => [
-    id,
-    isFeatured,
-    title,
-    tagline,
-    typeIcon,
-    coverImageAsset,
-    sourceUrl,
-    description,
-    technologies,
-    downloads,
-    features,
-  ];
+        id,
+        displayTier,
+        publishedAt,
+        title,
+        tagline,
+        typeIcon,
+        coverImageAsset,
+        sourceUrl,
+        description,
+        technologies,
+        downloads,
+        features,
+      ];
 }

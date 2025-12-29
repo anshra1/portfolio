@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/features/projects/domain/entities/architecture_feature.dart';
+import 'package:portfolio/features/projects/domain/entities/display_tier.dart';
 import 'package:portfolio/features/projects/domain/entities/downloadable_artifact.dart';
 import 'package:portfolio/features/projects/domain/entities/project.dart';
 import 'package:portfolio/features/projects/domain/entities/project_filter.dart';
@@ -21,7 +22,8 @@ void main() {
 
   final tProject = Project(
     id: faker.guid.guid(),
-    isFeatured: faker.randomGenerator.boolean(),
+    displayTier: DisplayTier.hero,
+    publishedAt: DateTime.now(),
     title: faker.lorem.words(3).join(' '),
     tagline: faker.lorem.sentence(),
     typeIcon: faker.lorem.word(),
@@ -50,7 +52,7 @@ void main() {
   final tProjects = [tProject];
   final tFilter = ProjectFilter(
     searchQuery: faker.lorem.word(),
-    isFeatured: true,
+   
   );
   final tParams = GetProjectsParams(page: 1, filter: tFilter, limit: 10);
 
@@ -59,8 +61,7 @@ void main() {
     useCase = GetProjects(mockRepository);
   });
 
-  test('should return List<Project> when repository call is successful',
-      () async {
+  test('should return List<Project> when repository call is successful', () async {
     // Arrange
     when(
       () => mockRepository.getProjects(
@@ -74,7 +75,7 @@ void main() {
     final result = await useCase(tParams);
 
     // Assert
-    expect(result, Right(tProjects));
+    expect(result, Right<Failure, List<Project>>(tProjects));
     verify(
       () => mockRepository.getProjects(
         page: tParams.page,
@@ -99,7 +100,7 @@ void main() {
     final result = await useCase(tParams);
 
     // Assert
-    expect(result, const Left(tFailure));
+    expect(result, const Left<Failure, List<Project>>(tFailure));
     verify(
       () => mockRepository.getProjects(
         page: tParams.page,

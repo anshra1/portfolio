@@ -12,7 +12,6 @@ abstract class ProjectFilterModel with _$ProjectFilterModel {
     String? searchQuery,
     String? technology,
     SortOrder? sortOrder,
-    bool? isFeatured,
   }) = _ProjectFilterModel;
 
   const ProjectFilterModel._();
@@ -25,7 +24,6 @@ abstract class ProjectFilterModel with _$ProjectFilterModel {
       searchQuery: entity.searchQuery,
       technology: entity.technology,
       sortOrder: entity.sortOrder,
-      isFeatured: entity.isFeatured,
     );
   }
 
@@ -34,7 +32,6 @@ abstract class ProjectFilterModel with _$ProjectFilterModel {
       searchQuery: searchQuery,
       technology: technology,
       sortOrder: sortOrder,
-      isFeatured: isFeatured,
     );
   }
 }

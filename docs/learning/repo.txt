@@ -1,0 +1,64 @@
+Here is the "Progressive Refinement" Workflow rewritten
+  specifically for Data Repository methods. This is your "Logic
+  Engine" workflow.
+
+  1. Define Purpose (The Business Goal)
+  Focus: The high-level intent of the method from a product
+  perspective.
+   * Example: "Retrieve a list of articles, but ensure 'Hero'
+     articles are prioritized at the top, filtered by user search,
+     and paginated."
+   * Role: Sets the Objective.
+
+  2. Functional Flow & Logic Expansion (The "Brain" Scan)
+  Focus: Breaking down the "Thinking Process" of the repository.
+   * The Flow: Fetch Raw Data $\rightarrow$ Filter (Search/Tags)
+     $\rightarrow$ Sort (Tier/Date) $\rightarrow$ Paginate (Slice)
+     $\rightarrow$ Map to Entity.
+   * The Logic Scan (The "What if?"):
+       * Sorting: If two articles are both 'Hero', which one wins?
+         (Newer date).
+       * Filtering: Is search case-sensitive? Does it check the body
+         text or just the title?
+       * Pagination: What if the user asks for Page 10 but there are
+         only 5 pages? (Return empty list).
+   * Role: Exposes the Hidden Complexity.
+
+  3. Architectural Decisions & Mock Data Setup (The Blueprint)
+  Focus: Freezing the rules and defining the test data.
+   * Decisions:
+       * "Primary Sort: DisplayTier (Hero > Standard)."
+       * "Secondary Sort: publishedAt (Newest > Oldest)."
+       * "Search Scope: Title + Summary only. Case-insensitive."
+       * "Error Mapping: ServerException $\rightarrow$
+         ServerFailure."
+   * Data Setup (Crucial): Define the specific mock items needed to
+     prove these rules.
+       * Mock 1: Hero Tier (Old Date).
+       * Mock 2: Standard Tier (New Date).
+       * Why: To prove that Tier > Date (Mock 1 must come before
+         Mock 2).
+   * Role: The Specification.
+
+  4. Test List Generation (The Verification Plan)
+  Focus: Translating decisions into assertions.
+   * The Tests:
+       1. should_return_list_sorted_by_tier_then_date
+       2. should_filter_articles_by_case_insensitive_query
+       3. should_return_empty_list_when_page_exceeds_data_length
+       4. should_return_ServerFailure_when_datasource_throws_ServerE
+          xception
+   * Role: The Checklist.
+
+  5. Execution (Red-Green-Refactor)
+   * Write the failing test (using the mock data from Step 3)
+     $\rightarrow$ Write the sorting/filtering logic $\rightarrow$
+     Pass.
+
+  ---
+
+  Why this is perfect for Repositories:
+  Repositories are where Logic meets Data. This workflow forces you
+  to define the logic rules (Step 3) before you write the code,
+  which is exactly where most bugs happen (e.g., "Oops, I forgot to
+  make search case-insensitive").

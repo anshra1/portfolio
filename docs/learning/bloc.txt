@@ -1,0 +1,72 @@
+Here is the "Progressive Refinement" Workflow rewritten
+  specifically for BLoC / State Management methods.
+
+  This workflow focuses on User Experience (UX), State Transitions,
+  and Side Effects.
+
+  1. Define Purpose (The User Story)
+  Focus: The user interaction and the desired visual outcome.
+   * Example: "When the user opens the screen, load the projects. If
+     successful, show the list. If it fails, show an error message."
+   * Role: Sets the UX Goal.
+
+  2. Functional Flow & State Machine (The Lifecycle)
+  Focus: The journey of the state (Initial $\rightarrow$ Loading
+  $\rightarrow$ Success/Failure).
+   * The Flow: User Event (LoadProjects) $\rightarrow$ Emit Loading
+     $\rightarrow$ Call UseCase $\rightarrow$ Check Result
+     (Left/Right) $\rightarrow$ Emit Final State.
+   * The UX Scan (The "What if?"):
+       * Debounce: If the user spams the refresh button, do we call
+         the API 10 times?
+       * Empty State: What if the API returns an empty list? Do we
+         show Success([]) or a specific Empty state?
+       * Preservation: If we refresh, do we clear the current list
+         (show spinner) or keep showing the old list while loading?
+   * Role: Defines the Behavior.
+
+  3. State Decisions & Dependency Setup (The Blueprint)
+  Focus: Freezing the rules for state emission.
+   * Decisions:
+       * "On Event: Emit ProjectLoading immediately."
+       * "On Success (Right): Emit ProjectLoaded(projects)."
+       * "On Failure (Left): Emit ProjectError(message)."
+       * "Transformation: The BLoC does not filter data; it only
+         passes params to the UseCase."
+   * Mock Setup:
+       * Mock UseCase: Needs to simulate Right(List) and
+         Left(Failure).
+   * Role: The Specification.
+
+  4. Test List Generation (The Verification Plan)
+  Focus: Verifying the stream of states.
+   * The Tests (`bloc_test`):
+       1. emits [Loading, Loaded] when usecase returns data
+       2. emits [Loading, Error] when usecase returns failure
+       3. emits [Loading, Empty] when usecase returns empty list (if
+          applicable)
+       4. does not emit state if event is added after closed
+   * Role: The Checklist.
+
+  5. Execution (Red-Green-Refactor)
+   * Write the test (expecting the sequence of states) $\rightarrow$
+     Write the event handler $\rightarrow$ Pass.
+
+  ---
+
+  Comparison: Repo vs. BLoC
+
+  ┌──────┬────────────────────────────┬─────────────────────────────
+  ─┐
+  │ Step │ Repository Workflow (Th... │ BLoC Workflow (The Coordi...
+  │
+  ├──────┼────────────────────────────┼─────────────────────────────
+  ─┤
+  │ *... │ Data Manipulation (Sort... │ State Transitions (Loadin...
+  │
+  │ *... │ "How do I rank this list?" │ "What does the user see *...
+  │
+  │ *... │ Asserting the *return v... │ Asserting the *sequence o...
+  │
+  └──────┴────────────────────────────┴─────────────────────────────
+  ─┘

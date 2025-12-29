@@ -1,4 +1,4 @@
-pusimport 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:portfolio/core/common/enums.dart';
 import 'package:portfolio/features/articles/domain/entities/article_filter.dart';
 

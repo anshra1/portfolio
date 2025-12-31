@@ -107,7 +107,7 @@ class ServerException extends AppException {
     super.context,
     super.stackTrace,
     super.priority = ErrorPriority.high,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -122,7 +122,7 @@ class CacheException extends AppException {
     super.context,
     super.stackTrace,
     super.priority = ErrorPriority.medium,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -137,7 +137,7 @@ class StorageException extends AppException {
     super.context,
     super.stackTrace,
     super.priority = ErrorPriority.medium,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -167,7 +167,7 @@ class NetworkException extends AppException {
     super.context,
     super.stackTrace,
     super.priority = ErrorPriority.high,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -197,7 +197,7 @@ class ValidationException extends AppException {
     super.context,
     super.stackTrace,
     super.priority = ErrorPriority.medium,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -242,7 +242,7 @@ class FileSystemException extends AppException {
     super.context,
     super.stackTrace,
     super.priority = ErrorPriority.high,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -254,6 +254,36 @@ class UnknownException extends AppException {
     required super.title,
     super.code,
     super.userMessage = 'Unknown error occurred',
+    super.context,
+    super.stackTrace,
+    super.priority = ErrorPriority.medium,
+    super.isRecoverable,
+  });
+}
+
+/// Exception for data parsing errors
+class DataParsingException extends AppException {
+  const DataParsingException({
+    required super.methodName,
+    required super.originalError,
+    required super.title,
+    super.userMessage = 'Failed to parse data',
+    super.code,
+    super.context,
+    super.stackTrace,
+    super.priority = ErrorPriority.medium,
+    super.isRecoverable,
+  });
+}
+
+/// Exception for not found errors
+class NotFoundException extends AppException {
+  const NotFoundException({
+    required super.methodName,
+    required super.originalError,
+    required super.title,
+    super.userMessage = 'Resource not found',
+    super.code,
     super.context,
     super.stackTrace,
     super.priority = ErrorPriority.medium,

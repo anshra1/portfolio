@@ -101,6 +101,28 @@ class ErrorMapper {
       );
     }
 
+    if (error is NotFoundException) {
+      return NotFoundFailure(
+        message: error.userMessage,
+        isRecoverable: error.isRecoverable,
+        title: error.title,
+        priority: error.priority,
+        code: error.code,
+        context: error.context ?? {},
+      );
+    }
+
+    if (error is DataParsingException) {
+      return DataParsingFailure(
+        message: error.userMessage,
+        isRecoverable: error.isRecoverable,
+        title: error.title,
+        priority: error.priority,
+        code: error.code,
+        context: error.context ?? {},
+      );
+    }
+
     if (error is AppException) {
       return UnknownFailure(
         message: error.userMessage,

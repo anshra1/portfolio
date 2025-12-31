@@ -157,7 +157,7 @@ Anything not listed here is **not allowed** unless explicitly approved.
 * No backend services
 * No local persistent storage
 * No experimental or beta libraries
-* No silent dependency additions
+
 
 ---
 

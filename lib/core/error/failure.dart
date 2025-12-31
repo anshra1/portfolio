@@ -51,7 +51,7 @@ class ServerFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.high,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -63,7 +63,7 @@ class ValidationFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.medium,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -75,7 +75,7 @@ class NetworkFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.high,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -87,7 +87,7 @@ class CacheFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.medium,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -99,7 +99,7 @@ class StorageFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.medium,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -111,7 +111,7 @@ class DatabaseFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.high,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -123,7 +123,7 @@ class PermissionFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.high,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -147,7 +147,7 @@ class FileSystemFailure extends Failure {
     super.code,
     super.context,
     super.priority = ErrorPriority.medium,
-    super.isRecoverable = true,
+    super.isRecoverable = false,
   });
 }
 
@@ -156,6 +156,30 @@ class UnknownFailure extends Failure {
   const UnknownFailure({
     super.message = 'Unknown error occurred',
     super.title = 'Unknown Error',
+    super.code,
+    super.context,
+    super.priority = ErrorPriority.medium,
+    super.isRecoverable = false,
+  });
+}
+
+/// Failure for data parsing errors
+class DataParsingFailure extends Failure {
+  const DataParsingFailure({
+    required super.message,
+    required super.title,
+    super.code,
+    super.context,
+    super.priority = ErrorPriority.medium,
+    super.isRecoverable = false,
+  });
+}
+
+/// Failure for not found errors
+class NotFoundFailure extends Failure {
+  const NotFoundFailure({
+    required super.message,
+    required super.title,
     super.code,
     super.context,
     super.priority = ErrorPriority.medium,

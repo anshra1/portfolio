@@ -96,6 +96,7 @@ Responsibilities:
 * Expose metadata for discovery and overview
 * Support lightweight rendering in grids and cards
 * **Computed Logic:** Expose `isFeatured` getter (Hero || Showcase) for UI convenience.
+* **Implementation Note:** Implemented as a **Unified Model** (Single `Project` entity) to simplify the architecture.
 
 ---
 
@@ -109,6 +110,7 @@ Responsibilities:
 * Provide tech stack and architecture highlights
 * Provide downloadable artifacts and store links
 * Act as the authoritative representation of a project
+* **Implementation Note:** Implemented as a **Unified Model** (Single `Project` entity) covering both summary and detailed fields.
 
 ---
 
@@ -252,9 +254,10 @@ It guarantees a **Ranked List** where the most important work (Hero Tier) is alw
 ### Method: getProjectDetail
 
 **Purpose (Detailed)**
-Retrieve the complete technical and descriptive representation of a single project. This method supports deep inspection of implementation details and architectural choices.
-
-It guarantees that the UI receives a fully-formed project object that can be rendered without defensive checks.
+Retrieve the complete technical and descriptive representation of a single project.
+*   **Primary Role:** **Data Recovery & Deep Link Handler**.
+*   **Context:** Used primarily when the application state is empty (e.g., Browser Refresh or Direct URL entry). Standard navigation should pass the `Project` object directly.
+*   **Guarantee:** Returns a fully hydrated `Project` entity with all optional collections normalized to safe defaults.
 
 ---
 
@@ -264,7 +267,7 @@ It guarantees that the UI receives a fully-formed project object that can be ren
 
 **Output**
 
-* `ProjectDetail`
+* `Project` (Unified Model)
 
 ---
 
@@ -277,31 +280,38 @@ It guarantees that the UI receives a fully-formed project object that can be ren
 
 **Data**
 
-* Locate the specific project in the local JSON dataset
-* Parse the raw JSON into the detailed domain entity
+* **Datasource Role:** Pure I/O & Lookup.
+* Accesses the local JSON asset and iterates internally to find the specific record.
+* Throws exceptions if not found or if parsing fails.
 
 **Data Repository**
 
-* **Role:** None (Pass-through)
-* No additional business logic or transformation is applied in this repository
-* It acts as a direct bridge to the Data Source
+* **Role:** Coordination & Error Mapping.
+* Delegates the lookup to the Datasource.
+* Converts technical exceptions into Domain Failures.
+* Normalizes the returned model (e.g., ensuring null lists become empty lists).
 
 ---
 
 **High-Level Functional Flow**
 
-1. Validate the project identifier
-2. Locate the project matching the identifier
-3. Load all extended fields and related data
-4. Normalize optional collections to safe defaults
-5. Return the complete project detail
+1. Validate the project identifier (check for non-empty)
+2. Call the Datasource to fetch the specific project by ID
+3. **Success:**
+    *   Normalize optional fields
+    *   Map Model to Entity
+    *   Return `Right(Project)`
+4. **Failure:**
+    *   Map `NotFoundException` → `Left(NotFoundFailure)`
+    *   Map `DataParsingException` → `Left(DataParsingFailure)`
+    *   Map other errors → `Left(ServerFailure)`
 
 ---
 
 **Edge Cases**
 
-* Empty or malformed project ID
-* Project exists but optional fields are missing
+* Invalid ID (empty/null)
+* Project ID not found in dataset
 
 ---
 
@@ -309,8 +319,8 @@ It guarantees that the UI receives a fully-formed project object that can be ren
 
 * ValidationFailure
 * NotFoundFailure
-* NetworkFailure
 * DataParsingFailure
+* ServerFailure
 
 ---
 

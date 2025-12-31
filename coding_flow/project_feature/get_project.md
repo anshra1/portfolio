@@ -1,125 +1,263 @@
-# Project Feature Name
-Projects
+# Plain-English Method Design Shell: getProjects
 
-# Method Name
+## 1. Project Feature Name
+
+**Projects Feature**
+
+**Role:**
+Allows users to discover, filter, and view the portfolio's body of work. This method is the primary data pipeline for the project list screen.
+
+## 2. Method Name
+
 `getProjects`
 
-# Method Responsibility
-*   Retrieve a complete list of projects from the remote datasource.
-*   Orchestrate client-side filtering by search query (title, tagline, description).
-*   Orchestrate client-side filtering by technology tags.
-*   Orchestrate client-side sorting by Display Tier (Hero > Showcase > Standard) and Publication Date.
-*   Orchestrate client-side pagination.
-*   Map raw data models to domain entities.
-*   Handle exceptions and map them to domain failures.
+**Role:**
+A single, testable unit of behavior that retrieves a paginated, filtered, and sorted list of projects from the local data store.
 
-# Datasource (The Mechanism)
+## 3. Method Responsibility
 
-## Full Method Working (Plain English)
-**Step 1:** The method receives the requested page number, the filtering criteria, and the desired limit.
+**Role:**
+Defines exactly what the method is accountable for.
 
-**Step 2:** It accesses the application's internal asset bundle to locate the static data file.
+*   **Retrieve** the raw project dataset from the local JSON asset.
+*   **Validate** and sanitize pagination and filter inputs.
+*   **Filter** projects based on Visibility (`DisplayTier`), Search Query, and Technology tags.
+*   **Sort** projects according to a strict Tier-Based Ranking (Hero > Showcase > Standard) combined with user-selected order (Date/Popularity).
+*   **Paginate** the results in-memory based on the requested page and limit.
+*   **Recover** partially from data corruption by discarding invalid records while keeping valid ones (Valid-Subset Recovery).
+*   **Map** technical failures (IO/Parsing) to Domain Failures.
 
-**Step 3:** It loads the content of the local JSON file as a string.
+## 4. Datasource (The Mechanism)
 
-**Step 4:** It decodes this string into a list of raw `ProjectModel` objects.
-*   **Step 4a (Success):** It returns the list of models.
-*   **Step 4b (Failure):** It throws a specific exception if the file is missing or the JSON is invalid.
+**Focus:** Pure IO interaction, Serialization, and Schema Validation. No business filtering or sorting.
 
-## Context & Inputs
+### 4.1 Full Method Working (Plain English)
+
+**Step 1:** Access the `assets/data/projects.json` file from the application bundle.
+**Step 2:** Read the file content as a raw string.
+**Step 3:** Decode the string into a generic JSON List.
+**Step 4:** Iterate through each JSON object in the list:
+   *   **4a:** Attempt to parse the object into a `ProjectModel` (DTO).
+   *   **4b (Success):** Add the model to the result list.
+   *   **4c (Schema Failure):** If a mandatory field (`id`, `title`) is missing, catch the error, **log a warning** via the Talker service ("Skipping corrupt project record"), and **discard** the record. Continue to the next item.
+**Step 5:** Convert the list of valid `ProjectModel`s into `Project` entities.
+**Step 6:** Return the list of entities.
+
+### 4.2 Context & Inputs
+
 **Services:**
-*   `AssetBundle`: To load the local file from the application binary (e.g., `rootBundle`).
+*   `AssetBundle` (or `rootBundle`): To read the file.
+*   `Talker`: To log warnings for skipped/corrupt records.
 
 **Data:**
-*   `assetPath`: The specific file path string to the JSON asset (e.g., `assets/data/projects.json`).
-*   `page`: Page number (context only).
-*   `limit`: Limit (context only).
+*   File Path: `assets/data/projects.json`.
 
-## Edge Cases
-*   **Asset Missing:** The specified file path does not exist in the bundle.
-*   **Malformed JSON:** The file content is not valid JSON or does not match the expected schema.
+### 4.3 Edge Cases
 
-## Architectural Decisions
-*   **Static Site Architecture:** As defined in the Tech Stack, this is a static website without a backend. All data is shipped with the application as static assets.
-*   **Raw Data Return:** The Datasource parses the static file into raw Models. It performs no filtering or sorting; that remains the Repository's job.
+*   **JSON Syntax Corruption:** The file exists but contains invalid JSON (e.g., missing comma).
+    *   *Behavior:* Catch `FormatException`, Throw `DataParsingException`.
+*   **Asset Missing:** The `projects.json` file is not found.
+    *   *Behavior:* Catch `FileSystemException`, Throw `DataParsingException`.
+*   **Schema Violation (Partial):** Individual records define a valid JSON object but miss required fields.
+    *   *Behavior:* Log error, discard record, return valid subset.
 
-## Test Cases
-*   **TC01:** Given a valid JSON asset, when loaded, then return a list of `ProjectModel`.
-*   **TC02:** Given a malformed JSON file, when loaded, then throw a `FormatException`.
+### 4.4 Architectural Decisions
 
-# Repository (The Policy)
+*   **Valid-Subset Recovery:** We prioritize feature availability over strict data consistency. A single bad record should not crash the entire portfolio.
+*   **Raw I/O Only:** The Datasource does **not** filter or sort. It returns the *entire* valid dataset to the Repository.
 
-## Full Method Working (Plain English)
-**Step 1:** The repository receives a request for projects including the page number, filtering options, and page size.
+### 4.5 Test Cases
 
-**Step 2:** It asks the Datasource for the entire library of projects.
-*   **Constraint:** It deliberately requests everything at once, ignoring the user's specific page for a moment, to ensure it has all data available for sorting and filtering in memory.
+**Test Case ID: DS-001**
+*   **Category:** Datasource
+*   **Scenario:** Successful retrieval of valid project data.
+*   **Preconditions:** `assets/data/projects.json` exists and contains a list of fully valid project objects.
+*   **Action:** Call `getProjects` on the Datasource.
+*   **Expected Outcome:** Returns a list of `Project` entities matching the JSON data perfectly.
+*   **Traceability:** Datasource Step 4b, Step 5.
 
-**Step 3:** It waits for the Datasource to respond.
-*   **Step 3a (Success):** It proceeds to the next step with the raw data.
-*   **Step 3b (Failure):** It captures the error, translates it into a standard business failure format, and returns that failure immediately.
+**Test Case ID: DS-002**
+*   **Category:** Datasource
+*   **Scenario:** Asset file is missing from the bundle.
+*   **Preconditions:** `assets/data/projects.json` does not exist.
+*   **Action:** Call `getProjects` on the Datasource.
+*   **Expected Outcome:** Throws `DataParsingException`.
+*   **Traceability:** Datasource Edge Case: Asset Missing.
 
-**Step 4:** It transforms the raw data records into domain-specific Project objects.
+**Test Case ID: DS-003**
+*   **Category:** Datasource
+*   **Scenario:** JSON file contains invalid syntax (e.g., missing comma).
+*   **Preconditions:** `assets/data/projects.json` contains malformed JSON text.
+*   **Action:** Call `getProjects` on the Datasource.
+*   **Expected Outcome:** Throws `DataParsingException`.
+*   **Traceability:** Datasource Edge Case: JSON Syntax Corruption.
 
-**Step 5:** It checks if the user provided a search query.
-*   **Step 5a (Query Exists):** It narrows the list down to only projects where the title, tagline, or description matches the search text.
-*   **Step 5b (No Query):** It leaves the list unchanged.
+**Test Case ID: DS-004**
+*   **Category:** Datasource
+*   **Scenario:** Valid-Subset Recovery (Partial Schema Violation).
+*   **Preconditions:** `assets/data/projects.json` contains 3 objects: 1. Valid Project A, 2. Invalid Project B (Missing `id`), 3. Valid Project C.
+*   **Action:** Call `getProjects` on the Datasource.
+*   **Expected Outcome:** Returns a list containing only Project A and Project C. Project B is silently discarded.
+*   **Traceability:** Datasource Step 4c, Edge Case: Schema Violation.
 
-**Step 6:** It checks if the user selected a specific technology filter.
-*   **Step 6a (Tech Exists):** It keeps only the projects that use that specific technology.
-*   **Step 6b (No Tech):** It leaves the list unchanged.
+**Test Case ID: DS-005**
+*   **Category:** Datasource
+*   **Scenario:** Logging of corrupt records during recovery.
+*   **Preconditions:** `assets/data/projects.json` contains a record missing mandatory fields.
+*   **Action:** Call `getProjects` on the Datasource.
+*   **Expected Outcome:** The Talker service receives a log message indicating a skipped record.
+*   **Traceability:** Datasource Step 4c (Monitoring Requirement).
 
-**Step 7:** It organizes the remaining projects into the correct order.
-*   **Primary Rule:** It places "Hero" projects at the very top, followed by "Showcase" projects, and then "Standard" projects.
-*   **Secondary Rule:** Within those groups, it sorts them by date (Newest to Oldest by default, or Oldest to Newest if requested).
+## 5. Repository (The Policy)
 
-**Step 8:** It calculates the correct page of results to show.
-*   **Step 8a:** It determines the starting position based on the current page number and page size.
-*   **Step 8b:** It checks if this starting position is valid. If the start point is beyond the number of available projects, it returns an empty list.
-*   **Step 8c:** It slices out just the specific items needed for the requested page.
+**Focus:** Coordination, Filtering, Sorting, and Pagination.
 
-**Step 9:** It returns the final, processed list of projects.
+### 5.1 Full Method Working (Plain English)
 
-## Context & Inputs
+**Step 1:** **Sanitize Inputs:**
+   *   If `page` < 1, set `page` to 1.
+   *   If `limit` is null or <= 0, set `limit` to 6 (Default).
+   *   Normalize `filter.searchQuery`: Trim whitespace and convert to lowercase.
+
+**Step 2:** **Fetch Data:** Call the Datasource to retrieve the complete list of projects.
+
+**Step 3:** **Filter: Visibility:**
+   *   Remove any project where `displayTier` is `DisplayTier.hidden`.
+
+**Step 4:** **Filter: Technology:**
+   *   If `filter.technology` is provided, keep only projects where `technologies` list contains the exact string (case-insensitive check).
+
+**Step 5:** **Filter: Search Query:**
+   *   If the normalized query is not empty:
+   *   Keep projects where `title`, `tagline`, or `description` (lowercased) contains the query.
+
+**Step 6:** **Sort: Tier-Preserving Strategy:**
+   *   **Primary Sort:** `DisplayTier` (Hero [0] > Showcase [1] > Standard [2]).
+   *   **Secondary Sort:** `filter.sortOrder`
+       *   *Newest / Popular:* `publishedAt` Descending.
+       *   *Oldest:* `publishedAt` Ascending.
+   *   **Tie-Breaker:** If Tier and Date are identical, sort alphabetically by `id`.
+
+**Step 7:** **Paginate:**
+   *   Calculate `startIndex = (page - 1) * limit`.
+   *   **Check:** If `startIndex` >= `filteredList.length`, return an Empty List `[]`.
+   *   Calculate `endIndex = min(startIndex + limit, totalLength)`.
+   *   Extract the sublist from `startIndex` to `endIndex`.
+
+**Step 8:** Return the sublist as `Right(List<Project>)`.
+
+### 5.2 Context & Inputs
+
 **Services:**
 *   `ProjectsRemoteDataSource`: To fetch the raw data.
 
 **Data:**
-*   `page`: Requested page number.
-*   `filter`: Contains `searchQuery`, `technology`, and `sortOrder`.
-*   `limit`: Page size (default 10).
+*   `int page`: 1-based page index.
+*   `int? limit`: Items per page.
+*   `ProjectFilter`: Contains `searchQuery`, `technology`, and `sortOrder`.
 
-## Edge Cases
-*   **Empty API Response:** Datasource returns empty list -> Repository returns empty list.
-*   **Pagination Overflow:** Requesting Page 10 of a 5-page result set returns an empty list.
-*   **Filtering Exhaustion:** Search query matches zero items -> Returns empty list.
+### 5.3 Edge Cases
 
-## Architectural Decisions
-*   **Logic Injection:** The repository assumes full responsibility for filtering and sorting. This decision decouples the specific sorting/filtering capabilities of the backend from the frontend requirements, ensuring the "Hero" tier logic is strictly enforced regardless of backend implementation.
+*   **Pagination Out of Bounds:** Requesting a page that doesn't exist.
+    *   *Behavior:* Return `Right([])` (Empty List).
+*   **Invalid Inputs:** Negative page numbers.
+    *   *Behavior:* Clamp to Page 1.
+*   **Search Noise:** Query string is just spaces.
+    *   *Behavior:* Trim and ignore (do not filter).
+*   **Unstable Sort:** Projects with identical dates.
+    *   *Behavior:* Apply `id` as a deterministic tie-breaker.
 
-## Test Cases
-*   **TC01:** Given a list of mixed-tier projects, when fetched, verify they are sorted Hero > Showcase > Standard.
-*   **TC02:** Given a search query "Flutter", verify only projects with "Flutter" in title/desc are returned.
-*   **TC03:** Given a request for Page 2 with limit 2, verify items 3 and 4 are returned.
-*   **TC04:** Given a datasource exception, verify a `Left(Failure)` is returned.
+### 5.4 Architectural Decisions
 
-# Full Working Flow (Datasource → Repository)
+*   **In-Memory Processing:** Since the dataset is small (Portfolio scale < 100 items), filtering and sorting are performed in memory rather than requiring a database engine.
+*   **Tier-Preservation:** Business rules dictate that "Hero" projects must always appear first, regardless of the user's date-sorting preference.
 
-**Step 1:** The Use Case calls `repository.getProjects(page: 1, filter: search="App")`.
+### 5.5 Test Cases
 
-**Step 2:** The Repository calls `datasource.getProjects(page: 1, limit: 1000)`.
+**Test Case ID: REP-001**
+*   **Category:** Repository
+*   **Scenario:** Input Sanitization (Invalid Pagination).
+*   **Preconditions:** Datasource returns valid projects. Caller requests `page: -1` and `limit: 0`.
+*   **Action:** Call `getProjects` on the Repository.
+*   **Expected Outcome:** Returns projects for Page 1 with the default limit (6).
+*   **Traceability:** Repository Step 1, Edge Case: Invalid Inputs.
 
-**Step 3:** The Datasource loads the static JSON file from assets, parses it, and returns a `List<ProjectModel>` (e.g., 20 items).
+**Test Case ID: REP-002**
+*   **Category:** Repository
+*   **Scenario:** Filtering by Visibility (Hidden Projects).
+*   **Preconditions:** Datasource returns a mix of `hero`, `standard`, and `hidden` projects.
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** Result list contains NO projects with `DisplayTier.hidden`.
+*   **Traceability:** Repository Step 3.
 
-**Step 4:** The Repository converts these 20 models to entities.
+**Test Case ID: REP-003**
+*   **Category:** Repository
+*   **Scenario:** Filtering by Technology (Case-Insensitive).
+*   **Preconditions:** Datasource has projects with tags ["Flutter"], ["React"]. Caller requests `filter.technology: "flutter"`.
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** Returns only the project with the "Flutter" tag.
+*   **Traceability:** Repository Step 4.
 
-**Step 5:** The Repository filters the 20 entities. "App" is found in 5 projects. List size is now 5.
+**Test Case ID: REP-004**
+*   **Category:** Repository
+*   **Scenario:** Search Query Noise Handling.
+*   **Preconditions:** Datasource has a project titled "Portfolio". Caller requests `filter.searchQuery: "  portfolio  "`.
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** Returns the "Portfolio" project (Query is trimmed and lowercased).
+*   **Traceability:** Repository Step 1, Step 5, Edge Case: Search Noise.
 
-**Step 6:** The Repository sorts the 5 projects. 1 Hero project moves to index 0.
+**Test Case ID: REP-005**
+*   **Category:** Repository
+*   **Scenario:** Tier-Preserving Sort Order.
+*   **Preconditions:** Datasource returns: 1. Standard Project (Date: 2024), 2. Hero Project (Date: 2020). Caller requests `sortOrder: Newest`.
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** The "Hero" project appears BEFORE the "Standard" project, despite being older.
+*   **Traceability:** Repository Step 6 (Primary Sort).
 
-**Step 7:** The Repository applies pagination (Page 1, Limit 10). It takes items 0-5.
+**Test Case ID: REP-006**
+*   **Category:** Repository
+*   **Scenario:** Deterministic Tie-Breaking.
+*   **Preconditions:** Datasource returns two Standard projects with the *exact same* `publishedAt` time. 1. ID: "B_Project", 2. ID: "A_Project".
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** "A_Project" appears before "B_Project" (Sorted alphabetically by ID).
+*   **Traceability:** Repository Step 6 (Tie-Breaker), Edge Case: Unstable Sort.
 
-**Step 8:** The Repository returns `Right([Project1, Project2, ...])` to the Use Case.
+**Test Case ID: REP-007**
+*   **Category:** Repository
+*   **Scenario:** Pagination (Standard Slice).
+*   **Preconditions:** Repository has 10 filtered projects. Caller requests `page: 2`, `limit: 3`.
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** Returns items at indices 3, 4, and 5 (The second batch of 3).
+*   **Traceability:** Repository Step 7.
 
-# Notes
-*   **Assumption:** The total number of projects will remain small enough (< 1000) that fetching all of them and filtering in memory is performant. If the dataset grows significantly, this logic must move to the backend/datasource.
+**Test Case ID: REP-008**
+*   **Category:** Repository
+*   **Scenario:** Pagination Out of Bounds.
+*   **Preconditions:** Repository has 5 filtered projects. Caller requests `page: 2`, `limit: 10`.
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** Returns an empty list `[]`.
+*   **Traceability:** Repository Step 7, Edge Case: Pagination Out of Bounds.
+
+**Test Case ID: REP-009**
+*   **Category:** Repository
+*   **Scenario:** Datasource Failure Mapping.
+*   **Preconditions:** Datasource throws `DataParsingException`.
+*   **Action:** Call `getProjects`.
+*   **Expected Outcome:** Returns `Left(DataParsingFailure)`.
+*   **Traceability:** Method Responsibility (Map failures).
+
+## 6. Full Working Flow (Datasource → Repository)
+
+**Step 1:** The UI requests `getProjects(page: 1, filter: "flutter")`.
+**Step 2:** The Repository sanitizes the inputs and asks the Datasource for *all* projects.
+**Step 3:** The Datasource reads the JSON file, discards any corrupt records (logging them), and returns a list of valid `Project` entities.
+**Step 4:** The Repository receives the list and filters out "Hidden" projects.
+**Step 5:** The Repository keeps only projects containing the "flutter" technology tag.
+**Step 6:** The Repository sorts the remaining list: Hero projects first, then by date.
+**Step 7:** The Repository slices the first 6 items (Page 1) from the sorted list.
+**Step 8:** The Repository returns the final list to the UI.
+
+## 7. Notes
+
+*   **Missing Feature:** The `ProjectFilter` entity currently lacks `isFeatured`. Logic for this is explicitly omitted until the Entity is updated.
+*   **Performance:** While acceptable for now, if the project list grows > 1000 items, the in-memory sorting strategy will need to move to an Isar/SQLite database.

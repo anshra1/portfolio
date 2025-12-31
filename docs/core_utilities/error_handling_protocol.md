@@ -57,6 +57,8 @@ Future<UserModel> login(String email, String password) async {
 ### Step 2: Catching & Mapping (Repository)
 Repositories act as the firewall. They must catch **ALL** exceptions and convert them to `Failure`.
 
+*   **Note:** Generic `Exception` (non-`AppException`) types caught by `ErrorMapper` are converted to `UnknownFailure`.
+
 ```dart
 // lib/features/auth/data/repositories/auth_repository_impl.dart
 
@@ -97,13 +99,19 @@ Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
 
 ---
 
-## 4. Extending the System
+## 4. Maintenance & Extension Rules
 
-If you encounter a scenario requiring a new error type:
+### Rule 1: Check Before You Create
+Before implementing error handling in a feature:
+1.  **Verify Support:** Check `lib/core/error/` to ensure the required `Exception`, `Failure`, and `ErrorMapper` support already exists.
+2.  **Reuse Existing:** If a requested error is semantically similar to an existing one (e.g., `ItemNotFoundException` vs `NotFoundException`), **always prefer the existing class**. Do not create duplicates with slightly different names.
 
+### Rule 2: Update Infrastructure First
+If a new error type is legitimately needed:
 1.  **Define Exception:** Create `MyNewException` in `lib/core/error/exception.dart` (extend `AppException`).
 2.  **Define Failure:** Create `MyNewFailure` in `lib/core/error/failure.dart` (extend `Failure`).
 3.  **Update Mapper:** Add a case to `ErrorMapper.mapErrorToFailure` in `lib/core/error/error_mapper.dart`.
+4.  **ONLY THEN:** Use the new exception in your feature code.
 
 ---
 

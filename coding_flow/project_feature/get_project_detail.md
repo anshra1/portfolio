@@ -124,7 +124,7 @@ Defines exactly what the method is accountable for.
 **Step 3:** **Handle Exceptions (Try/Catch):**
    *   Catch `NotFoundException` → Return `Left(NotFoundFailure)`.
    *   Catch `DataParsingException` → Return `Left(DataParsingFailure)`.
-   *   Catch generic `Exception` → Return `Left(ServerFailure)`.
+   *   Catch generic `Exception` → Return `Left(UnknownFailure)`.
 
 **Step 4:** **Normalize & Return:**
    *   Receive the `ProjectModel`.
@@ -207,7 +207,7 @@ Defines exactly what the method is accountable for.
 *   **Scenario:** Mapping Generic Server Failure.
 *   **Preconditions:** Datasource throws a generic `Exception`.
 *   **Action:** Call `getProjectDetail("p1")`.
-*   **Expected Outcome:** Returns `Left(ServerFailure)`.
+*   **Expected Outcome:** Returns `Left(UnknownFailure)`.
 *   **Traceability:** Repository Step 3.
 
 **Test Case ID: REP-DET-008**

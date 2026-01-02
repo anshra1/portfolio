@@ -1,0 +1,118 @@
+[
+  {
+    "id": "p_001_portfolio",
+    "displayTier": "hero",
+    "publishedAt": "2024-01-15T10:00:00.000Z",
+    "title": "Developer Portfolio",
+    "tagline": "A Clean Architecture showcase built with Flutter and Riverpod.",
+    "typeIcon": "web",
+    "coverImageAsset": "assets/images/projects/portfolio_cover.png",
+    "sourceUrl": "https://github.com/ansh/portfolio",
+    "description": "A high-performance, responsive web application designed to showcase technical proficiency. Built using strict Clean Architecture principles to ensure scalability and testability. Features a custom design system, adaptive layout for mobile and desktop, and a data-driven content management system powered by local JSON assets.",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Riverpod",
+      "Clean Architecture",
+      "Responsive Design"
+    ],
+    "downloads": [
+      {
+        "title": "Android APK",
+        "url": "https://github.com/ansh/portfolio/releases/download/v1.0.0/app-release.apk",
+        "icon": "android"
+      },
+      {
+        "title": "Source Code",
+        "url": "https://github.com/ansh/portfolio",
+        "icon": "github"
+      }
+    ],
+    "features": [
+      {
+        "title": "Clean Architecture",
+        "description": "Strict separation of concerns into Domain, Data, and Presentation layers.",
+        "icon": "layers"
+      },
+      {
+        "title": "Responsive Layout",
+        "description": "Adaptive UI that scales perfectly from mobile phones to 4K desktops.",
+        "icon": "devices"
+      }
+    ]
+  },
+  {
+    "id": "p_002_finance_tracker",
+    "displayTier": "showcase",
+    "publishedAt": "2023-11-20T14:30:00.000Z",
+    "title": "FinTrack Pro",
+    "tagline": "Personal finance management with real-time analytics.",
+    "typeIcon": "mobile",
+    "coverImageAsset": "assets/images/projects/fintrack_cover.png",
+    "sourceUrl": "https://github.com/ansh/fintrack",
+    "description": "A comprehensive mobile application for tracking personal expenses and income. Integrates with banking APIs for automated transaction categorization. Includes interactive charts for spending analysis and budget forecasting algorithms.",
+    "technologies": [
+      "Flutter",
+      "Firebase",
+      "Charts",
+      "Node.js",
+      "Stripe API"
+    ],
+    "downloads": [
+      {
+        "title": "Get it on Play Store",
+        "url": "https://play.google.com/store/apps/details?id=com.ansh.fintrack",
+        "icon": "google_play"
+      }
+    ],
+    "features": [
+      {
+        "title": "Real-time Sync",
+        "description": "Instant data synchronization across devices using Firebase Firestore.",
+        "icon": "cloud_sync"
+      },
+      {
+        "title": "Biometric Security",
+        "description": "Secure login using Fingerprint and Face ID authentication.",
+        "icon": "fingerprint"
+      }
+    ]
+  },
+  {
+    "id": "p_003_iot_dashboard",
+    "displayTier": "standard",
+    "publishedAt": "2023-08-05T09:15:00.000Z",
+    "title": "Home IoT Dashboard",
+    "tagline": "Centralized control for smart home devices.",
+    "typeIcon": "iot",
+    "coverImageAsset": "assets/images/projects/iot_dashboard_cover.png",
+    "sourceUrl": "https://github.com/ansh/iot-dashboard",
+    "description": "An experimental dashboard connecting various smart home protocols (Zigbee, Z-Wave) into a unified interface. Allows users to create automation routines and monitor sensor data in real-time.",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "MQTT",
+      "WebSockets"
+    ],
+    "downloads": [],
+    "features": []
+  },
+  {
+    "id": "p_004_legacy_cms",
+    "displayTier": "hidden",
+    "publishedAt": "2022-01-10T00:00:00.000Z",
+    "title": "Legacy CMS",
+    "tagline": "Old content management system.",
+    "typeIcon": "web",
+    "coverImageAsset": "assets/images/projects/cms_cover.png",
+    "sourceUrl": "https://github.com/ansh/legacy-cms",
+    "description": "An older project built with PHP and MySQL. Kept for archival purposes.",
+    "technologies": [
+      "PHP",
+      "MySQL",
+      "jQuery"
+    ],
+    "downloads": [],
+    "features": []
+  }
+]

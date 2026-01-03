@@ -20,7 +20,7 @@ Map<String, dynamic> _$ProjectFilterModelToJson(_ProjectFilterModel instance) =>
       'sortOrder': _$SortOrderEnumMap[instance.sortOrder],
     };
 
-const _$SortOrderEnumMap = {
+const Map<SortOrder, String> _$SortOrderEnumMap = {
   SortOrder.newest: 'newest',
   SortOrder.oldest: 'oldest',
   SortOrder.popular: 'popular',

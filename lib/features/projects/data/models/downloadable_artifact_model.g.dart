@@ -22,11 +22,11 @@ Map<String, dynamic> _$DownloadableArtifactModelToJson(
   'platformName': instance.platformName,
   'version': instance.version,
   'metaInfo': instance.metaInfo,
-  'type': _$ArtifactTypeEnumMap[instance.type]!,
+  'type': _$ArtifactTypeEnumMap[instance.type],
   'actionUrl': instance.actionUrl,
 };
 
-const _$ArtifactTypeEnumMap = {
+const Map<ArtifactType, String> _$ArtifactTypeEnumMap = {
   ArtifactType.binary: 'binary',
   ArtifactType.store: 'store',
 };

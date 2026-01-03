@@ -1,0 +1,24 @@
+[
+  {
+    "id": "a_001_clean_arch",
+    "displayTier": "hero",
+    "publishedAt": "2024-01-20T09:00:00.000Z",
+    "title": "Introduction to Clean Architecture",
+    "readTime": "5 min",
+    "tags": ["Architecture", "Flutter", "Best Practices"],
+    "summary": "Understand the core principles of Clean Architecture and why it matters for scalable apps.",
+    "contentPath": "assets/data/articles/content/clean_architecture_intro.md",
+    "coverImageAsset": "assets/images/articles/clean_arch_cover.png"
+  },
+  {
+    "id": "a_002_image_test",
+    "displayTier": "standard",
+    "publishedAt": "2024-01-21T10:00:00.000Z",
+    "title": "Markdown Image Test",
+    "readTime": "2 min",
+    "tags": ["Testing", "Images", "Markdown"],
+    "summary": "A sample article to verify that images load correctly from local assets.",
+    "contentPath": "assets/data/articles/content/image_test.md",
+    "coverImageAsset": "assets/images/articles/test_image.png"
+  }
+]

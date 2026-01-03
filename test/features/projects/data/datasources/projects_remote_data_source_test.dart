@@ -1,4 +1,3 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -16,12 +15,11 @@ void main() {
   late ProjectsRemoteDataSourceImpl dataSource;
   late MockAssetBundle mockAssetBundle;
   late MockTalkerService mockTalkerService;
-  late Faker faker;
 
   setUp(() {
     mockAssetBundle = MockAssetBundle();
     mockTalkerService = MockTalkerService();
-    faker = Faker();
+
     dataSource = ProjectsRemoteDataSourceImpl(
       assetBundle: mockAssetBundle,
       talkerService: mockTalkerService,

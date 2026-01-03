@@ -41,7 +41,7 @@ _ProjectModel _$ProjectModelFromJson(
 Map<String, dynamic> _$ProjectModelToJson(_ProjectModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'displayTier': _$DisplayTierEnumMap[instance.displayTier]!,
+      'displayTier': _$DisplayTierEnumMap[instance.displayTier],
       'publishedAt': instance.publishedAt.toIso8601String(),
       'title': instance.title,
       'tagline': instance.tagline,
@@ -54,7 +54,7 @@ Map<String, dynamic> _$ProjectModelToJson(_ProjectModel instance) =>
       'features': instance.features,
     };
 
-const _$DisplayTierEnumMap = {
+const Map<DisplayTier, String> _$DisplayTierEnumMap = {
   DisplayTier.hero: 'hero',
   DisplayTier.showcase: 'showcase',
   DisplayTier.standard: 'standard',

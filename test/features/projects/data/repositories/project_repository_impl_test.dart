@@ -124,12 +124,16 @@ void main() {
 
         // Assert
         expect(
-            result,
-            equals(left<Failure, dynamic>(const NotFoundFailure(
-              message: 'Resource not found',
-              title: 'Not Found',
-              isRecoverable: false,
-            ))));
+          result,
+          equals(
+            left<Failure, dynamic>(
+              const NotFoundFailure(
+                message: 'Resource not found',
+                title: 'Not Found',
+              ),
+            ),
+          ),
+        );
       },
     );
 
@@ -138,24 +142,29 @@ void main() {
       'throws DataParsingException',
       () async {
         // Arrange
-        when(() => mockDataSource.getProjectDetail(tProjectId))
-            .thenThrow(const DataParsingException(
-          methodName: 'getProjectDetail',
-          originalError: 'Parsing error',
-          title: 'Parsing Error',
-        ));
+        when(() => mockDataSource.getProjectDetail(tProjectId)).thenThrow(
+          const DataParsingException(
+            methodName: 'getProjectDetail',
+            originalError: 'Parsing error',
+            title: 'Parsing Error',
+          ),
+        );
 
         // Act
         final result = await repository.getProjectDetail(tProjectId);
 
         // Assert
         expect(
-            result,
-            equals(left<Failure, dynamic>(const DataParsingFailure(
-              message: 'Failed to parse data',
-              title: 'Parsing Error',
-              isRecoverable: false,
-            ))));
+          result,
+          equals(
+            left<Failure, dynamic>(
+              const DataParsingFailure(
+                message: 'Failed to parse data',
+                title: 'Parsing Error',
+              ),
+            ),
+          ),
+        );
       },
     );
 
@@ -436,12 +445,16 @@ void main() {
 
         // Assert
         expect(
-            result,
-            equals(left<Failure, dynamic>(const DataParsingFailure(
-              message: 'Failed to parse data',
-              title: 'Error',
-              isRecoverable: false,
-            ))));
+          result,
+          equals(
+            left<Failure, dynamic>(
+              const DataParsingFailure(
+                message: 'Failed to parse data',
+                title: 'Error',
+              ),
+            ),
+          ),
+        );
       },
     );
   });

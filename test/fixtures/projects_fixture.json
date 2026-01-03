@@ -1,0 +1,30 @@
+[
+  {
+    "id": "project-1",
+    "displayTier": "hero",
+    "publishedAt": "2024-01-01T00:00:00.000Z",
+    "title": "Project One",
+    "tagline": "Tagline One",
+    "typeIcon": "icon1",
+    "coverImageAsset": "image1",
+    "sourceUrl": "url1",
+    "description": "Description One",
+    "technologies": ["Flutter", "Dart"],
+    "downloads": [],
+    "features": []
+  },
+  {
+    "id": "project-2",
+    "displayTier": "showcase",
+    "publishedAt": "2024-02-01T00:00:00.000Z",
+    "title": "Project Two",
+    "tagline": "Tagline Two",
+    "typeIcon": "icon2",
+    "coverImageAsset": "image2",
+    "sourceUrl": "url2",
+    "description": "Description Two",
+    "technologies": ["React"],
+    "downloads": [],
+    "features": []
+  }
+]

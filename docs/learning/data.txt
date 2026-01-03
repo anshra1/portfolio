@@ -1,0 +1,68 @@
+For Data Sources, the focus shifts from Business Logic (deciding
+  what to show) to I/O Protocol (how to talk to the machine). 
+
+  Here is the "Progressive Refinement" workflow rewritten
+  specifically for Data Source methods:
+
+  1. Define Purpose (The Request Intent)
+  Focus: The endpoint, the HTTP method, and the required data.
+   * Example: "GET the /projects endpoint from the local JSON asset,
+     passing limit and page as query parameters, and return a raw
+     JSON list."
+   * Role: Sets the Contract.
+
+  2. Functional Flow & Error Mapping (The Lifecycle)
+  Focus: The journey of the request and the technical failures.
+   * The Flow: Construct the Path $\rightarrow$ Inject Params
+     $\rightarrow$ Read from Source (File/Dio) $\rightarrow$
+     Deserialize to Model (DTO).
+   * The Technical Scan (The "What if?"):
+       * What if the JSON file is missing?
+       * What if a required field in the JSON is null?
+       * What if the JSON is malformed (invalid syntax)?
+   * Role: Defines the Technical Robustness.
+
+  3. Protocol Decisions (The Blueprint)
+  Focus: Handling data types and specific exceptions.
+   * Decisions:
+       * "If the file is missing, throw ServerException (mapped from
+         FileSystemException)."
+       * "If JSON parsing fails, throw DataParsingException."
+       * "Use the Isolate or compute function for parsing if the
+         list is large?" (Performance decision).
+   * Data Setup: Create the "Gold Standard" JSON mock and the
+     "Broken" JSON mock to use in tests.
+   * Role: Sets the Technical Specification.
+
+  4. Test List Generation (The Verification)
+  Focus: Protocol compliance.
+   * The Tests:
+       1. should_call_correct_path_and_params
+       2. should_return_model_when_json_is_valid
+       3. should_throw_DataParsingException_when_json_is_malformed
+       4. should_throw_ServerException_when_source_is_unreachable
+   * Role: The Checklist for the machine.
+
+  5. Execution (The Coding)
+   * Write a test that mocks the Client (Dio/FilePicker)
+     $\rightarrow$ Watch it fail $\rightarrow$ Implement the code
+     $\rightarrow$ Watch it pass.
+
+  ---
+
+  Comparison: Repo vs. Data Source
+
+  ┌──────┬──────────────────────────┬───────────────────────────────
+  ┐
+  │ Step │ Repository Workflow (... │ Data Source Workflow (The ...
+  │
+  ├──────┼──────────────────────────┼───────────────────────────────
+  ┤
+  │ *... │ Sorting, Filtering, B... │ URL Construction, JSON Map...
+  │
+  │ *... │ Maps Exceptions to **... │ Catches I/O errors and thr...
+  │
+  │ *... │ Does it make the righ... │ Does it talk to the *serve...
+  │
+  └──────┴──────────────────────────┴───────────────────────────────
+  ┘

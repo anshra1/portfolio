@@ -1,0 +1,22 @@
+{
+  "name": "ansh-custom-theme",
+  "displayName": "Ansh Custom Theme",
+  "description": "Custom port of Material Theme Darker High Contrast from Cursor",
+  "version": "0.0.1",
+  "publisher": "ansh",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Ansh Material Darker",
+        "uiTheme": "vs-dark",
+        "path": "./themes/ansh-theme.json"
+      }
+    ]
+  }
+}

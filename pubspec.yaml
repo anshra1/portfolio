@@ -47,6 +47,7 @@ flutter:
 
   assets:
     - assets/data/
-    - assets/data/articles/
-    - assets/data/articles/content/
+    - database/articles/
+    - database/articles/content/
+    - database/project/
     - assets/images/articles/

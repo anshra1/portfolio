@@ -12,18 +12,18 @@ The feature is strictly read-only and optimized for clarity, discoverability, an
 
 ### In Scope
 
-* Display a list of articles
-* Support searching, filtering, and sorting (Ranked Results)
-* Load and display full article content
-* Provide a distraction-free reading experience
+*   Display a list of articles
+*   Support searching, filtering, and sorting (Ranked Results)
+*   Load and display full article content
+*   Provide a distraction-free reading experience
 
 ### Out of Scope
 
-* Writing or editing articles
-* Comments, likes, or reactions
-* Offline reading
-* Bookmarking or saving articles
-* Analytics or tracking
+*   Writing or editing articles
+*   Comments, likes, or reactions
+*   Offline reading
+*   Bookmarking or saving articles
+*   Analytics or tracking
 
 ---
 
@@ -31,33 +31,21 @@ The feature is strictly read-only and optimized for clarity, discoverability, an
 
 ### Article
 
-Represents an article in a list or summary context.
+Represents a blog post or tutorial.
 
-Responsibilities:
+**Responsibilities:**
 
-* Provide identity for routing and lookup
-* Expose metadata required for discovery (title, date, tags, summary)
-* Support lightweight rendering in list and grid views
-* **Computed Logic:** Expose `isFeatured` getter (checks if Tier is `hero`) for UI styling.
-
----
-
-### ArticleDetail
-
-Represents the full reading view of an article.
-
-Responsibilities:
-
-* Expose the full content body (HTML / Markdown)
-* Provide complete metadata for the reader view
-* Act as the single source of truth for article content
+*   Provide identity for routing and lookup
+*   Expose metadata for discovery (title, date, tags, summary)
+*   Support lightweight rendering in list and grid views
+*   **Implementation Note:** Implemented as a **Unified Model** (Single `Article` entity). The `content` field is lazy-loaded via the `contentPath`.
 
 ---
 
 ## Public Methods (Feature API)
 
-* `getArticles({int page, int limit, ArticleFilter filter})`
-* `getArticleDetail(String articleId)`
+*   `getArticles({int page, int limit, ArticleFilter filter})`
+*   `getArticleDetail(String articleId)`
 
 ---
 
@@ -65,73 +53,72 @@ Responsibilities:
 
 ### Data Source Strategy
 
-* Data is loaded from a simulated remote source (local JSON assets)
-* All reads are asynchronous
+*   **Registry & Content Pattern:** Data is split between a metadata index and individual content files.
+*   **Storage Root:** All feature data is stored in the `database/articles/` directory.
+*   All reads are asynchronous to simulate remote fetching.
+
+### Content & Asset Organization
+
+Articles use a **Component Folder** strategy to keep text and related assets together:
+
+*   **Registry Index:** `database/articles/articles.json` (Metadata only).
+*   **Article Bundles:** Each article has its own directory under `database/articles/content/` containing:
+    *   `index.md` (The full content).
+    *   Local images and assets specific to that article.
+*   **Image Paths:** Markdown files must use **Project-Root relative paths** (e.g., `database/articles/content/my_article/image.png`) to ensure Flutter AssetBundle compatibility.
 
 ### Pagination Policy
 
-* Infinite Scroll: Data is loaded in chunks
-* The API returns a subset of items based on `page` and `limit`
-* An empty list signifies the end of the dataset
+*   **Infinite Scroll:** Data is loaded in chunks.
+*   The API returns a subset of items based on `page` and `limit`.
+*   An empty list signifies the end of the dataset.
 
 ### Filtering & Sorting Policy
 
-* **Ranked Search Algorithm:**
-  1.  **Primary Sort:** `DisplayTier` (Hero > Standard)
-  2.  **Secondary Sort:** `publishedAt` (Newest > Oldest)
-* **Supported Filters:**
-  * Search query (title + summary)
-  * Tag selection
+*   **Ranked Search Algorithm:**
+    1.  **Primary Sort:** `DisplayTier` (Hero > Standard)
+    2.  **Secondary Sort:** `publishedAt` (Newest > Oldest)
+*   **Supported Filters:**
+    *   Search query (title)
+    *   Tag selection
 
 ### Caching Policy
 
-* No persistent cache
-* No in-memory reuse across calls
+*   No persistent cache.
+*   No in-memory reuse across calls.
 
 ### Offline Behavior
 
-* Fail-fast: offline state immediately returns a failure
+*   **Fail-fast:** Offline state immediately returns a failure.
 
 ### Error Handling Model
 
-* All public methods return `Result<T, Failure>`
-* Technical exceptions are mapped to domain failures
+*   All public methods return `Result<T, Failure>`.
+*   Technical exceptions are mapped to domain failures.
 
 ---
 
-## Feature-Level Failures
+## Data Model: Article
 
-* NetworkFailure
-* ServerFailure
-* DataParsingFailure
-* NotFoundFailure
-* ValidationFailure
+**Definition:** Represents a blog post or tutorial.
 
----
+### 1. Core Fields (Traceability)
 
-### Data Model: Article
+*   `id`: String — **Logic:** Unique identifier for routing.
+*   `displayTier`: Enum (Hero, Standard, Hidden) — **Logic:** Controls ranking and visual prominence.
+*   `publishedAt`: DateTime — **Logic:** Used for chronological sorting and secondary ranking.
+*   `title`: String — **UI:** Headline on Card and Detail Screen.
+*   `readTime`: String — **UI:** Estimated reading time.
+*   `summary`: String — **UI:** Short excerpt for the Card view.
+*   `contentPath`: String — **Logic:** Path to the physical Markdown file in the database.
+*   `tags`: List<String> — **UI:** Filtering criteria and UI chips.
+*   `coverImageAsset`: String — **UI:** Local asset path for the cover image.
 
-Definition:
+### 2. Relationships
 
-Represents a blog post or tutorial.
+*   None.
 
-**1. Core Fields (Traceability)**
-
-- `id`: String — **Logic:** Unique identifier for routing.
-- `displayTier`: Enum (Hero, Standard, Hidden) — **Logic:** Controls ranking and visual prominence.
-- `publishedAt`: DateTime — **Logic:** Used for chronological sorting and secondary ranking.
-- `title`: String — **UI:** Headline on Card and Detail Screen.
-- `readTime`: String — **UI:** Estimated reading time.
-- `summary`: String — **UI:** Short excerpt for the Card view.
-- `contentBody`: HTML/Markdown — **UI:** Full rich-text content.
-- `tags`: List<String> — **UI:** Filtering criteria and UI chips.
-- `coverImageAsset`: String — **UI:** Local asset path.
-
-**2. Relationships**
-
-- None.
-
-**3. Mock Data Structure (JSON)**
+### 3. Mock Data Structure (JSON)
 
 ```json
 {
@@ -142,8 +129,8 @@ Represents a blog post or tutorial.
   "readTime": "3 min",
   "tags": ["#UI/UX", "#Flutter"],
   "summary": "Build reusable components first, then compose scalable UI.",
-  "contentBody": "<p>On a recent project, I began by composing small, reusable widgets...</p>",
-  "coverImageAsset": "assets/images/articles/component_ui.jpg"
+  "contentPath": "database/articles/content/component_ui/index.md",
+  "coverImageAsset": "database/articles/content/component_ui/cover.jpg"
 }
 ```
 
@@ -153,107 +140,50 @@ Represents a blog post or tutorial.
 
 ### Method: getArticles
 
-**Purpose (Detailed)**
-Provide a discoverable list of articles based on current user intent. This method returns a **Ranked Result Set** where the most significant content (Hero tier) is automatically promoted to the top.
+**Purpose:** Provide a discoverable list of articles based on current user intent. This method returns a **Ranked Result Set** where the most significant content (Hero tier) is automatically promoted to the top.
 
----
+**Input:**
 
-**Input**
+*   `page` (int, optional)
+*   `limit` (int, optional)
+*   `filter` (ArticleFilter, optional)
 
-* `page` (int, optional)
-* `limit` (int, optional)
-* `filter` (ArticleFilter, optional)
+**Output:**
 
-**Output**
+*   `List<Article>`
 
-* `List<Article>`
+**Data Flow:**
 
----
-
-**Inherited Feature Decisions**
-
-* Infinite Scroll (Chunk-based loading)
-* No cache
-* Fail-fast offline
-
----
-
-**Data**
-
-* Retrieve the complete article dataset from the local JSON asset
-* Parse raw JSON into domain entities
-
-**Data Repository**
-
-* **Role:** Logic Engine & Pagination
-* Applies filtering and the **Ranked Sorting** algorithm in-memory.
-* Slices the list based on `page` and `limit`.
-
----
-
-**High-Level Functional Flow**
-
-1. Validate incoming filter and pagination parameters
-2. Retrieve the full article dataset
-3. Apply search filtering if a query is present
-4. Apply tag-based filtering if a tag is selected
-5. **Apply Ranked Sorting:** Sort by Tier (Hero first), then by Date (Newest first).
-6. Apply pagination (slice the list based on page and limit)
-7. Return the processed article list to the caller
-
----
-
-**Edge Cases**
-
-* No articles exist in the dataset
-* Filters produce zero matching results
-
----
-
-**Failures**
-
-* NetworkFailure
-* ServerFailure
-* DataParsingFailure
+1.  Validate incoming filter and pagination parameters.
+2.  Retrieve the full article dataset from `articles.json` (Registry).
+3.  Apply search filtering if a query is present.
+4.  Apply tag-based filtering if a tag is selected.
+5.  **Apply Ranked Sorting:** Sort by Tier (Hero first), then by Date (Newest first).
+6.  Apply pagination (slice the list based on page and limit).
+7.  Return the processed article list to the caller.
 
 ---
 
 ### Method: getArticleDetail
 
-**Purpose (Detailed)**
-Retrieve the complete reading content for a single article.
+**Purpose:** Retrieve the complete reading content and metadata for a single article.
 
----
+*   **Primary Role:** **Content Hydrator & Deep Link Handler.**
+*   **Mandatory Use:** Unlike the Projects feature, this method **must** be called for every article view (including standard navigation), as the full article content is stored in external files and is not available in the list-view metadata.
+*   **Guarantee:** Returns a fully hydrated `Article` entity where the `content` field is populated with the Markdown text.
 
-**Input**
+**Input:**
 
-* `articleId` (String)
+*   `articleId` (String)
 
-**Output**
+**Output:**
 
-* `ArticleDetail`
+*   `Article` (Unified Model)
 
----
+**Data Flow:**
 
-**High-Level Functional Flow**
-
-1. Validate the article identifier
-2. Locate the article matching the identifier
-3. Load the full content body and metadata
-4. Return the complete article detail to the caller
-
----
-
-**Failures**
-
-* ValidationFailure
-* NotFoundFailure
-* NetworkFailure
-* DataParsingFailure
-
----
-
-## Final Notes
-
-* This feature is read-only by design
-* All business logic must live outside the UI layer
+1.  Validate the article identifier.
+2.  Locate the article metadata in the Registry.
+3.  **Hydrate Content:** Read the file at `contentPath` (e.g., `database/articles/content/.../index.md`).
+4.  Populate the `content` field of the Article model.
+5.  Return the complete article detail to the caller.

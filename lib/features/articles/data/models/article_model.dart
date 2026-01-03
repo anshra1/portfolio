@@ -14,9 +14,10 @@ abstract class ArticleModel with _$ArticleModel {
     required String title,
     required String readTime,
     required String summary,
-    required String contentBody,
+    required String contentPath,
     required List<String> tags,
     required String coverImageAsset,
+    String? content,
   }) = _ArticleModel;
 
   const ArticleModel._();
@@ -32,9 +33,10 @@ abstract class ArticleModel with _$ArticleModel {
       title: entity.title,
       readTime: entity.readTime,
       summary: entity.summary,
-      contentBody: entity.contentBody,
+      contentPath: entity.contentPath,
       tags: entity.tags,
       coverImageAsset: entity.coverImageAsset,
+      content: entity.content,
     );
   }
 
@@ -46,9 +48,10 @@ abstract class ArticleModel with _$ArticleModel {
       title: title,
       readTime: readTime,
       summary: summary,
-      contentBody: contentBody,
+      contentPath: contentPath,
       tags: tags,
       coverImageAsset: coverImageAsset,
+      content: content,
     );
   }
 }

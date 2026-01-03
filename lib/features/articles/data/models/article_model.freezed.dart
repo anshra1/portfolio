@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ArticleModel {
 
- String get id; ArticleDisplayTier get displayTier; DateTime get publishedAt; String get title; String get readTime; String get summary; String get contentBody; List<String> get tags; String get coverImageAsset;
+ String get id; ArticleDisplayTier get displayTier; DateTime get publishedAt; String get title; String get readTime; String get summary; String get contentPath; List<String> get tags; String get coverImageAsset; String? get content;
 /// Create a copy of ArticleModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ArticleModelCopyWith<ArticleModel> get copyWith => _$ArticleModelCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleModel&&(identical(other.id, id) || other.id == id)&&(identical(other.displayTier, displayTier) || other.displayTier == displayTier)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.readTime, readTime) || other.readTime == readTime)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.contentBody, contentBody) || other.contentBody == contentBody)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.coverImageAsset, coverImageAsset) || other.coverImageAsset == coverImageAsset));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleModel&&(identical(other.id, id) || other.id == id)&&(identical(other.displayTier, displayTier) || other.displayTier == displayTier)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.readTime, readTime) || other.readTime == readTime)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.contentPath, contentPath) || other.contentPath == contentPath)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.coverImageAsset, coverImageAsset) || other.coverImageAsset == coverImageAsset)&&(identical(other.content, content) || other.content == content));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayTier,publishedAt,title,readTime,summary,contentBody,const DeepCollectionEquality().hash(tags),coverImageAsset);
+int get hashCode => Object.hash(runtimeType,id,displayTier,publishedAt,title,readTime,summary,contentPath,const DeepCollectionEquality().hash(tags),coverImageAsset,content);
 
 @override
 String toString() {
-  return 'ArticleModel(id: $id, displayTier: $displayTier, publishedAt: $publishedAt, title: $title, readTime: $readTime, summary: $summary, contentBody: $contentBody, tags: $tags, coverImageAsset: $coverImageAsset)';
+  return 'ArticleModel(id: $id, displayTier: $displayTier, publishedAt: $publishedAt, title: $title, readTime: $readTime, summary: $summary, contentPath: $contentPath, tags: $tags, coverImageAsset: $coverImageAsset, content: $content)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ArticleModelCopyWith<$Res>  {
   factory $ArticleModelCopyWith(ArticleModel value, $Res Function(ArticleModel) _then) = _$ArticleModelCopyWithImpl;
 @useResult
 $Res call({
- String id, ArticleDisplayTier displayTier, DateTime publishedAt, String title, String readTime, String summary, String contentBody, List<String> tags, String coverImageAsset
+ String id, ArticleDisplayTier displayTier, DateTime publishedAt, String title, String readTime, String summary, String contentPath, List<String> tags, String coverImageAsset, String? content
 });
 
 
@@ -65,7 +65,7 @@ class _$ArticleModelCopyWithImpl<$Res>
 
 /// Create a copy of ArticleModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayTier = null,Object? publishedAt = null,Object? title = null,Object? readTime = null,Object? summary = null,Object? contentBody = null,Object? tags = null,Object? coverImageAsset = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayTier = null,Object? publishedAt = null,Object? title = null,Object? readTime = null,Object? summary = null,Object? contentPath = null,Object? tags = null,Object? coverImageAsset = null,Object? content = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,displayTier: null == displayTier ? _self.displayTier : displayTier // ignore: cast_nullable_to_non_nullable
@@ -73,10 +73,11 @@ as ArticleDisplayTier,publishedAt: null == publishedAt ? _self.publishedAt : pub
 as DateTime,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,readTime: null == readTime ? _self.readTime : readTime // ignore: cast_nullable_to_non_nullable
 as String,summary: null == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
-as String,contentBody: null == contentBody ? _self.contentBody : contentBody // ignore: cast_nullable_to_non_nullable
+as String,contentPath: null == contentPath ? _self.contentPath : contentPath // ignore: cast_nullable_to_non_nullable
 as String,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
 as List<String>,coverImageAsset: null == coverImageAsset ? _self.coverImageAsset : coverImageAsset // ignore: cast_nullable_to_non_nullable
-as String,
+as String,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -161,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  ArticleDisplayTier displayTier,  DateTime publishedAt,  String title,  String readTime,  String summary,  String contentBody,  List<String> tags,  String coverImageAsset)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  ArticleDisplayTier displayTier,  DateTime publishedAt,  String title,  String readTime,  String summary,  String contentPath,  List<String> tags,  String coverImageAsset,  String? content)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ArticleModel() when $default != null:
-return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.readTime,_that.summary,_that.contentBody,_that.tags,_that.coverImageAsset);case _:
+return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.readTime,_that.summary,_that.contentPath,_that.tags,_that.coverImageAsset,_that.content);case _:
   return orElse();
 
 }
@@ -182,10 +183,10 @@ return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.r
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  ArticleDisplayTier displayTier,  DateTime publishedAt,  String title,  String readTime,  String summary,  String contentBody,  List<String> tags,  String coverImageAsset)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  ArticleDisplayTier displayTier,  DateTime publishedAt,  String title,  String readTime,  String summary,  String contentPath,  List<String> tags,  String coverImageAsset,  String? content)  $default,) {final _that = this;
 switch (_that) {
 case _ArticleModel():
-return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.readTime,_that.summary,_that.contentBody,_that.tags,_that.coverImageAsset);case _:
+return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.readTime,_that.summary,_that.contentPath,_that.tags,_that.coverImageAsset,_that.content);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +203,10 @@ return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.r
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  ArticleDisplayTier displayTier,  DateTime publishedAt,  String title,  String readTime,  String summary,  String contentBody,  List<String> tags,  String coverImageAsset)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  ArticleDisplayTier displayTier,  DateTime publishedAt,  String title,  String readTime,  String summary,  String contentPath,  List<String> tags,  String coverImageAsset,  String? content)?  $default,) {final _that = this;
 switch (_that) {
 case _ArticleModel() when $default != null:
-return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.readTime,_that.summary,_that.contentBody,_that.tags,_that.coverImageAsset);case _:
+return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.readTime,_that.summary,_that.contentPath,_that.tags,_that.coverImageAsset,_that.content);case _:
   return null;
 
 }
@@ -217,7 +218,7 @@ return $default(_that.id,_that.displayTier,_that.publishedAt,_that.title,_that.r
 @JsonSerializable()
 
 class _ArticleModel extends ArticleModel {
-  const _ArticleModel({required this.id, required this.displayTier, required this.publishedAt, required this.title, required this.readTime, required this.summary, required this.contentBody, required final  List<String> tags, required this.coverImageAsset}): _tags = tags,super._();
+  const _ArticleModel({required this.id, required this.displayTier, required this.publishedAt, required this.title, required this.readTime, required this.summary, required this.contentPath, required final  List<String> tags, required this.coverImageAsset, this.content}): _tags = tags,super._();
   factory _ArticleModel.fromJson(Map<String, dynamic> json) => _$ArticleModelFromJson(json);
 
 @override final  String id;
@@ -226,7 +227,7 @@ class _ArticleModel extends ArticleModel {
 @override final  String title;
 @override final  String readTime;
 @override final  String summary;
-@override final  String contentBody;
+@override final  String contentPath;
  final  List<String> _tags;
 @override List<String> get tags {
   if (_tags is EqualUnmodifiableListView) return _tags;
@@ -235,6 +236,7 @@ class _ArticleModel extends ArticleModel {
 }
 
 @override final  String coverImageAsset;
+@override final  String? content;
 
 /// Create a copy of ArticleModel
 /// with the given fields replaced by the non-null parameter values.
@@ -249,16 +251,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleModel&&(identical(other.id, id) || other.id == id)&&(identical(other.displayTier, displayTier) || other.displayTier == displayTier)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.readTime, readTime) || other.readTime == readTime)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.contentBody, contentBody) || other.contentBody == contentBody)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.coverImageAsset, coverImageAsset) || other.coverImageAsset == coverImageAsset));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleModel&&(identical(other.id, id) || other.id == id)&&(identical(other.displayTier, displayTier) || other.displayTier == displayTier)&&(identical(other.publishedAt, publishedAt) || other.publishedAt == publishedAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.readTime, readTime) || other.readTime == readTime)&&(identical(other.summary, summary) || other.summary == summary)&&(identical(other.contentPath, contentPath) || other.contentPath == contentPath)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.coverImageAsset, coverImageAsset) || other.coverImageAsset == coverImageAsset)&&(identical(other.content, content) || other.content == content));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayTier,publishedAt,title,readTime,summary,contentBody,const DeepCollectionEquality().hash(_tags),coverImageAsset);
+int get hashCode => Object.hash(runtimeType,id,displayTier,publishedAt,title,readTime,summary,contentPath,const DeepCollectionEquality().hash(_tags),coverImageAsset,content);
 
 @override
 String toString() {
-  return 'ArticleModel(id: $id, displayTier: $displayTier, publishedAt: $publishedAt, title: $title, readTime: $readTime, summary: $summary, contentBody: $contentBody, tags: $tags, coverImageAsset: $coverImageAsset)';
+  return 'ArticleModel(id: $id, displayTier: $displayTier, publishedAt: $publishedAt, title: $title, readTime: $readTime, summary: $summary, contentPath: $contentPath, tags: $tags, coverImageAsset: $coverImageAsset, content: $content)';
 }
 
 
@@ -269,7 +271,7 @@ abstract mixin class _$ArticleModelCopyWith<$Res> implements $ArticleModelCopyWi
   factory _$ArticleModelCopyWith(_ArticleModel value, $Res Function(_ArticleModel) _then) = __$ArticleModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, ArticleDisplayTier displayTier, DateTime publishedAt, String title, String readTime, String summary, String contentBody, List<String> tags, String coverImageAsset
+ String id, ArticleDisplayTier displayTier, DateTime publishedAt, String title, String readTime, String summary, String contentPath, List<String> tags, String coverImageAsset, String? content
 });
 
 
@@ -286,7 +288,7 @@ class __$ArticleModelCopyWithImpl<$Res>
 
 /// Create a copy of ArticleModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayTier = null,Object? publishedAt = null,Object? title = null,Object? readTime = null,Object? summary = null,Object? contentBody = null,Object? tags = null,Object? coverImageAsset = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayTier = null,Object? publishedAt = null,Object? title = null,Object? readTime = null,Object? summary = null,Object? contentPath = null,Object? tags = null,Object? coverImageAsset = null,Object? content = freezed,}) {
   return _then(_ArticleModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,displayTier: null == displayTier ? _self.displayTier : displayTier // ignore: cast_nullable_to_non_nullable
@@ -294,10 +296,11 @@ as ArticleDisplayTier,publishedAt: null == publishedAt ? _self.publishedAt : pub
 as DateTime,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,readTime: null == readTime ? _self.readTime : readTime // ignore: cast_nullable_to_non_nullable
 as String,summary: null == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
-as String,contentBody: null == contentBody ? _self.contentBody : contentBody // ignore: cast_nullable_to_non_nullable
+as String,contentPath: null == contentPath ? _self.contentPath : contentPath // ignore: cast_nullable_to_non_nullable
 as String,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
 as List<String>,coverImageAsset: null == coverImageAsset ? _self.coverImageAsset : coverImageAsset // ignore: cast_nullable_to_non_nullable
-as String,
+as String,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

@@ -17,9 +17,10 @@ _ArticleModel _$ArticleModelFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       readTime: json['readTime'] as String,
       summary: json['summary'] as String,
-      contentBody: json['contentBody'] as String,
+      contentPath: json['contentPath'] as String,
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       coverImageAsset: json['coverImageAsset'] as String,
+      content: json['content'] as String?,
     );
 
 Map<String, dynamic> _$ArticleModelToJson(_ArticleModel instance) =>
@@ -30,9 +31,10 @@ Map<String, dynamic> _$ArticleModelToJson(_ArticleModel instance) =>
       'title': instance.title,
       'readTime': instance.readTime,
       'summary': instance.summary,
-      'contentBody': instance.contentBody,
+      'contentPath': instance.contentPath,
       'tags': instance.tags,
       'coverImageAsset': instance.coverImageAsset,
+      'content': instance.content,
     };
 
 const _$ArticleDisplayTierEnumMap = {

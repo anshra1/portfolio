@@ -141,7 +141,7 @@ void main() {
     );
 
     test(
-      'should throw DataParsingException when mandatory fields are missing [DS-DET-005]',
+      'should throw NotFoundException when mandatory fields are missing (Relaxed Contract: invalid = missing) [DS-DET-005]',
       () async {
         // Arrange
         // Missing "title"
@@ -169,7 +169,7 @@ void main() {
         // Assert
         expect(
           () => call(tProjectId),
-          throwsA(isA<DataParsingException>()),
+          throwsA(isA<NotFoundException>()),
         );
       },
     );

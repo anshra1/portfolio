@@ -30,14 +30,13 @@ Defines exactly what the method is accountable for.
 
 ### 4.1 Full Method Working (Plain English)
 
-**Step 1:** Access the `assets/data/projects.json` file from the application bundle.
-**Step 2:** Read the file content as a raw string.
-**Step 3:** Decode the string into a generic JSON List of Maps.
-**Step 4:** Iterate through the list to find the first object where the `id` field matches the requested `projectId`.
-   *   **4a (Found):** Serialize the Map into a `ProjectModel` (DTO) and return it.
-       *   *Validation:* If the record exists but is missing mandatory fields (e.g., `title`, `technologies`), throw `DataParsingException` immediately (Strict Serialization).
-   *   **4b (Not Found):** Throw a specific `NotFoundException`.
-**Step 5 (Failure):** If the file read fails or JSON parsing fails, throw `DataParsingException`.
+**Step 1:** Check if the projects list is already cached in memory.
+   *   **1a (Cached):** Use the existing list.
+   *   **1b (Not Cached):** Load `assets/data/projects.json`, parse it, skip corrupt records (Valid-Subset Recovery), and cache the result.
+**Step 2:** Search the list for the first `ProjectModel` where `id` matches `projectId`.
+   *   **2a (Found):** Return the `ProjectModel`.
+   *   **2b (Not Found):** Throw `NotFoundException`.
+       *   *Note:* If a project exists in the file but is corrupt (missing mandatory fields), it was skipped during Step 1. Therefore, it will effectively be treated as "Not Found" here.
 
 ### 4.2 Context & Inputs
 
@@ -55,15 +54,15 @@ Defines exactly what the method is accountable for.
 *   **Malformed JSON Syntax:** The file content is invalid JSON.
     *   *Behavior:* Catch `FormatException`, Throw `DataParsingException` (Strict Failure).
 *   **Partial Schema Violation:** The requested record exists but is missing mandatory fields.
-    *   *Behavior:* Throw `DataParsingException` (Strict Serialization) to prevent displaying incomplete data.
+    *   *Behavior:* Throw `NotFoundException` (Relaxed Contract: Corrupt data is treated as missing).
 *   **Project Not Found:** The valid ID does not exist in the dataset.
     *   *Behavior:* Throw `NotFoundException`.
 
 ### 4.4 Architectural Decisions
 
-*   **Datasource Lookup:** The responsibility of iterating the raw list to find the specific ID is delegated to the Datasource.
-*   **Fail-Fast I/O:** Any issue with reading the file or parsing the JSON results in an immediate exception.
-*   **Strict Serialization:** We prioritize data integrity over partial availability for the detail view. A corrupt record is treated as a total failure to avoid misleading the user with "Untitled" projects.
+*   **In-Memory Caching:** Reuses the cached list from `getProjects` to avoid redundant parsing.
+*   **Relaxed Contract:** We treat corrupt records as "Not Found" rather than throwing a parsing error. This ensures that a single bad record doesn't prevent looking up other valid records.
+*   **Datasource Lookup:** The responsibility of iterating the list is delegated to the Datasource.
 
 ### 4.5 Test Cases
 
@@ -73,7 +72,7 @@ Defines exactly what the method is accountable for.
 *   **Preconditions:** The `assets/data/projects.json` file exists and contains a JSON list with a valid project object having `id="p1"`.
 *   **Action:** Call `getProjectDetail("p1")`.
 *   **Expected Outcome:** Returns a `ProjectModel` object where the `id` field matches "p1" and all other fields match the JSON content.
-*   **Traceability:** Datasource Step 4a.
+*   **Traceability:** Datasource Step 2a.
 
 **Test Case ID: DS-DET-002**
 *   **Category:** Datasource
@@ -81,7 +80,7 @@ Defines exactly what the method is accountable for.
 *   **Preconditions:** The `assets/data/projects.json` file exists but does NOT contain any object with `id="unknown"`.
 *   **Action:** Call `getProjectDetail("unknown")`.
 *   **Expected Outcome:** Throws `NotFoundException`.
-*   **Traceability:** Datasource Step 4b, Edge Case: Project Not Found.
+*   **Traceability:** Datasource Step 2b, Edge Case: Project Not Found.
 
 **Test Case ID: DS-DET-003**
 *   **Category:** Datasource
@@ -89,7 +88,7 @@ Defines exactly what the method is accountable for.
 *   **Preconditions:** The `assets/data/projects.json` file is physically missing or inaccessible.
 *   **Action:** Call `getProjectDetail("p1")`.
 *   **Expected Outcome:** Throws `DataParsingException`.
-*   **Traceability:** Datasource Step 5, Edge Case: Missing Asset File.
+*   **Traceability:** Edge Case: Missing Asset File.
 
 **Test Case ID: DS-DET-004**
 *   **Category:** Datasource
@@ -97,15 +96,15 @@ Defines exactly what the method is accountable for.
 *   **Preconditions:** The `assets/data/projects.json` file contains invalid JSON text (e.g., missing closing brace).
 *   **Action:** Call `getProjectDetail("p1")`.
 *   **Expected Outcome:** Throws `DataParsingException`.
-*   **Traceability:** Datasource Step 5, Edge Case: Malformed JSON Syntax.
+*   **Traceability:** Edge Case: Malformed JSON Syntax.
 
 **Test Case ID: DS-DET-005**
 *   **Category:** Datasource
-*   **Scenario:** Strict Serialization - Missing mandatory fields.
+*   **Scenario:** Relaxed Contract - Missing mandatory fields.
 *   **Preconditions:** The `assets/data/projects.json` file contains a project with `id="p1"` but is missing the mandatory `title` field.
 *   **Action:** Call `getProjectDetail("p1")`.
-*   **Expected Outcome:** Throws `DataParsingException`.
-*   **Traceability:** Datasource Step 4a, Edge Case: Partial Schema Violation.
+*   **Expected Outcome:** Throws `NotFoundException` (The invalid record is skipped, so ID "p1" is not found in the valid list).
+*   **Traceability:** Datasource Step 1, Step 2b, Edge Case: Partial Schema Violation.
 
 ## 5. Repository (The Policy)
 

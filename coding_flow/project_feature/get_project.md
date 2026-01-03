@@ -39,7 +39,7 @@ Defines exactly what the method is accountable for.
 **Step 4:** Iterate through each JSON object in the list:
    *   **4a:** Attempt to parse the object into a `ProjectModel` (DTO).
    *   **4b (Success):** Add the model to the result list.
-   *   **4c (Schema Failure):** If a mandatory field (`id`, `title`) is missing, catch the error, **log a warning** via the Talker service ("Skipping corrupt project record"), and **discard** the record. Continue to the next item.
+   *   **4c (Schema Failure):** If a mandatory field (`id`, `title`) is missing or a type mismatch occurs (`TypeError`), catch the error using a catch-all `on Object` block, **log a warning** via the Talker service ("Skipping corrupt project record"), and **discard** the record. Continue to the next item.
 **Step 5:** Convert the list of valid `ProjectModel`s into `Project` entities.
 **Step 6:** Return the list of entities.
 
@@ -63,6 +63,7 @@ Defines exactly what the method is accountable for.
 
 ### 4.4 Architectural Decisions
 
+*   **In-Memory Caching:** The parsed list of projects is cached in memory (`_cachedProjects`) after the first successful load. This eliminates redundant I/O and parsing overhead for subsequent calls (e.g., filtering or pagination).
 *   **Valid-Subset Recovery:** We prioritize feature availability over strict data consistency. A single bad record should not crash the entire portfolio.
 *   **Raw I/O Only:** The Datasource does **not** filter or sort. It returns the *entire* valid dataset to the Repository.
 

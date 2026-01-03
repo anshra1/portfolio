@@ -9,7 +9,7 @@ part 'article_filter_model.g.dart';
 abstract class ArticleFilterModel with _$ArticleFilterModel {
   const factory ArticleFilterModel({
     String? searchQuery,
-    String? tag,
+    @Default([]) List<String> tags,
     SortOrder? sortOrder,
   }) = _ArticleFilterModel;
 
@@ -21,7 +21,7 @@ abstract class ArticleFilterModel with _$ArticleFilterModel {
   factory ArticleFilterModel.fromEntity(ArticleFilter entity) {
     return ArticleFilterModel(
       searchQuery: entity.searchQuery,
-      tag: entity.tag,
+      tags: entity.tags,
       sortOrder: entity.sortOrder,
     );
   }
@@ -29,7 +29,7 @@ abstract class ArticleFilterModel with _$ArticleFilterModel {
   ArticleFilter toEntity() {
     return ArticleFilter(
       searchQuery: searchQuery,
-      tag: tag,
+      tags: tags,
       sortOrder: sortOrder,
     );
   }

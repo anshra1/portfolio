@@ -4,14 +4,16 @@ import 'package:portfolio/core/common/enums.dart';
 class ArticleFilter extends Equatable {
   const ArticleFilter({
     this.searchQuery,
-    this.tag,
+    this.tags = const [],
     this.sortOrder,
   });
 
   final String? searchQuery;
-  final String? tag;
+
+  /// List of tags to filter by
+  final List<String> tags;
   final SortOrder? sortOrder;
 
   @override
-  List<Object?> get props => [searchQuery, tag, sortOrder];
+  List<Object?> get props => [searchQuery, tags, sortOrder];
 }

@@ -106,7 +106,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
 
       // Step 8: Return
       return Right(paginatedList);
-    } on Exception catch (e) {
+    } catch (e) {
       // All exceptions delegated to ErrorMapper per Protocol
       return Left(ErrorMapper.mapErrorToFailure(e));
     }
@@ -132,7 +132,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
       // Note: Normalization of optional lists (downloads, features) to ensure they are
       // non-null is handled by the ProjectModel's default values and toEntity() mapping.
       return Right(projectModel.toEntity());
-    } on Exception catch (e) {
+    } catch (e) {
       // All exceptions delegated to ErrorMapper per Protocol
       return Left(ErrorMapper.mapErrorToFailure(e));
     }

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ArticleFilterModel {
 
- String? get searchQuery; String? get tag; SortOrder? get sortOrder;
+ String? get searchQuery; List<String> get tags; SortOrder? get sortOrder;
 /// Create a copy of ArticleFilterModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ArticleFilterModelCopyWith<ArticleFilterModel> get copyWith => _$ArticleFilterM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,searchQuery,tag,sortOrder);
+int get hashCode => Object.hash(runtimeType,searchQuery,const DeepCollectionEquality().hash(tags),sortOrder);
 
 @override
 String toString() {
-  return 'ArticleFilterModel(searchQuery: $searchQuery, tag: $tag, sortOrder: $sortOrder)';
+  return 'ArticleFilterModel(searchQuery: $searchQuery, tags: $tags, sortOrder: $sortOrder)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ArticleFilterModelCopyWith<$Res>  {
   factory $ArticleFilterModelCopyWith(ArticleFilterModel value, $Res Function(ArticleFilterModel) _then) = _$ArticleFilterModelCopyWithImpl;
 @useResult
 $Res call({
- String? searchQuery, String? tag, SortOrder? sortOrder
+ String? searchQuery, List<String> tags, SortOrder? sortOrder
 });
 
 
@@ -65,11 +65,11 @@ class _$ArticleFilterModelCopyWithImpl<$Res>
 
 /// Create a copy of ArticleFilterModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? searchQuery = freezed,Object? tag = freezed,Object? sortOrder = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? searchQuery = freezed,Object? tags = null,Object? sortOrder = freezed,}) {
   return _then(_self.copyWith(
 searchQuery: freezed == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
-as String?,tag: freezed == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
-as String?,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
+as String?,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
+as List<String>,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
 as SortOrder?,
   ));
 }
@@ -155,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? searchQuery,  String? tag,  SortOrder? sortOrder)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? searchQuery,  List<String> tags,  SortOrder? sortOrder)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ArticleFilterModel() when $default != null:
-return $default(_that.searchQuery,_that.tag,_that.sortOrder);case _:
+return $default(_that.searchQuery,_that.tags,_that.sortOrder);case _:
   return orElse();
 
 }
@@ -176,10 +176,10 @@ return $default(_that.searchQuery,_that.tag,_that.sortOrder);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? searchQuery,  String? tag,  SortOrder? sortOrder)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? searchQuery,  List<String> tags,  SortOrder? sortOrder)  $default,) {final _that = this;
 switch (_that) {
 case _ArticleFilterModel():
-return $default(_that.searchQuery,_that.tag,_that.sortOrder);case _:
+return $default(_that.searchQuery,_that.tags,_that.sortOrder);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +196,10 @@ return $default(_that.searchQuery,_that.tag,_that.sortOrder);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? searchQuery,  String? tag,  SortOrder? sortOrder)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? searchQuery,  List<String> tags,  SortOrder? sortOrder)?  $default,) {final _that = this;
 switch (_that) {
 case _ArticleFilterModel() when $default != null:
-return $default(_that.searchQuery,_that.tag,_that.sortOrder);case _:
+return $default(_that.searchQuery,_that.tags,_that.sortOrder);case _:
   return null;
 
 }
@@ -211,11 +211,17 @@ return $default(_that.searchQuery,_that.tag,_that.sortOrder);case _:
 @JsonSerializable()
 
 class _ArticleFilterModel extends ArticleFilterModel {
-  const _ArticleFilterModel({this.searchQuery, this.tag, this.sortOrder}): super._();
+  const _ArticleFilterModel({this.searchQuery, final  List<String> tags = const [], this.sortOrder}): _tags = tags,super._();
   factory _ArticleFilterModel.fromJson(Map<String, dynamic> json) => _$ArticleFilterModelFromJson(json);
 
 @override final  String? searchQuery;
-@override final  String? tag;
+ final  List<String> _tags;
+@override@JsonKey() List<String> get tags {
+  if (_tags is EqualUnmodifiableListView) return _tags;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_tags);
+}
+
 @override final  SortOrder? sortOrder;
 
 /// Create a copy of ArticleFilterModel
@@ -231,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleFilterModel&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,searchQuery,tag,sortOrder);
+int get hashCode => Object.hash(runtimeType,searchQuery,const DeepCollectionEquality().hash(_tags),sortOrder);
 
 @override
 String toString() {
-  return 'ArticleFilterModel(searchQuery: $searchQuery, tag: $tag, sortOrder: $sortOrder)';
+  return 'ArticleFilterModel(searchQuery: $searchQuery, tags: $tags, sortOrder: $sortOrder)';
 }
 
 
@@ -251,7 +257,7 @@ abstract mixin class _$ArticleFilterModelCopyWith<$Res> implements $ArticleFilte
   factory _$ArticleFilterModelCopyWith(_ArticleFilterModel value, $Res Function(_ArticleFilterModel) _then) = __$ArticleFilterModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? searchQuery, String? tag, SortOrder? sortOrder
+ String? searchQuery, List<String> tags, SortOrder? sortOrder
 });
 
 
@@ -268,11 +274,11 @@ class __$ArticleFilterModelCopyWithImpl<$Res>
 
 /// Create a copy of ArticleFilterModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? searchQuery = freezed,Object? tag = freezed,Object? sortOrder = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? searchQuery = freezed,Object? tags = null,Object? sortOrder = freezed,}) {
   return _then(_ArticleFilterModel(
 searchQuery: freezed == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
-as String?,tag: freezed == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
-as String?,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
+as String?,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
+as List<String>,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
 as SortOrder?,
   ));
 }

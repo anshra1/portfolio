@@ -1,5 +1,8 @@
 # 🎬 Animations Deep Dive
 
+**Primary Package:** [`flutter_animate`](https://pub.dev/packages/flutter_animate)
+**Current Version:** `^4.5.2`
+
 ## 🚀 The Philosophy: Declarative vs. Imperative
 Don't manage `AnimationControllers` manually. Use the extension-based approach provided by `flutter_animate` to keep code clean, readable, and memory-safe.
 

@@ -3,7 +3,9 @@
 This domain covers everything the user sees and interacts with. Our goal is to create "App Store quality" interfaces that feel responsive and alive.
 
 ## 🎬 Animations
-Standard Flutter animations can be boilerplate-heavy. We prioritize a declarative, extension-based approach to keep the codebase clean and maintainable.
+Standard Flutter animations can be boilerplate-heavy. We prioritize a declarative, extension-based approach.
+
+**Primary Package:** [`flutter_animate: ^4.5.2`](https://pub.dev/packages/flutter_animate)
 
 **Rule #1: Use `flutter_animate` for Declarative UI Motion**
 *   **When to use:** For all standard UI transitions (fades, slides, shimmers), staggered list entries, and tactile button feedback.

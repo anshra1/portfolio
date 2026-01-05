@@ -13,5 +13,4 @@ Standard Flutter animations can be boilerplate-heavy. We prioritize a declarativ
 **Rule #2: Use `animated_text_kit` for Specialized Text Effects**
 *   **When to use:** For narrative-style text effects like Typewriter, Typer, Wavy, or Liquid Fill animations.
 *   **Primary Package:** [`animated_text_kit: ^4.3.0`](https://pub.dev/packages/animated_text_kit)
-
-**[Deep Dive: Animations Guide](./animations.md)** - Shorthand syntax, text effects, and pro tips.
+*   **[Deep Dive: Text Effects Guide](./text_animations.md)**

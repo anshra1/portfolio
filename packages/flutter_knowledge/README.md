@@ -15,3 +15,4 @@ It is organized into 10 key domains to ensure scalability and consistency.
 8.  **[Performance & Debugging](./08_performance_and_debugging/index.md)** - Optimization, DevTools, Profiling.
 9.  **[Essential Packages](./09_essential_packages/index.md)** - Vetted 3rd-party libraries.
 10. **[Learning Resources](./10_learning_resources/index.md)** - Summaries, Articles, Research.
+11. **[Code Writing Rules](./11_code_writing_rules/index.md)** - Guidelines for clean and consistent code.

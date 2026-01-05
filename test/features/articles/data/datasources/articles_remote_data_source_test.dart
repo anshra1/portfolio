@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:faker/faker.dart';
 import 'package:flutter/foundation.dart';
@@ -7,14 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:portfolio/core/error/error.dart';
+import 'package:portfolio/core/services/talker_service.dart';
 import 'package:portfolio/features/articles/data/datasources/articles_remote_data_source.dart';
+import 'package:portfolio/features/articles/data/models/article_filter_model.dart';
 import 'package:portfolio/features/articles/data/models/article_model.dart';
 import 'package:portfolio/features/articles/domain/entities/article_display_tier.dart';
-import 'package:portfolio/features/articles/domain/entities/article.dart';
-import 'package:portfolio/features/articles/data/models/article_filter_model.dart';
-import 'package:portfolio/core/services/talker_service.dart';
 
 class MockAssetBundle extends Mock implements AssetBundle {}
+
 class MockTalkerService extends Mock implements TalkerService {}
 
 void main() {
@@ -61,7 +60,7 @@ void main() {
         'contentPath': tContentPath,
         'tags': ['flutter'],
         'coverImageAsset': 'assets/image.png',
-      }
+      },
     ]);
 
     ByteData createByteData(String content) {
@@ -70,13 +69,15 @@ void main() {
     }
 
     void mockRegistrySuccess() {
-      when(() => mockAssetBundle.loadString(tRegistryPath))
-          .thenAnswer((_) async => tRegistryJson);
+      when(
+        () => mockAssetBundle.loadString(tRegistryPath),
+      ).thenAnswer((_) async => tRegistryJson);
     }
 
     void mockContentSuccess([String content = tContent]) {
-      when(() => mockAssetBundle.load(tContentPath))
-          .thenAnswer((_) async => createByteData(content));
+      when(
+        () => mockAssetBundle.load(tContentPath),
+      ).thenAnswer((_) async => createByteData(content));
     }
 
     test(
@@ -122,8 +123,7 @@ void main() {
       'DS-ART-DET-003: should parse registry exactly once during concurrent initialization',
       () async {
         // Arrange
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async {
+        when(() => mockAssetBundle.loadString(tRegistryPath)).thenAnswer((_) async {
           await Future.delayed(const Duration(milliseconds: 100));
           return tRegistryJson;
         });
@@ -168,13 +168,14 @@ void main() {
             'title': 'Corrupt',
             'readTime': '5 min',
             'summary': 'Summary',
-            // Missing contentPath
+            'contentPath': '',
             'tags': [],
             'coverImageAsset': 'asset',
-          }
+          },
         ]);
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async => corruptRegistry);
+        when(
+          () => mockAssetBundle.loadString(tRegistryPath),
+        ).thenAnswer((_) async => corruptRegistry);
 
         // Act
         final call = dataSource.getArticleDetail(tId);
@@ -188,7 +189,7 @@ void main() {
       'DS-ART-DET-006: should throw DataParsingException on path traversal attack (relative path)',
       () async {
         // Arrange
-        final maliciousPath = 'database/articles/content/../../secret.txt';
+        const maliciousPath = 'database/articles/content/../../secret.txt';
         final maliciousRegistry = jsonEncode([
           {
             'id': tId,
@@ -200,10 +201,11 @@ void main() {
             'contentPath': maliciousPath,
             'tags': [],
             'coverImageAsset': 'asset',
-          }
+          },
         ]);
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async => maliciousRegistry);
+        when(
+          () => mockAssetBundle.loadString(tRegistryPath),
+        ).thenAnswer((_) async => maliciousRegistry);
 
         // Act
         final call = dataSource.getArticleDetail(tId);
@@ -230,10 +232,11 @@ void main() {
             'contentPath': maliciousPath,
             'tags': [],
             'coverImageAsset': 'asset',
-          }
+          },
         ]);
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async => maliciousRegistry);
+        when(
+          () => mockAssetBundle.loadString(tRegistryPath),
+        ).thenAnswer((_) async => maliciousRegistry);
 
         // Act
         final call = dataSource.getArticleDetail(tId);
@@ -250,8 +253,9 @@ void main() {
         // Arrange
         mockRegistrySuccess();
         final oversizedBytes = Uint8List(5 * 1024 * 1024 + 1);
-        when(() => mockAssetBundle.load(tContentPath))
-            .thenAnswer((_) async => ByteData.sublistView(oversizedBytes));
+        when(
+          () => mockAssetBundle.load(tContentPath),
+        ).thenAnswer((_) async => ByteData.sublistView(oversizedBytes));
 
         // Act
         final call = dataSource.getArticleDetail(tId);
@@ -267,8 +271,9 @@ void main() {
         // Arrange
         mockRegistrySuccess();
         final invalidBytes = Uint8List.fromList([0xFF, 0xFE, 0xFD]);
-        when(() => mockAssetBundle.load(tContentPath))
-            .thenAnswer((_) async => ByteData.sublistView(invalidBytes));
+        when(
+          () => mockAssetBundle.load(tContentPath),
+        ).thenAnswer((_) async => ByteData.sublistView(invalidBytes));
 
         // Act
         final call = dataSource.getArticleDetail(tId);
@@ -283,8 +288,9 @@ void main() {
       () async {
         // Arrange
         mockRegistrySuccess();
-        when(() => mockAssetBundle.load(tContentPath))
-            .thenThrow(FlutterError('Asset not found'));
+        when(
+          () => mockAssetBundle.load(tContentPath),
+        ).thenThrow(FlutterError('Asset not found'));
 
         // Act
         final call = dataSource.getArticleDetail(tId);
@@ -299,8 +305,9 @@ void main() {
       () async {
         // Arrange
         mockRegistrySuccess();
-        when(() => mockAssetBundle.load(tContentPath))
-            .thenAnswer((_) async => ByteData(0));
+        when(
+          () => mockAssetBundle.load(tContentPath),
+        ).thenAnswer((_) async => ByteData(0));
 
         // Act
         final result = await dataSource.getArticleDetail(tId);
@@ -328,15 +335,16 @@ void main() {
         'contentPath': tContentPath,
         'tags': ['flutter'],
         'coverImageAsset': 'assets/image.png',
-      }
+      },
     ]);
 
     test(
       'DS-ART-LST-001: should return List<Article> entities (not models) from registry',
       () async {
         // Arrange
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async => tValidRegistry);
+        when(
+          () => mockAssetBundle.loadString(tRegistryPath),
+        ).thenAnswer((_) async => tValidRegistry);
 
         // Act
         final result = await dataSource.getArticles(
@@ -371,11 +379,12 @@ void main() {
             // CORRUPT: Missing 'id'
             'displayTier': 'standard',
             'title': 'Corrupt',
-          }
+          },
         ]);
 
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async => mixedRegistry);
+        when(
+          () => mockAssetBundle.loadString(tRegistryPath),
+        ).thenAnswer((_) async => mixedRegistry);
 
         // Act
         final result = await dataSource.getArticles(
@@ -394,8 +403,9 @@ void main() {
       'DS-ART-LST-003: should ignore pagination/filter params and return full dataset',
       () async {
         // Arrange
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async => tValidRegistry);
+        when(
+          () => mockAssetBundle.loadString(tRegistryPath),
+        ).thenAnswer((_) async => tValidRegistry);
 
         // Act
         final result = await dataSource.getArticles(
@@ -413,8 +423,7 @@ void main() {
       'DS-ART-LST-004: should execute exact-once initialization during concurrent calls',
       () async {
         // Arrange
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenAnswer((_) async {
+        when(() => mockAssetBundle.loadString(tRegistryPath)).thenAnswer((_) async {
           await Future.delayed(const Duration(milliseconds: 50));
           return tValidRegistry;
         });
@@ -436,8 +445,9 @@ void main() {
       'DS-ART-LST-005: should throw DataParsingException when asset file is missing',
       () async {
         // Arrange
-        when(() => mockAssetBundle.loadString(tRegistryPath))
-            .thenThrow(FlutterError('Asset not found'));
+        when(
+          () => mockAssetBundle.loadString(tRegistryPath),
+        ).thenThrow(FlutterError('Asset not found'));
 
         // Act
         final call = dataSource.getArticles(

@@ -5,7 +5,7 @@ It is organized into 10 key domains to ensure scalability and consistency.
 
 ## 🗂️ The Shelves
 
-1.  **[UI & UX Engineering](./01_ui_ux_engineering/index.md)** - Visuals, Layouts, Theming, A11y.
+1.  **[UI & UX](./01_ui_ux/index.md)** - Visuals, Layouts, Theming, A11y.
 2.  **[State Management](./02_state_management/index.md)** - Riverpod/Bloc patterns.
 3.  **[Data & Networking](./03_data_and_networking/index.md)** - API Client, Error Handling, Storage.
 4.  **[Testing & QA](./04_testing_and_qa/index.md)** - Unit, Widget, Integration, Golden tests.

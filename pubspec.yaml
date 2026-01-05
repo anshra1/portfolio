@@ -46,8 +46,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/data/
     - database/articles/
     - database/articles/content/
     - database/project/
-    - assets/images/articles/
+    

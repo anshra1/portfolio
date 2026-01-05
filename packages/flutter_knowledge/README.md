@@ -16,3 +16,24 @@ It is organized into 10 key domains to ensure scalability and consistency.
 9.  **[Essential Packages](./09_essential_packages/index.md)** - Vetted 3rd-party libraries.
 10. **[Learning Resources](./10_learning_resources/index.md)** - Summaries, Articles, Research.
 11. **[Code Writing Rules](./11_code_writing_rules/index.md)** - Guidelines for clean and consistent code.
+
+---
+
+## ✍️ Rules of Writing (Documentation Standard)
+
+To maintain a clean and searchable database, all contributors must follow the **"Trailer vs. Movie"** principle:
+
+1.  **The `index.md` (The Trailer):**
+    *   Every folder must have an `index.md`.
+    *   It acts as a high-level overview or "trailer" for the domain.
+    *   It **must not** contain deep technical details.
+    *   It **must** contain a Table of Contents linking to specific deep-dive files.
+
+2.  **Specific `.md` Files (The Movie):**
+    *   Technical details, code snippets, and "deep knowledge" belong in their own focused files.
+    *   Example: Use `naming_conventions.md` for details, not the `index.md`.
+
+3.  **Formatting:**
+    *   Use clear headers (H1, H2, H3).
+    *   Keep code snippets concise and production-ready.
+    *   Use emojis for visual grouping.

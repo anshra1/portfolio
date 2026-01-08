@@ -1,4 +1,4 @@
-# 🎨 UI & UX Engineering
+# 🎨 Animation Index File
 
 This domain covers everything the user sees and interacts with. Our goal is to create "App Store quality" interfaces that feel responsive and alive.
 

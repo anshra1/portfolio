@@ -36,6 +36,15 @@ export 'src/widgets/layout/cards/core_card.dart';
 export 'src/widgets/layout/scaffolds/core_scaffold.dart';
 export 'src/widgets/layout/separators/core_divider.dart';
 // Widgets
-export 'src/widgets/primitives/buttons/core_button.dart';
-export 'src/widgets/primitives/inputs/core_text_field.dart';
-export 'src/widgets/primitives/toggles/core_switch.dart';
+export 'src/widgets/buttons/kit_base_button.dart';
+export 'src/widgets/buttons/kit_destructive_button.dart';
+export 'src/widgets/buttons/kit_ghost_button.dart';
+export 'src/widgets/buttons/kit_icon_button.dart';
+export 'src/widgets/buttons/kit_link_button.dart';
+export 'src/widgets/buttons/kit_outline_button.dart';
+export 'src/widgets/buttons/kit_primary_button.dart';
+export 'src/widgets/buttons/kit_secondary_button.dart';
+export 'src/widgets/buttons/kit_social_button.dart';
+
+export 'src/widgets/inputs/core_text_field.dart';
+export 'src/widgets/toggles/core_switch.dart';

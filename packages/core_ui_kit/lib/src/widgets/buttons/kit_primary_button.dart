@@ -1,4 +1,5 @@
 import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_size.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class KitPrimaryButton extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final KitButtonState state;
+  final KitButtonSize size;
   final Size? fixedSize;
   final Size? minimumSize;
 
@@ -21,6 +23,7 @@ class KitPrimaryButton extends StatelessWidget {
     this.leading,
     this.trailing,
     this.state = KitButtonState.enabled,
+    this.size = KitButtonSize.medium,
     this.fixedSize,
     this.minimumSize,
   });
@@ -34,12 +37,13 @@ class KitPrimaryButton extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       state: state,
+      size: size,
       backgroundColor: theme.colorScheme.primary,
       foregroundColor: theme.colorScheme.onPrimary,
       elevation: 2,
       fixedSize: fixedSize,
       minimumSize: minimumSize,
-      padding: KitButtonTokens.paddingBase,
+      // padding: handled by size in KitBaseButton
       borderRadius: BorderRadius.circular(KitButtonTokens.radius),
     );
   }

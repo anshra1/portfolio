@@ -1,4 +1,6 @@
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_size.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A customizable base button that serves as the foundation for other button types.
@@ -22,6 +24,9 @@ class KitBaseButton extends StatelessWidget {
   /// The current state of the button. Defaults to [KitButtonState.enabled].
   final KitButtonState state;
 
+  /// The size of the button. Defaults to [KitButtonSize.medium].
+  final KitButtonSize size;
+
   /// The background color of the button. 
   /// Can be a [Color] or a [WidgetStateProperty<Color?>].
   final dynamic backgroundColor;
@@ -37,7 +42,8 @@ class KitBaseButton extends StatelessWidget {
   /// The border radius of the button.
   final BorderRadius? borderRadius;
 
-  /// The padding of the button content.
+  /// The padding of the button content. 
+  /// If null, it is determined by [size].
   final EdgeInsetsGeometry? padding;
 
   /// The elevation of the button.
@@ -59,6 +65,7 @@ class KitBaseButton extends StatelessWidget {
     this.leading,
     this.trailing,
     this.state = KitButtonState.enabled,
+    this.size = KitButtonSize.medium,
     this.backgroundColor,
     this.foregroundColor,
     this.borderSide,
@@ -91,12 +98,14 @@ class KitBaseButton extends StatelessWidget {
 
     final VoidCallback? effectiveOnPressed = (isDisabled || isLoading) ? null : onPressed;
 
+    EdgeInsetsGeometry effectivePadding = padding ?? _getPaddingForSize(size);
+
     return ElevatedButton(
       onPressed: effectiveOnPressed,
       focusNode: focusNode,
       style: ElevatedButton.styleFrom(
         elevation: elevation,
-        padding: padding,
+        padding: effectivePadding,
         minimumSize: minimumSize,
         fixedSize: fixedSize,
         shape: borderRadius != null
@@ -111,6 +120,18 @@ class KitBaseButton extends StatelessWidget {
           ? _buildLoadingIndicator(context) 
           : _buildContent(),
     );
+  }
+
+  EdgeInsetsGeometry _getPaddingForSize(KitButtonSize size) {
+    switch (size) {
+      case KitButtonSize.small:
+        return KitButtonTokens.paddingSmall;
+      case KitButtonSize.large:
+        return KitButtonTokens.paddingLarge;
+      case KitButtonSize.medium:
+      default:
+        return KitButtonTokens.paddingMedium;
+    }
   }
 
   Widget _buildContent() {

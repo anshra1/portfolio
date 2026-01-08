@@ -1,4 +1,5 @@
 import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_size.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class KitDestructiveButton extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final KitButtonState state;
+  final KitButtonSize size;
   final Size? fixedSize;
   final Size? minimumSize;
   final bool outlined;
@@ -22,6 +24,7 @@ class KitDestructiveButton extends StatelessWidget {
     this.leading,
     this.trailing,
     this.state = KitButtonState.enabled,
+    this.size = KitButtonSize.medium,
     this.fixedSize,
     this.minimumSize,
     this.outlined = false,
@@ -40,6 +43,7 @@ class KitDestructiveButton extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         state: state,
+        size: size,
         backgroundColor: Colors.transparent,
         foregroundColor: errorColor,
         elevation: 0,
@@ -51,7 +55,6 @@ class KitDestructiveButton extends StatelessWidget {
         }),
         fixedSize: fixedSize,
         minimumSize: minimumSize,
-        padding: KitButtonTokens.paddingBase,
         borderRadius: BorderRadius.circular(KitButtonTokens.radius),
       );
     }
@@ -62,12 +65,12 @@ class KitDestructiveButton extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       state: state,
+      size: size,
       backgroundColor: errorColor,
       foregroundColor: onErrorColor,
       elevation: 0,
       fixedSize: fixedSize,
       minimumSize: minimumSize,
-      padding: KitButtonTokens.paddingBase,
       borderRadius: BorderRadius.circular(KitButtonTokens.radius),
     );
   }

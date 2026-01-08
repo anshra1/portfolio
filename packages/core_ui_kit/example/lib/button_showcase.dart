@@ -163,18 +163,19 @@ class _ButtonShowcaseScreenState extends State<ButtonShowcaseScreen> {
                   SizedBox(
                     width: 400,
                     child: Column(
-                      gap: 12,
                       children: [
                         KitSocialButton(
                           onPressed: () {}, 
                           brand: SocialBrand.google,
                           state: _globalState,
                         ),
+                        const SizedBox(height: 12),
                          KitSocialButton(
                           onPressed: () {}, 
                           brand: SocialBrand.apple,
                           state: _globalState,
                         ),
+                        const SizedBox(height: 12),
                          KitSocialButton(
                           onPressed: () {}, 
                           brand: SocialBrand.facebook,

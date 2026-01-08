@@ -66,32 +66,72 @@ class KitSocialButton extends StatelessWidget {
         break;
     }
 
-    return KitBaseButton(
-      onPressed: onPressed,
-      state: state,
-      backgroundColor: bgColor,
-      foregroundColor: fgColor,
-      borderSide: border,
-      elevation: 1,
-      fixedSize: fixedSize,
-      minimumSize: const Size(double.infinity, 48), // Social buttons usually full width in auth forms
-      padding: KitButtonTokens.paddingCompact,
-      borderRadius: BorderRadius.circular(KitButtonTokens.radius),
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Icon(iconData, size: 24),
+        return KitBaseButton(
+
+          onPressed: onPressed,
+
+          state: state,
+
+          backgroundColor: bgColor,
+
+          foregroundColor: fgColor,
+
+          borderSide: border,
+
+          elevation: 1,
+
+          fixedSize: fixedSize,
+
+          minimumSize: const Size(double.infinity, 48), // Social buttons usually full width in auth forms
+
+          padding: KitButtonTokens.paddingCompact,
+
+          borderRadius: BorderRadius.circular(KitButtonTokens.radius),
+
+          child: Row(
+
+            children: [
+
+              // Icon on the left
+
+              Icon(iconData, size: 24),
+
+              
+
+              // Centered Text
+
+              Expanded(
+
+                child: Text(
+
+                  text ?? label,
+
+                  textAlign: TextAlign.center,
+
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+
+                  overflow: TextOverflow.ellipsis, // Prevent overflow
+
+                ),
+
+              ),
+
+              
+
+              // Invisible spacer on the right to balance the icon's width
+
+              // ensuring the text is perfectly centered relative to the button
+
+              const SizedBox(width: 24), 
+
+            ],
+
           ),
-          Center(
-            child: Text(
-              text ?? label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+
+        );
+
+      }
+
+    }
+
+    

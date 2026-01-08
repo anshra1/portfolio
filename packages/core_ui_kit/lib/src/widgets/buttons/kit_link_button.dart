@@ -1,4 +1,3 @@
-import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
 import 'package:flutter/material.dart';
 
@@ -26,25 +25,38 @@ class KitLinkButton extends StatelessWidget {
     final effectiveColor = color ?? theme.colorScheme.primary;
     final effectiveStyle = style ?? theme.textTheme.bodyMedium;
 
-    return KitBaseButton(
-      onPressed: onPressed,
-      state: state,
-      backgroundColor: Colors.transparent,
-      foregroundColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return theme.disabledColor;
-        }
-        return effectiveColor;
-      }),
-      elevation: 0,
-      padding: EdgeInsets.zero,
-      minimumSize: Size.zero,
-      child: Text(
-        text,
-        style: effectiveStyle?.copyWith(
-          decoration: TextDecoration.underline,
-          // We don't set color here, it will be inherited from the button's foregroundColor
-        ),
+    final bool isLoading = state == KitButtonState.loading;
+    final bool isDisabled = state == KitButtonState.disabled;
+    final VoidCallback? effectiveOnPressed = (isDisabled || isLoading) ? null : onPressed;
+
+    return TextButton(
+      onPressed: effectiveOnPressed,
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero,
+        minimumSize: Size.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        foregroundColor: effectiveColor,
+        disabledForegroundColor: theme.disabledColor,
+        shape: const RoundedRectangleBorder(),
+      ),
+      child: isLoading 
+        ? _buildLoadingIndicator(theme)
+        : Text(
+            text,
+            style: effectiveStyle?.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+          ),
+    );
+  }
+
+  Widget _buildLoadingIndicator(ThemeData theme) {
+    return SizedBox(
+      height: 14,
+      width: 14,
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation<Color>(color ?? theme.colorScheme.primary),
       ),
     );
   }

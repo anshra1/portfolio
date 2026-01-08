@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 class KitDestructiveButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
+  final Widget? leading;
+  final Widget? trailing;
   final KitButtonState state;
   final Size? fixedSize;
   final Size? minimumSize;
@@ -17,6 +19,8 @@ class KitDestructiveButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.leading,
+    this.trailing,
     this.state = KitButtonState.enabled,
     this.fixedSize,
     this.minimumSize,
@@ -32,6 +36,9 @@ class KitDestructiveButton extends StatelessWidget {
     if (outlined) {
       return KitBaseButton(
         onPressed: onPressed,
+        child: child,
+        leading: leading,
+        trailing: trailing,
         state: state,
         backgroundColor: Colors.transparent,
         foregroundColor: errorColor,
@@ -46,12 +53,14 @@ class KitDestructiveButton extends StatelessWidget {
         minimumSize: minimumSize,
         padding: KitButtonTokens.paddingBase,
         borderRadius: BorderRadius.circular(KitButtonTokens.radius),
-        child: child,
       );
     }
 
     return KitBaseButton(
       onPressed: onPressed,
+      child: child,
+      leading: leading,
+      trailing: trailing,
       state: state,
       backgroundColor: errorColor,
       foregroundColor: onErrorColor,
@@ -60,7 +69,6 @@ class KitDestructiveButton extends StatelessWidget {
       minimumSize: minimumSize,
       padding: KitButtonTokens.paddingBase,
       borderRadius: BorderRadius.circular(KitButtonTokens.radius),
-      child: child,
     );
   }
 }

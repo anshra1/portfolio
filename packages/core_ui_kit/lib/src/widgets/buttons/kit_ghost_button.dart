@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 class KitGhostButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
+  final Widget? leading;
+  final Widget? trailing;
   final KitButtonState state;
   final Size? fixedSize;
   final Size? minimumSize;
@@ -17,6 +19,8 @@ class KitGhostButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.leading,
+    this.trailing,
     this.state = KitButtonState.enabled,
     this.fixedSize,
     this.minimumSize,
@@ -30,6 +34,9 @@ class KitGhostButton extends StatelessWidget {
 
     return KitBaseButton(
       onPressed: onPressed,
+      child: child,
+      leading: leading,
+      trailing: trailing,
       state: state,
       backgroundColor: Colors.transparent,
       foregroundColor: effectiveColor,
@@ -38,7 +45,6 @@ class KitGhostButton extends StatelessWidget {
       minimumSize: minimumSize,
       padding: KitButtonTokens.paddingCompact,
       borderRadius: BorderRadius.circular(KitButtonTokens.radius),
-      child: child,
     );
   }
 }

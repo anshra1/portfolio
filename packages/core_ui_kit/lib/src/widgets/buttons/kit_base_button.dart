@@ -13,6 +13,12 @@ class KitBaseButton extends StatelessWidget {
   /// Usually a [Text] or [Icon] widget or a [Row] of both.
   final Widget child;
 
+  /// A widget to display before the [child].
+  final Widget? leading;
+
+  /// A widget to display after the [child].
+  final Widget? trailing;
+
   /// The current state of the button. Defaults to [KitButtonState.enabled].
   final KitButtonState state;
 
@@ -50,6 +56,8 @@ class KitBaseButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.leading,
+    this.trailing,
     this.state = KitButtonState.enabled,
     this.backgroundColor,
     this.foregroundColor,
@@ -81,10 +89,6 @@ class KitBaseButton extends StatelessWidget {
     final bool isLoading = state == KitButtonState.loading;
     final bool isDisabled = state == KitButtonState.disabled;
 
-    // The button is effectively disabled if:
-    // 1. onPressed is null
-    // 2. state is disabled
-    // 3. state is loading
     final VoidCallback? effectiveOnPressed = (isDisabled || isLoading) ? null : onPressed;
 
     return ElevatedButton(
@@ -103,7 +107,30 @@ class KitBaseButton extends StatelessWidget {
         foregroundColor: resolveColor(foregroundColor),
         side: resolveBorder(borderSide),
       ),
-      child: isLoading ? _buildLoadingIndicator(context) : child,
+      child: isLoading 
+          ? _buildLoadingIndicator(context) 
+          : _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
+    if (leading == null && trailing == null) {
+      return child;
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (leading != null) ...[
+          leading!,
+          const SizedBox(width: 8), // Standard gap
+        ],
+        child,
+        if (trailing != null) ...[
+          const SizedBox(width: 8), // Standard gap
+          trailing!,
+        ],
+      ],
     );
   }
 

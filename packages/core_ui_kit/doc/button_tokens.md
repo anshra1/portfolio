@@ -2,23 +2,29 @@
 
 This document records the centralized design tokens used across the `core_ui_kit` button system.
 
-## Tokens Overview
-
-| Token Name | Value | Description |
+## 1. Corner Radius
+| Token | Value | Description |
 | :--- | :--- | :--- |
-| `radius` | `8.0` | The standard corner radius for all button types. |
-| `paddingBase` | `horizontal: 24, vertical: 12` | Default internal spacing for primary and secondary buttons. |
-| `paddingCompact` | `horizontal: 16, vertical: 12` | Reduced internal spacing for ghost and minimal buttons. |
-| `iconSize` | `20.0` | The standard size for icons when used inside buttons. |
+| `radius` | `8.0` | Standard corner radius for all button types. |
 
-## Usage
+## 2. Padding (Sizes)
+| Token | Value | Size Enum | Description |
+| :--- | :--- | :--- | :--- |
+| `paddingSmall` | `16h, 8v` | `small` | Compact padding for dense UIs. |
+| `paddingMedium`| `24h, 12v` | `medium`| Standard padding (Default). |
+| `paddingLarge` | `32h, 16v` | `large` | Prominent padding for CTAs. |
+| `paddingCompact`| `16h, 12v` | - | Used for special minimal buttons. |
 
-Reference these tokens using the `KitButtonTokens` class to ensure visual consistency:
+## 3. Elevation (Depth)
+| Token | Value | Description |
+| :--- | :--- | :--- |
+| `elevationPrimary`| `2.0` | Default elevation for Primary and Destructive buttons. |
+| `elevationNone` | `0.0` | Flat style used for Secondary, Ghost, and Outlined buttons. |
 
-```dart
-KitBaseButton(
-  borderRadius: BorderRadius.circular(KitButtonTokens.radius),
-  padding: KitButtonTokens.paddingBase,
-  // ...
-)
-```
+> **Note:** Elevation automatically drops to `0.0` globally when the button state is `loading` or `disabled`.
+
+## 4. Icons
+| Token | Value | Description |
+| :--- | :--- | :--- |
+| `iconSize` | `20.0` | Standard size for icons used inside buttons. |
+| `gap` | `8.0` | The fixed spacing between an icon and the child text. |

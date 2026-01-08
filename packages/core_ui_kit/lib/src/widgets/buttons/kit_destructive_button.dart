@@ -68,7 +68,7 @@ class KitDestructiveButton extends StatelessWidget {
       size: size,
       backgroundColor: errorColor,
       foregroundColor: onErrorColor,
-      elevation: 0,
+      elevation: KitButtonTokens.elevationPrimary,
       fixedSize: fixedSize,
       minimumSize: minimumSize,
       borderRadius: BorderRadius.circular(KitButtonTokens.radius),

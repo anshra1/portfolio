@@ -100,11 +100,14 @@ class KitBaseButton extends StatelessWidget {
 
     EdgeInsetsGeometry effectivePadding = padding ?? _getPaddingForSize(size);
 
+    // If disabled or loading, we remove elevation to make it look "flat" and inactive
+    final double? effectiveElevation = (isDisabled || isLoading) ? 0.0 : elevation;
+
     return ElevatedButton(
       onPressed: effectiveOnPressed,
       focusNode: focusNode,
       style: ElevatedButton.styleFrom(
-        elevation: elevation,
+        elevation: effectiveElevation,
         padding: effectivePadding,
         minimumSize: minimumSize,
         fixedSize: fixedSize,

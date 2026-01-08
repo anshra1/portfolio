@@ -40,7 +40,7 @@ class KitSecondaryButton extends StatelessWidget {
       size: size,
       backgroundColor: theme.colorScheme.secondaryContainer,
       foregroundColor: theme.colorScheme.onSecondaryContainer,
-      elevation: 0,
+      elevation: KitButtonTokens.elevationNone,
       fixedSize: fixedSize,
       minimumSize: minimumSize,
       borderRadius: BorderRadius.circular(KitButtonTokens.radius),

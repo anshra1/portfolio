@@ -34,4 +34,10 @@ class KitButtonTokens {
 
   /// Standard icon size within buttons.
   static const double iconSize = 20.0;
+
+  /// Default elevation for primary/high-emphasis buttons.
+  static const double elevationPrimary = 2.0;
+
+  /// No elevation (flat).
+  static const double elevationNone = 0.0;
 }

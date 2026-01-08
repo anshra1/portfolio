@@ -40,7 +40,7 @@ class KitPrimaryButton extends StatelessWidget {
       size: size,
       backgroundColor: theme.colorScheme.primary,
       foregroundColor: theme.colorScheme.onPrimary,
-      elevation: 2,
+      elevation: KitButtonTokens.elevationPrimary,
       fixedSize: fixedSize,
       minimumSize: minimumSize,
       // padding: handled by size in KitBaseButton

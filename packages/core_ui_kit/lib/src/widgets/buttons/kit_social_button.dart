@@ -14,6 +14,7 @@ enum SocialBrand {
 class KitSocialButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final SocialBrand brand;
+  final KitButtonState state;
   final String? text; // Optional override
   final Size? fixedSize;
 
@@ -21,6 +22,7 @@ class KitSocialButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.brand,
+    this.state = KitButtonState.enabled,
     this.text,
     this.fixedSize,
   });
@@ -66,6 +68,7 @@ class KitSocialButton extends StatelessWidget {
 
     return KitBaseButton(
       onPressed: onPressed,
+      state: state,
       backgroundColor: bgColor,
       foregroundColor: fgColor,
       borderSide: border,

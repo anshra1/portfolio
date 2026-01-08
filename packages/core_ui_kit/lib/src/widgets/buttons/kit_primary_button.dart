@@ -1,4 +1,5 @@
 import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 class KitPrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
+  final KitButtonState state;
   final Size? fixedSize;
   final Size? minimumSize;
 
@@ -14,6 +16,7 @@ class KitPrimaryButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.state = KitButtonState.enabled,
     this.fixedSize,
     this.minimumSize,
   });
@@ -23,6 +26,7 @@ class KitPrimaryButton extends StatelessWidget {
     final theme = Theme.of(context);
     return KitBaseButton(
       onPressed: onPressed,
+      state: state,
       backgroundColor: theme.colorScheme.primary,
       foregroundColor: theme.colorScheme.onPrimary,
       elevation: 2,

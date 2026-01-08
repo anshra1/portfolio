@@ -1,3 +1,4 @@
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
 import 'package:flutter/material.dart';
 
 /// A customizable base button that serves as the foundation for other button types.
@@ -11,6 +12,9 @@ class KitBaseButton extends StatelessWidget {
   /// The widget below this widget in the tree.
   /// Usually a [Text] or [Icon] widget or a [Row] of both.
   final Widget child;
+
+  /// The current state of the button. Defaults to [KitButtonState.enabled].
+  final KitButtonState state;
 
   /// The background color of the button. 
   /// Can be a [Color] or a [WidgetStateProperty<Color?>].
@@ -46,6 +50,7 @@ class KitBaseButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.state = KitButtonState.enabled,
     this.backgroundColor,
     this.foregroundColor,
     this.borderSide,
@@ -73,11 +78,19 @@ class KitBaseButton extends StatelessWidget {
       return null;
     }
 
+    final bool isLoading = state == KitButtonState.loading;
+    final bool isDisabled = state == KitButtonState.disabled;
+
+    // The button is effectively disabled if:
+    // 1. onPressed is null
+    // 2. state is disabled
+    // 3. state is loading
+    final VoidCallback? effectiveOnPressed = (isDisabled || isLoading) ? null : onPressed;
+
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: effectiveOnPressed,
       focusNode: focusNode,
       style: ElevatedButton.styleFrom(
-        // We use the basic styleFrom for simple properties
         elevation: elevation,
         padding: padding,
         minimumSize: minimumSize,
@@ -86,12 +99,33 @@ class KitBaseButton extends StatelessWidget {
             ? RoundedRectangleBorder(borderRadius: borderRadius!)
             : null,
       ).copyWith(
-        // We override with WidgetStateProperties to support complex states
         backgroundColor: resolveColor(backgroundColor),
         foregroundColor: resolveColor(foregroundColor),
         side: resolveBorder(borderSide),
       ),
-      child: child,
+      child: isLoading ? _buildLoadingIndicator(context) : child,
+    );
+  }
+
+  Widget _buildLoadingIndicator(BuildContext context) {
+    // We try to match the spinner color to the foreground color (text color)
+    final theme = Theme.of(context);
+    
+    Color spinnerColor;
+    if (foregroundColor is Color) {
+      spinnerColor = foregroundColor;
+    } else {
+      // Fallback to theme-based color if foregroundColor is null or complex
+      spinnerColor = theme.colorScheme.primary;
+    }
+
+    return SizedBox(
+      height: 20,
+      width: 20,
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation<Color>(spinnerColor),
+      ),
     );
   }
 }

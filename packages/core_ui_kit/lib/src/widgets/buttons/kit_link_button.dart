@@ -1,4 +1,5 @@
 import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
 import 'package:flutter/material.dart';
 
 /// A button that looks like a hyperlink.
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 class KitLinkButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
+  final KitButtonState state;
   final TextStyle? style;
   final Color? color;
 
@@ -13,6 +15,7 @@ class KitLinkButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
+    this.state = KitButtonState.enabled,
     this.style,
     this.color,
   });
@@ -25,6 +28,7 @@ class KitLinkButton extends StatelessWidget {
 
     return KitBaseButton(
       onPressed: onPressed,
+      state: state,
       backgroundColor: Colors.transparent,
       foregroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {

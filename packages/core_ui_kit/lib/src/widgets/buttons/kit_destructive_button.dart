@@ -1,4 +1,5 @@
 import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
 import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 class KitDestructiveButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
+  final KitButtonState state;
   final Size? fixedSize;
   final Size? minimumSize;
   final bool outlined;
@@ -15,6 +17,7 @@ class KitDestructiveButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.state = KitButtonState.enabled,
     this.fixedSize,
     this.minimumSize,
     this.outlined = false,
@@ -29,6 +32,7 @@ class KitDestructiveButton extends StatelessWidget {
     if (outlined) {
       return KitBaseButton(
         onPressed: onPressed,
+        state: state,
         backgroundColor: Colors.transparent,
         foregroundColor: errorColor,
         elevation: 0,
@@ -48,6 +52,7 @@ class KitDestructiveButton extends StatelessWidget {
 
     return KitBaseButton(
       onPressed: onPressed,
+      state: state,
       backgroundColor: errorColor,
       foregroundColor: onErrorColor,
       elevation: 0,

@@ -1,3 +1,4 @@
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A standardized icon button for the app.
@@ -29,7 +30,7 @@ class KitIconButton extends StatelessWidget {
     return IconButton(
       onPressed: onPressed,
       icon: icon,
-      iconSize: iconSize ?? 24.0,
+      iconSize: iconSize ?? KitButtonTokens.iconSize,
       padding: padding,
       tooltip: tooltip,
       color: color ?? theme.colorScheme.onSurfaceVariant,

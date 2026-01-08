@@ -26,17 +26,20 @@ class KitLinkButton extends StatelessWidget {
     return KitBaseButton(
       onPressed: onPressed,
       backgroundColor: Colors.transparent,
-      foregroundColor: effectiveColor,
+      foregroundColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return theme.disabledColor;
+        }
+        return effectiveColor;
+      }),
       elevation: 0,
-      padding: EdgeInsets.zero, // Minimal padding for link look
-      minimumSize: Size.zero, // Allow it to be as small as the text
-      // We overwrite the child to ensure the text style is applied correctly for a link (e.g. underline)
+      padding: EdgeInsets.zero,
+      minimumSize: Size.zero,
       child: Text(
         text,
         style: effectiveStyle?.copyWith(
-          color: onPressed == null ? theme.disabledColor : effectiveColor,
           decoration: TextDecoration.underline,
-          decorationColor: onPressed == null ? theme.disabledColor : effectiveColor,
+          // We don't set color here, it will be inherited from the button's foregroundColor
         ),
       ),
     );

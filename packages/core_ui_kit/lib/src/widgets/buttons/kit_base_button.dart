@@ -12,14 +12,17 @@ class KitBaseButton extends StatelessWidget {
   /// Usually a [Text] or [Icon] widget or a [Row] of both.
   final Widget child;
 
-  /// The background color of the button.
-  final Color? backgroundColor;
+  /// The background color of the button. 
+  /// Can be a [Color] or a [WidgetStateProperty<Color?>].
+  final dynamic backgroundColor;
 
   /// The color of the child (text/icon) when the button is enabled.
-  final Color? foregroundColor;
+  /// Can be a [Color] or a [WidgetStateProperty<Color?>].
+  final dynamic foregroundColor;
 
   /// The border of the button.
-  final BorderSide? borderSide;
+  /// Can be a [BorderSide] or a [WidgetStateProperty<BorderSide?>].
+  final dynamic borderSide;
 
   /// The border radius of the button.
   final BorderRadius? borderRadius;
@@ -56,20 +59,37 @@ class KitBaseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Helper to resolve colors to WidgetStateProperty if they aren't already
+    WidgetStateProperty<Color?>? resolveColor(dynamic value) {
+      if (value is Color) return WidgetStatePropertyAll(value);
+      if (value is WidgetStateProperty<Color?>) return value;
+      return null;
+    }
+
+    // Helper to resolve border to WidgetStateProperty if it isn't already
+    WidgetStateProperty<BorderSide?>? resolveBorder(dynamic value) {
+      if (value is BorderSide) return WidgetStatePropertyAll(value);
+      if (value is WidgetStateProperty<BorderSide?>) return value;
+      return null;
+    }
+
     return ElevatedButton(
       onPressed: onPressed,
       focusNode: focusNode,
       style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: foregroundColor,
+        // We use the basic styleFrom for simple properties
         elevation: elevation,
         padding: padding,
         minimumSize: minimumSize,
         fixedSize: fixedSize,
-        side: borderSide,
         shape: borderRadius != null
             ? RoundedRectangleBorder(borderRadius: borderRadius!)
             : null,
+      ).copyWith(
+        // We override with WidgetStateProperties to support complex states
+        backgroundColor: resolveColor(backgroundColor),
+        foregroundColor: resolveColor(foregroundColor),
+        side: resolveBorder(borderSide),
       ),
       child: child,
     );

@@ -37,6 +37,7 @@ export 'src/widgets/layout/scaffolds/core_scaffold.dart';
 export 'src/widgets/layout/separators/core_divider.dart';
 // Widgets
 export 'src/widgets/buttons/kit_base_button.dart';
+export 'src/widgets/buttons/kit_button_tokens.dart';
 export 'src/widgets/buttons/kit_destructive_button.dart';
 export 'src/widgets/buttons/kit_ghost_button.dart';
 export 'src/widgets/buttons/kit_icon_button.dart';

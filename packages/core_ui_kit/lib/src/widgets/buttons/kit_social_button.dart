@@ -1,4 +1,5 @@
 import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
 enum SocialBrand {
@@ -71,8 +72,8 @@ class KitSocialButton extends StatelessWidget {
       elevation: 1,
       fixedSize: fixedSize,
       minimumSize: const Size(double.infinity, 48), // Social buttons usually full width in auth forms
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      borderRadius: BorderRadius.circular(8),
+      padding: KitButtonTokens.paddingCompact,
+      borderRadius: BorderRadius.circular(KitButtonTokens.radius),
       child: Stack(
         children: [
           Align(

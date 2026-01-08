@@ -1,4 +1,5 @@
 import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// An outlined button with a border and transparent background.
@@ -29,11 +30,16 @@ class KitOutlineButton extends StatelessWidget {
       backgroundColor: Colors.transparent,
       foregroundColor: effectiveColor,
       elevation: 0,
-      borderSide: BorderSide(color: onPressed == null ? theme.disabledColor : effectiveColor),
+      borderSide: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return BorderSide(color: theme.disabledColor);
+        }
+        return BorderSide(color: effectiveColor);
+      }),
       fixedSize: fixedSize,
       minimumSize: minimumSize,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      borderRadius: BorderRadius.circular(8),
+      padding: KitButtonTokens.paddingBase,
+      borderRadius: BorderRadius.circular(KitButtonTokens.radius),
       child: child,
     );
   }

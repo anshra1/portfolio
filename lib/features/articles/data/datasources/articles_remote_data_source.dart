@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:portfolio/core/constants/app_constants.dart';
+import 'package:portfolio/core/constants/asset_constants.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/core/services/talker_service.dart';
 import 'package:portfolio/features/articles/data/models/article_filter_model.dart';
@@ -50,7 +52,7 @@ class ArticlesRemoteDataSourceImpl implements ArticlesRemoteDataSource {
   Future<void> _loadArticles() async {
     try {
       final jsonString = await _assetBundle.loadString(
-        'database/articles/articles.json',
+        AssetConstants.articlesDbPath,
       );
       final (articles, errors) = await compute(_parseArticles, jsonString);
 
@@ -104,7 +106,7 @@ class ArticlesRemoteDataSourceImpl implements ArticlesRemoteDataSource {
     }
 
     final contentPath = article.contentPath;
-    if (!contentPath.startsWith('database/articles/content/') ||
+    if (!contentPath.startsWith(AssetConstants.articleContentBasePath) ||
         contentPath.contains('..')) {
       _talkerService.warning('Security: Path traversal attempt detected: $contentPath');
       throw DataParsingException(
@@ -117,7 +119,7 @@ class ArticlesRemoteDataSourceImpl implements ArticlesRemoteDataSource {
     try {
       final byteData = await _assetBundle.load(contentPath);
 
-      if (byteData.lengthInBytes > 5 * 1024 * 1024) {
+      if (byteData.lengthInBytes > AppConstants.maxFileSizeBytes) {
         throw DataParsingException(
           methodName: 'getArticleDetail',
           originalError: 'File size exceeds 5MB limit: ${byteData.lengthInBytes} bytes',

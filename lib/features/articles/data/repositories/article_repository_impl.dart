@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:portfolio/core/common/typedefs.dart';
+import 'package:portfolio/core/constants/app_constants.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/features/articles/data/datasources/articles_remote_data_source.dart';
 import 'package:portfolio/features/articles/data/models/article_filter_model.dart';
@@ -23,7 +24,9 @@ class ArticleRepositoryImpl implements ArticleRepository {
     try {
       // Step 1: Sanitize Inputs
       final sanitizedPage = page < 1 ? 1 : page;
-      final sanitizedLimit = (limit == null || limit <= 0) ? 10 : limit;
+      final sanitizedLimit = (limit == null || limit <= 0)
+          ? AppConstants.defaultArticlePageSize
+          : limit;
       final normalizedQuery = filter.searchQuery?.trim().toLowerCase() ?? '';
       final normalizedTags = filter.tags.map((t) => t.toLowerCase()).toList();
 

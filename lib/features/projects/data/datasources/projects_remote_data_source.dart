@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:portfolio/core/constants/asset_constants.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/core/services/talker_service.dart';
 import 'package:portfolio/features/projects/data/models/project_filter_model.dart';
@@ -26,7 +27,7 @@ class ProjectsRemoteDataSourceImpl implements ProjectsRemoteDataSource {
 
   final AssetBundle assetBundle;
   final TalkerService talkerService;
-  static const _sourcePath = 'assets/data/projects.json';
+  static const _sourcePath = AssetConstants.projectsDbPath;
 
   // In-memory cache to prevent redundant file reading
   List<ProjectModel>? _cachedProjects;

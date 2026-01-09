@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:dartz/dartz.dart';
 import 'package:portfolio/core/common/enums.dart';
 import 'package:portfolio/core/common/typedefs.dart';
+import 'package:portfolio/core/constants/app_constants.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/features/projects/data/datasources/projects_remote_data_source.dart';
 import 'package:portfolio/features/projects/data/models/project_filter_model.dart';
@@ -28,7 +29,9 @@ class ProjectRepositoryImpl implements ProjectRepository {
     // Step 1: Sanitize Inputs
     final cleanPage = max(1, page);
     // If limit is null or <= 0, set limit to 6 (Default).
-    final cleanLimit = (limit != null && limit > 0) ? limit : 6;
+    final cleanLimit = (limit != null && limit > 0)
+        ? limit
+        : AppConstants.defaultProjectPageSize;
     final cleanQuery = filter.searchQuery?.trim().toLowerCase() ?? '';
 
     try {
@@ -37,7 +40,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
       // Strategy 1: "Simulate Fetch All" as per Architectural Decision
       final projectModels = await _remoteDataSource.getProjects(
         page: 1,
-        limit: 1000,
+        limit: AppConstants.fetchAllLimit,
         filter: const ProjectFilterModel(),
       );
 

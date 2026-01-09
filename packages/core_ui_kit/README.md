@@ -133,6 +133,19 @@ ThemeData theme = SystemTokensConverter.toThemeData(
 );
 ```
 
+## UI Kit & Atomic Design
+
+This package includes a comprehensive UI Kit built using **Atomic Design** principles. This ensures that every component is modular, reusable, and follows a clear hierarchy.
+
+### Component Structure
+- **Atoms**: Basic building blocks (Buttons, Inputs, Toggles).
+- **Molecules**: Simple groups of atoms (Cards, Dialogs, Toasts).
+- **Organisms**: Complex interface sections (Headers, Forms).
+- **Templates**: Page-level layout structures (Scaffolds).
+- **Pages**: Full screens with content.
+
+For more details on how to use and extend the UI Kit, see the [Atomic Design Guide](./doc/ATOMIC_DESIGN.md).
+
 ## Generated Colors
 
 ### Primary/Secondary/Tertiary

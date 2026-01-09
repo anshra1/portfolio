@@ -28,3 +28,17 @@ This document records the centralized design tokens used across the `core_ui_kit
 | :--- | :--- | :--- |
 | `iconSize` | `20.0` | Standard size for icons used inside buttons. |
 | `gap` | `8.0` | The fixed spacing between an icon and the child text. |
+
+## 5. Typography
+| Token | Style | Description |
+| :--- | :--- | :--- |
+| `textStyle` | `labelLarge` | The material text style used for button labels. |
+
+## 6. Color Roles
+| Button Type | Background | Foreground | Border |
+| :--- | :--- | :--- | :--- |
+| **Primary** | `primary` | `onPrimary` | None |
+| **Secondary** | `secondaryContainer` | `onSecondaryContainer` | None |
+| **Destructive** | `error` | `onError` | None |
+| **Outline** | Transparent | `primary` | `primary` (1px) |
+| **Ghost** | Transparent | `primary` | None |

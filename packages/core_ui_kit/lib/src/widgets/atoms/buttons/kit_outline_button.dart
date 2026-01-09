@@ -1,12 +1,12 @@
-import 'package:core_ui_kit/src/widgets/buttons/kit_base_button.dart';
-import 'package:core_ui_kit/src/widgets/buttons/kit_button_size.dart';
-import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
-import 'package:core_ui_kit/src/widgets/buttons/kit_button_tokens.dart';
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_size.dart';
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A ghost button (also known as a text button) with no background or border.
-/// Used for low-emphasis actions.
-class KitGhostButton extends StatelessWidget {
+/// An outlined button with a border and transparent background.
+/// Used for medium-emphasis actions.
+class KitOutlineButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
   final Widget? leading;
@@ -17,7 +17,7 @@ class KitGhostButton extends StatelessWidget {
   final Size? minimumSize;
   final Color? color;
 
-  const KitGhostButton({
+  const KitOutlineButton({
     super.key,
     required this.onPressed,
     required this.child,
@@ -45,10 +45,14 @@ class KitGhostButton extends StatelessWidget {
       backgroundColor: Colors.transparent,
       foregroundColor: effectiveColor,
       elevation: 0,
+      borderSide: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return BorderSide(color: theme.disabledColor);
+        }
+        return BorderSide(color: effectiveColor);
+      }),
       fixedSize: fixedSize,
       minimumSize: minimumSize,
-      // We rely on size-based padding now.
-      // If you want the old "compact" look by default, use size: KitButtonSize.small
       borderRadius: BorderRadius.circular(KitButtonTokens.radius),
     );
   }

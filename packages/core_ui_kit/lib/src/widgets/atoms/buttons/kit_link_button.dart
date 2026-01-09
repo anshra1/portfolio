@@ -1,4 +1,4 @@
-import 'package:core_ui_kit/src/widgets/buttons/kit_button_state.dart';
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
 import 'package:flutter/material.dart';
 
 /// A button that looks like a hyperlink.

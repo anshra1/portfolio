@@ -7,28 +7,28 @@ This document outlines the strict naming standards for the Bloc library in this 
 ## 1. Events (UI $\rightarrow$ Bloc)
 Events represent something that **already happened** in the UI or system.
 
-*   **Rule**: Must be in **Past Tense**.
-*   **Syntax**: `[Subject] + [Action (Verb)] + [Context/Suffix]`
+*   **Rule**: Must be in **Past Tense** AND end with the suffix `Event`.
+*   **Syntax**: `[Subject] + [Action (Verb)] + [Context] + Event`
 *   **Examples**:
-    *   ✅ `CounterIncrementPressed`
-    *   ✅ `ThemeToggleToggled`
-    *   ✅ `SettingsLoadRequested`
-    *   ❌ `IncrementCounter` (Imperative)
-    *   ❌ `LoadSettings` (Command)
+    *   ✅ `CounterIncrementPressedEvent`
+    *   ✅ `ThemeToggleToggledEvent`
+    *   ✅ `SettingsLoadRequestedEvent`
+    *   ❌ `CounterIncrementPressed` (Missing suffix)
+    *   ❌ `IncrementCounterEvent` (Imperative)
 
 ---
 
 ## 2. States (Bloc $\rightarrow$ UI)
-States represent a **snapshot** or a **condition** of the system at a specific moment.
+States represent a **snapshot** or a **condition** of the system at a specific moment. We use **Sealed Classes** (separate classes), not one big class.
 
-*   **Rule**: Must be **Nouns** or **Adjectives describing a status**.
-*   **Syntax**: `[Subject] + [Status/Description]`
+*   **Rule**: Must be **Nouns** AND end with the suffix `State`.
+*   **Syntax**: `[Subject] + [Status] + State`
 *   **Examples**:
-    *   ✅ `AuthAuthenticated`
-    *   ✅ `DataLoadInProgress`
-    *   ✅ `SearchEmpty`
-    *   ❌ `Loading` (Too generic)
-    *   ❌ `Loaded` (Ambiguous)
+    *   ✅ `AuthAuthenticatedState`
+    *   ✅ `DataLoadInProgressState`
+    *   ✅ `SearchEmptyState`
+    *   ❌ `AuthAuthenticated` (Missing suffix)
+    *   ❌ `LoadingState` (Too generic, needs Subject)
 
 ---
 

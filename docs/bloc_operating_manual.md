@@ -116,6 +116,22 @@ MultiBlocProvider(
 )
 ```
 
+### Navigation & State Sharing
+When navigating to a new route, the `BuildContext` changes, and the new screen loses access to the previous screen's Blocs. Use `BlocProvider.value` to provide an **existing** instance to the new route.
+
+```dart
+// Inside the original screen
+Navigator.of(context).push(
+  MaterialPageRoute(
+    builder: (_) => BlocProvider.value(
+      value: context.read<CounterBloc>(), // Pass existing instance
+      child: const NextScreen(),
+    ),
+  ),
+);
+```
+**Critical**: Because the Bloc was not created by this `BlocProvider`, it will **not** be closed when the route is popped. Ownership remains with the original provider.
+
 ---
 
 ## 3. The Simpler Path: Cubit

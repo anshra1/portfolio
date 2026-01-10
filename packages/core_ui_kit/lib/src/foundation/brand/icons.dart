@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppIcons {
+class KitIcons {
   static const IconData close = Icons.close;
   static const IconData back = Icons.arrow_back;
   static const IconData chevronRight = Icons.chevron_right;

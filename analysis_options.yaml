@@ -1,7 +1,32 @@
 analyzer:
+  plugins:
+    - custom_lint
   errors:
     lines_longer_than_80_chars: ignore
+
 include: package:very_good_analysis/analysis_options.yaml
+
+bloc:
+  rules:
+    # 🛡️ ARCHITECTURE SAFETY (Critical)
+    - avoid_flutter_imports                  # CRITICAL: No UI in Logic
+    - avoid_public_fields                    # CRITICAL: Immutable State
+    - avoid_public_properties_in_bloc_and_cubit
+    - prefer_bloc_in_provider                # Safe Lifecycle
+    
+    # 📝 NAMING & STYLE (Consistency)
+    - prefer_file_naming_conventions         # Enforces _bloc.dart, _event.dart
+    - avoid_public_bloc_methods              # Force Event-Driven Architecture
+    - prefer_void_public_cubit_methods       # Cubit methods should be one-way (void)
+    
+    # 🔌 USAGE PATTERNS
+    - avoid_build_context_extensions         # Don't use context.read inside BLoC
+    - prefer_build_context_extensions        # Do use context.read inside UI
+
+    # ❌ DISABLED RULES (Intentional)
+    # - prefer_bloc: We want the freedom to use Cubit for simple states.
+    # - prefer_cubit: We want the freedom to use Bloc for complex flows.
+
 linter:
   rules:
     public_member_api_docs: false

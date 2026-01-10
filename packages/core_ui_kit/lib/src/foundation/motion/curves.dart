@@ -1,5 +1,5 @@
 import 'package:flutter/animation.dart';
 
-class AppCurves {
+class KitCurves {
   static const Curve easeInOutCubic = Curves.easeInOutCubic;
 }

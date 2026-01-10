@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CoreDialog extends StatelessWidget {
-  const CoreDialog({super.key});
+class KitDialog extends StatelessWidget {
+  const KitDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

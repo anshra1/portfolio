@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CoreTextField extends StatelessWidget {
-  const CoreTextField({super.key});
+class KitTextField extends StatelessWidget {
+  const KitTextField({super.key});
 
   @override
   Widget build(BuildContext context) {

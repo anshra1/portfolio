@@ -33,7 +33,9 @@ The system is strictly divided into three layers:
 
 ---
 
-## 2. The "Golden Path" Implementation
+## 2. The "Golden Path" Implementation (Bloc)
+
+Use `Bloc` when you need event traceability or advanced event transformation (debounce, throttle).
 
 ```dart
 import 'package:flutter/material.dart';
@@ -99,29 +101,89 @@ class CounterView extends StatelessWidget {
     );
   }
 }
+```
 
-### Advanced: Reactive Data Sources
-When your Bloc needs to listen to a `Stream` (e.g., from a Repository), prefer `emit.forEach`. It automatically handles subscription and unsubscription.
+### Multi-Provider Pattern
+To avoid nesting hell, use `MultiBlocProvider` when injecting multiple Blocs.
 
 ```dart
-// Within the Bloc
-on<SubscriptionRequested>((event, emit) async {
-  await emit.forEach<int>(
-    repository.intStream(),
-    onData: (value) => state.copyWith(value: value),
-    onError: (error, stackTrace) => state.copyWith(error: error),
-  );
-});
+MultiBlocProvider(
+  providers: [
+    BlocProvider(create: (context) => BlocA()),
+    BlocProvider(create: (context) => BlocB()),
+  ],
+  child: App(),
+)
 ```
 
 ---
 
-## 3. Critical Rules (The "Musts")
+## 3. The Simpler Path: Cubit
+
+Use `Cubit` for simple state management where event tracking is unnecessary. It exposes functions instead of processing events.
+
+```dart
+// 1. DEFINITION
+class CounterCubit extends Cubit<int> {
+  CounterCubit() : super(0);
+
+  // 2. LOGIC: Direct function calls
+  void increment() => emit(state + 1);
+}
+
+// 3. CONSUMPTION
+// Triggering changes (in UI):
+context.read<CounterCubit>().increment();
+```
+
+**Rule**: Start with Cubit. Refactor to Bloc only when you need the "Flight Recorder" (traceability) or "Assembly Line Control" (transformers).
+
+---
+
+## 4. Naming Conventions (Strict)
+
+Adhere to these rules to maintain codebase consistency.
+
+### Events (Bloc Only)
+*   **Tense**: Must be **Past Tense**. They represent things that *happened*.
+*   **Syntax**: `[Subject] + [Action (Verb)] + [Context/Suffix (Optional)]`
+*   **Examples**:
+    *   ✅ `CounterIncrementPressed` (User pressed it)
+    *   ✅ `OrderSubmitted` (System event)
+    *   ❌ `IncrementCounter` (Command/Imperative)
+    *   ❌ `SubmitOrder`
+
+### States
+*   **Part of Speech**: Must be **Nouns**. They represent a *snapshot*.
+*   **Syntax**: `[Subject] + [Status/Description]`
+*   **Examples**:
+    *   ✅ `CounterLoadSuccess`
+    *   ✅ `AuthFailure`
+    *   ❌ `Loaded` (Ambiguous)
+    *   ❌ `Loading` (Adjective/Verb)
+
+---
+
+## 5. Advanced: Event Transformers
+
+When you need to control *how* events are processed (e.g., ignore rapid clicks, process sequentially), use transformers.
+*   **Concurrent** (Default): Process all events as they come.
+*   **Sequential**: Process one after another (good for transactional logic).
+*   **Droppable**: Ignore new events if one is currently processing.
+*   **Restartable**: Cancel current processing and start new event (good for search).
+
+```dart
+import 'package:bloc_concurrency/bloc_concurrency.dart';
+
+on<SearchTextChanged>(
+  (event, emit) async { ... },
+  transformer: restartable(), // Cancels previous search if typing continues
+);
 ```
 
 ---
 
-## 3. Critical Rules (The "Musts")
+## 6. Critical Rules (The "Musts")
 
 *   **Bloc-to-Bloc Communication**:
     *   **Forbidden**: Blocs listening to other Blocs' streams directly.
@@ -137,7 +199,7 @@ on<SubscriptionRequested>((event, emit) async {
 
 ---
 
-## 4. Foot-Guns & Anti-Patterns
+## 7. Foot-Guns & Anti-Patterns
 
 *   **The "Same Context" Trap**:
     *   *Anti-Pattern*: Trying to `context.read<MyBloc>()` in the *same* widget that created the `BlocProvider`.
@@ -163,7 +225,37 @@ on<SubscriptionRequested>((event, emit) async {
 
 ---
 
-## 5. Type & API Contract
+## 8. Testing Strategy
+
+Testing is not optional. It is the "Flight Recorder" verification.
+
+### Dependencies
+Use the `bloc_test` package.
+
+### Anatomy of a Test
+Use the `blocTest` helper for declarative testing of event-to-state transitions.
+
+```dart
+import 'package:bloc_test/bloc_test.dart';
+
+blocTest<CounterBloc, CounterState>(
+  'emits [1] when CounterIncrementPressed is added',
+  build: () => CounterBloc(),
+  act: (bloc) => bloc.add(CounterIncrementPressed()),
+  expect: () => [
+    const CounterState(1),
+  ],
+);
+```
+
+### Key Rules
+*   **Test Outputs, Not Internals**: Verify that *Input A* leads to *Output B*. Do not test private functions.
+*   **Mock Repositories**: Always mock the Data Layer (Repositories) to isolate the Business Logic.
+*   **Seed States**: Use `seed` in `blocTest` to start the Bloc in a specific state for intermediate tests.
+
+---
+
+## 9. Type & API Contract
 
 ### Context Extension Matrix
 | Method | Target | Rebuilds Widget? | Recommended Location |
@@ -178,104 +270,7 @@ on<SubscriptionRequested>((event, emit) async {
 
 ---
 
-## 6. Implicit Assumptions & Documentation Gaps
+## 10. Implicit Assumptions & Documentation Gaps
 
-*   **Equality Implementation**: The entire library's efficiency (and correctness) assumes State and Event objects implement value equality. Using the `equatable` package is effectively mandatory in production.
-*   **Concurrency Defaults**: Sequential processing is the default. For high-frequency events (e.g., text search), you must explicitly use `EventTransformers` (like `restartable` or `droppable`).
-*   **Repository Isolation**: `RepositoryProvider` is for data logic. Repositories should never know about Blocs; Blocs consume Repositories.
-*   **Boilerplate vs Scale**: The architecture assumes that the overhead of defining Events/States is a worthwhile trade-off for team collaboration and code predictability in large codebases.
-
----
-
-## 7. Testing Strategy
-
-The standard is `bloc_test`. It follows a strictly declarative `build` -> `act` -> `expect` pattern.
-
-```dart
-// test/counter_bloc_test.dart
-void main() {
-  group('CounterBloc', () {
-    late CounterBloc bloc;
-
-    setUp(() {
-      bloc = CounterBloc();
-    });
-
-    test('initial state is 0', () {
-      expect(bloc.state, equals(const CounterState(0)));
-    });
-
-    blocTest<CounterBloc, CounterState>(
-      'emits [1] when CounterIncrementPressed is added',
-      build: () => bloc,
-      act: (bloc) => bloc.add(CounterIncrementPressed()),
-      expect: () => [const CounterState(1)],
-    );
-  });
-}
-```
-
-## 8. Advanced: Concurrency Patterns
-
-Use `bloc_concurrency` to handle event storms (rapid clicks, type-ahead).
-
-| Transformer | Behavior | Use Case |
-| :--- | :--- | :--- |
-| `droppable()` | Ignores new events while processing current. | **Form Submission** (Prevent double-submit) |
-| `restartable()` | Cancels current processing and starts new. | **Search/Type-ahead** (Only care about latest query) |
-| `sequential()` | Process one by one (Default). | **Transactional operations** |
-| `concurrent()` | Process all in parallel. | **Analytics / Logging** |
-
-```dart
-import 'package:bloc_concurrency/bloc_concurrency.dart';
-
-// In Bloc Constructor
-on<SearchTermChanged>(
-  (event, emit) async { ... },
-  transformer: restartable(), // Cancel previous searches
-);
-```
-
-## 9. Debugging & Observability
-
-Use a `BlocObserver` to log all state changes and errors globally. This is the "Flight Recorder" in action.
-
-```dart
-// lib/app_bloc_observer.dart
-class AppBlocObserver extends BlocObserver {
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    print('${bloc.runtimeType} $transition');
-  }
-
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    print('${bloc.runtimeType} $error');
-    super.onError(bloc, error, stackTrace);
-  }
-}
-
-// main.dart
-void main() {
-  Bloc.observer = AppBlocObserver();
-  runApp(const MyApp());
-}
-```
-
-## 10. File Structure & Naming
-
-Follow the feature-driven directory structure.
-
-```
-lib/
-  feature_name/
-    bloc/
-      feature_bloc.dart   // The Bloc class
-      feature_event.dart  // sealed class FeatureEvent
-      feature_state.dart  // final class FeatureState
-    view/
-      feature_page.dart   // Provider Injection
-      feature_view.dart   // UI Consumption
-```
-
+*   **Equality Implementation**: The entire library's efficiency (and correctness) assumes State and Event objects implement value equality. Using the `equatable` package is effectively mandatory unless using Data Classes (Dart 3).
+*   **Streams**: The library assumes familiarity with Dart Streams (`yield`, `await for`, `StreamSubscription`).

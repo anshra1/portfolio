@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CoreSwitch extends StatelessWidget {
-  const CoreSwitch({super.key});
+class KitSwitch extends StatelessWidget {
+  const KitSwitch({super.key});
 
   @override
   Widget build(BuildContext context) {

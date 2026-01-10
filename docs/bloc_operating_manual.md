@@ -140,7 +140,54 @@ context.read<CounterCubit>().increment();
 
 ---
 
-## 4. Naming Conventions (Strict)
+## 4. Advanced: Power-User Patterns
+
+### Performance: BlocSelector
+Stop rebuilding the entire widget when only one field changes. `BlocSelector` acts like a filter.
+
+```dart
+// Only rebuilds if 'name' changes. Ignores 'age' or 'email' changes.
+BlocSelector<UserBloc, UserState, String>(
+  selector: (state) => state.name,
+  builder: (context, name) {
+    return Text('Hello $name');
+  },
+);
+```
+
+### Reactivity: emit.forEach
+**NEVER** manually subscribe to streams inside a Bloc. Use `emit.forEach` to bridge the Data Layer (Streams) to the Bloc. It automatically handles subscription, unsubscription, and error handling.
+
+```dart
+on<SubscriptionRequested>((event, emit) async {
+  await emit.forEach<int>(
+    repository.intStream(),
+    onData: (value) => state.copyWith(value: value),
+    onError: (error, stackTrace) => state.copyWith(error: error),
+  );
+});
+```
+
+### Safety: Exhaustive Switching
+Leverage Dart 3 `sealed` classes to enforce handling of every state.
+
+```dart
+BlocBuilder<AuthBloc, AuthState>(
+  builder: (context, state) {
+    // Compiler error if a case is missing
+    return switch (state) {
+      AuthInitial() => const LoginScreen(),
+      AuthLoading() => const LoadingSpinner(),
+      AuthAuthenticated(user: var u) => HomeScreen(user: u),
+      AuthFailure(error: var e) => ErrorScreen(message: e),
+    };
+  },
+);
+```
+
+---
+
+## 5. Naming Conventions (Strict)
 
 Adhere to these rules to maintain codebase consistency.
 
@@ -164,7 +211,7 @@ Adhere to these rules to maintain codebase consistency.
 
 ---
 
-## 5. Advanced: Event Transformers
+## 6. Advanced: Event Transformers
 
 When you need to control *how* events are processed (e.g., ignore rapid clicks, process sequentially), use transformers.
 *   **Concurrent** (Default): Process all events as they come.
@@ -173,7 +220,7 @@ When you need to control *how* events are processed (e.g., ignore rapid clicks, 
 *   **Restartable**: Cancel current processing and start new event (good for search).
 
 ```dart
-import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:bloc_concurrency/bloc_concurrency.';
 
 on<SearchTextChanged>(
   (event, emit) async { ... },
@@ -183,7 +230,7 @@ on<SearchTextChanged>(
 
 ---
 
-## 6. Critical Rules (The "Musts")
+## 7. Critical Rules (The "Musts")
 
 *   **Bloc-to-Bloc Communication**:
     *   **Forbidden**: Blocs listening to other Blocs' streams directly.
@@ -199,7 +246,7 @@ on<SearchTextChanged>(
 
 ---
 
-## 7. Foot-Guns & Anti-Patterns
+## 8. Foot-Guns & Anti-Patterns
 
 *   **The "Same Context" Trap**:
     *   *Anti-Pattern*: Trying to `context.read<MyBloc>()` in the *same* widget that created the `BlocProvider`.
@@ -225,7 +272,36 @@ on<SearchTextChanged>(
 
 ---
 
-## 8. Testing Strategy
+## 9. Debugging & Observability
+
+Use a `BlocObserver` to log all state changes and errors globally. This is the "Flight Recorder" in action.
+
+```dart
+// lib/app_bloc_observer.dart
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print('${bloc.runtimeType} $transition');
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    print('${bloc.runtimeType} $error');
+    super.onError(bloc, error, stackTrace);
+  }
+}
+
+// main.dart
+void main() {
+  Bloc.observer = AppBlocObserver();
+  runApp(const MyApp());
+}
+```
+
+---
+
+## 10. Testing Strategy
 
 Testing is not optional. It is the "Flight Recorder" verification.
 
@@ -236,7 +312,7 @@ Use the `bloc_test` package.
 Use the `blocTest` helper for declarative testing of event-to-state transitions.
 
 ```dart
-import 'package:bloc_test/bloc_test.dart';
+import 'package:bloc_test/bloc_test';
 
 blocTest<CounterBloc, CounterState>(
   'emits [1] when CounterIncrementPressed is added',
@@ -255,7 +331,7 @@ blocTest<CounterBloc, CounterState>(
 
 ---
 
-## 9. Type & API Contract
+## 11. Type & API Contract
 
 ### Context Extension Matrix
 | Method | Target | Rebuilds Widget? | Recommended Location |
@@ -270,7 +346,9 @@ blocTest<CounterBloc, CounterState>(
 
 ---
 
-## 10. Implicit Assumptions & Documentation Gaps
+## 12. Implicit Assumptions & Documentation Gaps
 
 *   **Equality Implementation**: The entire library's efficiency (and correctness) assumes State and Event objects implement value equality. Using the `equatable` package is effectively mandatory unless using Data Classes (Dart 3).
 *   **Streams**: The library assumes familiarity with Dart Streams (`yield`, `await for`, `StreamSubscription`).
+
+```

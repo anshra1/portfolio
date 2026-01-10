@@ -3,7 +3,7 @@
 ## Part 1: Philosophy & Mental Model
 
 ### The Analogy: The Industrial Assembly Line
-The Bloc library acts as a **reactive assembly line**.
+The Bloc library acts as a **reactive assembly line** coupled with a **flight recorder**.
 *   **The Assembly Line**: Raw materials (**Events**) enter the factory floor. The **Bloc** (processing unit) transforms these materials through a serialized event loop. The finished products (**States**) are shipped to the loading dock (**UI**).
 *   **Layered Architecture**:
     1.  **Data Layer** (Repositories): Abstraction over API/DB. *Never knows about Blocs.*
@@ -139,8 +139,44 @@ on<SubscriptionRequested>((event, emit) async {
 ### 2. Concurrency: Transformers
 Control how events are processed (e.g., `restartable()`, `droppable()`).
 
+```dart
+import 'package:bloc_concurrency/bloc_concurrency;
+
+on<SearchTextChanged>(
+  (event, emit) async { ... },
+  transformer: restartable(), // Cancels previous search if typing continues
+);
+```
+
 ### 3. Safety: Exhaustive Switching
 Use Dart 3 `sealed` classes to ensure the UI handles every possible state.
+
+```dart
+return switch (state) {
+  AuthInitial() => const LoginScreen(),
+  AuthLoading() => const LoadingSpinner(),
+  AuthAuthenticated(user: var u) => HomeScreen(user: u),
+  AuthFailure(error: var e) => ErrorScreen(message: e),
+};
+```
+
+### 4. Critical Rules (The "Musts")
+*   **Bloc-to-Bloc Communication**:
+    *   **Forbidden**: Blocs listening to other Blocs' streams directly.
+    *   **Allowed**: UI Orchestration (UI listens to A, adds event to B) or Repo Sync (Both listen to Repo).
+*   **Single-Path Mutation**: Enforce exactly one way to change a specific state. No back-door methods or public setters.
+
+### 5. Anti-Patterns (The "Foot-Guns")
+*   **The "Same Context" Trap**:
+    *   *Anti-Pattern*: Trying to `context.read<MyBloc>()` in the *same* widget that created the `BlocProvider`.
+    *   *Fix*: Wrap the child in a `Builder` or extract it to a separate widget class.
+*   **Broken Equatable**:
+    *   *Anti-Pattern*: Forgetting to include a property in `props` or modifying a List/Map in place.
+    *   *Result*: `stateA == stateB` returns true, so the UI never updates.
+*   **In-Place Mutation**:
+    *   *Anti-Pattern*: `state.list.add(item); emit(state);`
+    *   *Result*: Bloc compares objects by reference (same instance), so no update triggers.
+    *   *Fix*: `emit(state.copyWith(list: List.of(state.list)..add(item)));`
 
 ---
 
@@ -156,10 +192,27 @@ class AppBlocObserver extends BlocObserver {
     super.onTransition(bloc, transition);
     print('${bloc.runtimeType} $transition');
   }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    print('${bloc.runtimeType} $error');
+    super.onError(bloc, error, stackTrace);
+  }
 }
 ```
 
 ### 2. Verification: Testing Strategy
 Use `bloc_test` for declarative `build` -> `act` -> `expect` verification.
+
+```dart
+blocTest<CounterBloc, CounterState>(
+  'emits [1] when CounterIncrementPressed is added',
+  build: () => CounterBloc(),
+  act: (bloc) => bloc.add(CounterIncrementPressed()),
+  expect: () => [const CounterState(1)],
+);
+```
+*   **Rule**: Test outputs (States), not internals.
+*   **Rule**: Mock all Repositories.
 
 ```

@@ -1,0 +1,95 @@
+graph TD
+    %% App Architecture & Principles
+    subgraph App_Architecture ["App Architecture"]
+        direction TB
+        CleanArch["Clean Architecture"]
+        FeatureFirst["Feature-First Design"]
+        ReadOnly["Read-Only Domain Model"]
+        ErrorHandling["Result/Failure Error Handling"]
+    end
+
+    %% Features Layer
+    subgraph Features ["Features Layer"]
+        direction TB
+        
+        %% Home Feature
+        subgraph Home_Feature ["Home Feature"]
+            Home_Purpose["Landing & Orchestration"]
+            Home_Resp["Show Featured Content"]
+            Home_Nav["Route to Deeper Features"]
+        end
+
+        %% Projects Feature
+        subgraph Projects_Feature ["Projects Feature"]
+            Projects_Purpose["Showcase Work"]
+            Project_Entity["Entity: Project"]
+            
+            subgraph Project_Methods ["Public Methods"]
+                getProjects["getProjects"]
+                getProjectDetail["getProjectDetail"]
+                ext_openSource["openProjectSource"]
+                ext_download["downloadProjectArtifact"]
+                ext_store["openProjectStore"]
+            end
+            
+            subgraph Project_Data ["Data Strategy"]
+                Project_JSON["Local JSON Assets"]
+                Project_Rank["Ranked Sorting: Hero > Showcase > Standard"]
+            end
+        end
+
+        %% Articles Feature
+        subgraph Articles_Feature ["Articles Feature"]
+            Articles_Purpose["Knowledge Base"]
+            Article_Entity["Entity: Article"]
+            
+            subgraph Article_Methods ["Public Methods"]
+                getArticles["getArticles"]
+                getArticleDetail["getArticleDetail"]
+            end
+            
+            subgraph Article_Data ["Data Strategy"]
+                Article_Registry["Registry: articles.json"]
+                Article_Content["Content: Markdown Files"]
+                Article_Rank["Ranked Sorting: Hero > Standard"]
+            end
+        end
+
+        %% System Feature
+        subgraph System_Feature ["System Feature"]
+            System_Purpose["Platform Abstraction"]
+            subgraph System_Caps ["Capabilities"]
+                Sys_OpenUrl["Open External URL"]
+                Sys_Download["Trigger Download"]
+                Sys_Email["Trigger Email"]
+                Sys_Net["Check Network"]
+            end
+        end
+    end
+
+    %% Relationships
+    App_Architecture -.-> Features
+    
+    %% Home Interactions
+    Home_Feature -->|Routes to| Projects_Feature
+    Home_Feature -->|Routes to| Articles_Feature
+    
+    %% Project Interactions
+    getProjects -->|Reads| Project_JSON
+    getProjectDetail -->|Reads| Project_JSON
+    getProjects -->|Applies| Project_Rank
+    
+    %% Project External Actions (Delegation to System)
+    ext_openSource -->|Uses| Sys_OpenUrl
+    ext_download -->|Uses| Sys_Download
+    ext_store -->|Uses| Sys_OpenUrl
+    
+    %% Article Interactions
+    getArticles -->|Reads| Article_Registry
+    getArticles -->|Applies| Article_Rank
+    getArticleDetail -->|Reads| Article_Registry
+    getArticleDetail -->|Hydrates Content| Article_Content
+    
+    %% Cross-Feature Rules
+    Features -->|Rule: Independent Logic| Features
+    Features -->|Rule: Nav via ID only| Features

@@ -11,6 +11,7 @@ workspace:
 
 dependencies:
   bloc: ^9.1.0
+  connectivity_plus: ^7.0.0
   core_ui_kit:
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
@@ -31,6 +32,7 @@ dependencies:
   talker: ^5.1.9
   talker_bloc_logger: ^5.1.9
   talker_flutter: ^5.1.9
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   bloc_lint: ^0.3.5

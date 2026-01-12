@@ -163,7 +163,7 @@ class ArticleRemoteDataSourceImpl implements ArticleRemoteDataSource {
 **Rules:** Catch exceptions, map to `Failure`, return `Right` with Entities.
 
 ```dart
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:portfolio/core/common/typedefs.dart';
 import 'package:portfolio/core/error/error_mapper.dart';
 import 'package:portfolio/features/articles/domain/entities/article.dart';

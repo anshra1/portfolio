@@ -3,7 +3,7 @@
 
 # Use Case Creation Rules (Clean Architecture + TDD)
 
-These rules define how **use cases should be designed, implemented, and tested** using `dartz` for functional error handling and `faker` for test data generation.
+These rules define how **use cases should be designed, implemented, and tested** using `fpdart` for functional error handling and `faker` for test data generation.
 
 The goal of a use case is **not to perform work**, but to **express business intent clearly and safely**.
 
@@ -188,7 +188,7 @@ Use cases represent business intent. If a button color change or a UI redesign f
 ## Rule 15 — Functional Error Handling (No Exceptions)
 
 Use cases **must never throw exceptions** for expected business failures.
-You must use the **`dartz`** package.
+You must use the **`fpdart`** package.
 
 * Return type must be `Future<Either<Failure, Type>>`.
 * **Left** side always contains a `Failure` object.

@@ -22,7 +22,7 @@ To decide where logic belongs, ask: **"Who has the authority to stop this action
 ### **Core Libraries & Paths**
 *   **Result Types:** `ResultFuture<T>` / `ResultStream<T>` defined in `lib/core/common/typedefs.dart`.
 *   **Error Handling:** Base `Failure` class defined in `lib/core/error/failures.dart`.
-*   **Functional Ops:** `dartz` package (for `Either`).
+*   **Functional Ops:** `fpdart` package (for `Either`).
 *   **Testing:** `flutter_test` and `mocktail` (Manual mocking, no code gen).
 
 ---

@@ -1,6 +1,6 @@
 # Test Writing Rule: Explicit Functional Typing
 
-Always provide explicit type arguments for every element whenever possible for `dartz` helpers in tests.
+Always provide explicit type arguments for every element whenever possible for `fpdart` helpers in tests.
 
 ### Required Syntax
 ```dart

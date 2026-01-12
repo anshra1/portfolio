@@ -1,5 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:portfolio/core/error/error.dart';
 import 'package:portfolio/features/projects/data/datasources/projects_remote_data_source.dart';
@@ -272,7 +272,7 @@ void main() {
         // 3. Sort Date/ID: p1, p2, p3(A), p4(B)
         // 4. Page 1, Limit 6 -> Returns all 4
         expect(result.isRight(), true);
-        final list = result.getOrElse(() => <Project>[]);
+        final list = result.getOrElse((_) => <Project>[]);
         expect(list.length, 4);
         expect(list[0].id, p1Hero.id);
       },
@@ -291,7 +291,7 @@ void main() {
         );
 
         // Assert
-        final list = result.getOrElse(() => <Project>[]);
+        final list = result.getOrElse((_) => <Project>[]);
         expect(list.any((Project p) => p.displayTier == DisplayTier.hidden), false);
         expect(
           list.map((Project p) => p.id),
@@ -316,7 +316,7 @@ void main() {
         );
 
         // Assert
-        final list = result.getOrElse(() => <Project>[]);
+        final list = result.getOrElse((_) => <Project>[]);
         expect(list.length, 2);
         expect(list.map((Project p) => p.id), containsAll(['p1', 'A_Project']));
       },
@@ -337,7 +337,7 @@ void main() {
         );
 
         // Assert
-        final list = result.getOrElse(() => <Project>[]);
+        final list = result.getOrElse((_) => <Project>[]);
         expect(list.length, 1);
         expect(list.first.id, 'p1');
       },
@@ -364,7 +364,7 @@ void main() {
         );
 
         // Assert
-        final list = result.getOrElse(() => <Project>[]);
+        final list = result.getOrElse((_) => <Project>[]);
         expect(list.length, 4);
         expect(list[0].id, 'p1'); // Hero
         expect(list[1].id, 'p2'); // Showcase
@@ -391,7 +391,7 @@ void main() {
         );
 
         // Assert
-        final list = result.getOrElse(() => <Project>[]);
+        final list = result.getOrElse((_) => <Project>[]);
         expect(list.length, 2);
         expect(list[0].id, 'A_Project'); // p3
         expect(list[1].id, 'B_Project'); // p4
@@ -414,7 +414,7 @@ void main() {
         );
 
         // Assert
-        final list = result.getOrElse(() => <Project>[]);
+        final list = result.getOrElse((_) => <Project>[]);
         expect(list, isEmpty);
       },
     );

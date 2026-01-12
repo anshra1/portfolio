@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:portfolio/core/common/typedefs.dart';
 import 'package:portfolio/core/constants/app_constants.dart';
 import 'package:portfolio/core/error/error.dart';

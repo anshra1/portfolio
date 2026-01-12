@@ -78,7 +78,7 @@ Anything not listed here is **not allowed** unless explicitly approved.
 
 ## 8. Functional Programming
 
-* **Functional Utilities:** `dartz` (Primarily for `Either` types in error handling)
+* **Functional Utilities:** `fpdart` (Primarily for `Either` types in error handling)
 
 ---
 

@@ -1,8 +1,8 @@
 // Target Use Case: GetProjectDetail
 // Repository Method: getProjectDetail
 
-import 'package:dartz/dartz.dart';
 import 'package:faker/faker.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:portfolio/core/error/error.dart';

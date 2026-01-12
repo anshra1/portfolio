@@ -33,7 +33,7 @@ This project adheres to **Strict Clean Architecture** principles, ensuring scala
 *   **State Management:** `flutter_bloc`
 *   **Dependency Injection:** `get_it`
 *   **Code Generation:** `freezed`, `json_serializable`, `build_runner`
-*   **Functional Programming:** `dartz` (Either types for error handling)
+*   **Functional Programming:** `fpdart` (Either types for error handling)
 *   **Testing:** `flutter_test`, `mocktail`
 
 ## 📂 Project Structure

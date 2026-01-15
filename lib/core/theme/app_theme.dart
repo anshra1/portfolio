@@ -1,9 +1,12 @@
 import 'package:core_ui_kit/core_ui_kit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/core/theme/app_colors.dart';
+import 'package:portfolio/core/theme/density/density.dart';
 
 /// Centralized manager for Application Themes.
 ///
+// ignore: comment_references
 /// Uses [core_ui_kit] generators to produce consistent Light and Dark themes
 /// based on the seeds defined in [AppColors].
 class AppTheme {
@@ -27,7 +30,10 @@ class AppTheme {
     return SystemTokensConverter.toThemeData(
       tokens,
       brightness: Brightness.light,
-    ) ;
+    ).copyWith(
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      extensions: [AppDensityTokens.adaptive(defaultTargetPlatform)],
+    );
   }
 
   /// The main Dark Theme for the application.
@@ -36,6 +42,9 @@ class AppTheme {
     return SystemTokensConverter.toThemeData(
       tokens,
       brightness: Brightness.dark,
+    ).copyWith(
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      extensions: [AppDensityTokens.adaptive(defaultTargetPlatform)],
     );
   }
 }

@@ -132,8 +132,7 @@ class KitBaseButton extends StatelessWidget {
       case KitButtonSize.large:
         return KitButtonTokens.paddingLarge;
       case KitButtonSize.medium:
-      default:
-        return KitButtonTokens.paddingMedium;
+      return KitButtonTokens.paddingMedium;
     }
   }
 

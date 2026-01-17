@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Article Detail — Flutter Developer Portfolio</title>
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              DEFAULT: '#8B5CF6',
+              50: '#F5F3FF',
+              100: '#EDE9FE',
+              200: '#DDD6FE',
+              300: '#C4B5FD',
+              400: '#A78BFA',
+              500: '#8B5CF6',
+              600: '#7C3AED',
+              700: '#6D28D9',
+              800: '#5B21B6',
+              900: '#4C1D95',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased selection:bg-primary-500 selection:text-white">
+
+  <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="article_page.html" class="group flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+        <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to Articles
+      </a>
+
+      <button id="themeToggle" class="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-6 py-12 lg:py-16">
+
+    <header class="mb-10 text-center md:text-left">
+      <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-4">
+        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 border border-primary-100 dark:border-primary-800">
+          #UI/UX
+        </span>
+        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+          #Flutter
+        </span>
+      </div>
+
+      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight">
+        Component-first UI speeds development
+      </h1>
+
+      <div class="flex items-center justify-center md:justify-start gap-4 text-sm text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-primary-600 font-bold text-xs ring-2 ring-white dark:ring-slate-900">
+                ME
+            </div>
+            <span class="font-medium text-slate-900 dark:text-slate-200">Flutter Dev</span>
+        </div>
+        <span>•</span>
+        <time datetime="2024-11-25">Nov 25, 2024</time>
+        <span>•</span>
+        <span>3 min read</span>
+      </div>
+    </header>
+
+    <div class="mb-12 rounded-2xl overflow-hidden shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800">
+      <img src="https://placehold.co/1200x600/8B5CF6/ffffff?text=Component+First+Workflow" class="w-full h-auto object-cover" alt="Article Cover Image">
+    </div>
+
+    <article class="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary-600 dark:prose-a:text-primary-400 hover:prose-a:text-primary-500 prose-img:rounded-xl">
+
+      <p class="lead text-xl text-slate-600 dark:text-slate-300">
+        On a recent project, I began by composing small, reusable widgets rather than constructing full screens. Within hours, page-building became almost effortless.
+      </p>
+
+      <p>
+        Each screen was simply an assembly of proven components, reducing bugs and making iterative UI work significantly faster. Small components are easier to test, read, and reuse.
+      </p>
+
+      <h3>The "Atomic" Mindset</h3>
+      <p>
+        A component-first approach creates long-term momentum in development. Focus on creating atomic Flutter widgets that can be styled and extended independently before moving on to complex screen layouts.
+      </p>
+
+      <blockquote>
+        "Don't build pages. Build systems that build pages."
+      </blockquote>
+
+      <h4>Key takeaway for Flutter developers:</h4>
+      <ul>
+        <li><strong>Atomic Design:</strong> Break down large features into small, testable widgets.</li>
+        <li><strong>Reusability:</strong> Promote widgets into a central library for quick access.</li>
+        <li><strong>Performance:</strong> Smaller widget trees are generally easier for Flutter's rendering engine to optimize.</li>
+      </ul>
+
+      <p>
+        By isolating logic into smaller units (`StatelessWidget`), you also make your codebase significantly more testable. If a button works in isolation, it will work on the Login page, the Profile page, and the Settings page.
+      </p>
+    </article>
+
+    <div class="mt-16 p-8 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 text-center">
+      <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Enjoyed this insight?</h3>
+      <p class="text-slate-600 dark:text-slate-400 mb-6">Check out my other projects to see these principles in action.</p>
+      <a href="port.html" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition shadow-lg shadow-primary-500/20">
+        View My Projects
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="py-8 border-t border-slate-200 dark:border-slate-800 text-center">
+    <p class="text-slate-500 dark:text-slate-400 text-sm">
+      © 2024 Flutter Developer Portfolio. All rights reserved.
+    </p>
+  </footer>
+
+  <script>
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    // Check local storage or preference on load
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      if (html.classList.contains('dark')) {
+        localStorage.theme = 'dark';
+      } else {
+        localStorage.theme = 'light';
+      }
+    });
+  </script>
+
+</body>
+</html>

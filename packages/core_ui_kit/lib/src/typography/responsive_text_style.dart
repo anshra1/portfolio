@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-import 'breakpoint_configuration.dart';
+import '../responsive/breakpoint_configuration.dart';
 import 'font_scaling_configuration.dart';
-import 'screen_size_detector.dart';
-import 'window_size_class.dart';
+import '../responsive/screen_size_detector.dart';
+import '../responsive/window_size_class.dart';
 
 /// A text style that adapts based on screen size.
 ///
@@ -114,6 +114,21 @@ class ResponsiveTextStyle {
   ///
   /// Use this when you don't have a [BuildContext] or want a fixed style.
   TextStyle get value => base;
+
+  /// Makes the style callable.
+  ///
+  /// - If [context] is provided: Returns the resolved responsive style.
+  /// - If [context] is null: Returns the base (mobile) style.
+  ///
+  /// ```dart
+  /// final style = ResponsiveTextStyle(base: TextStyle(fontSize: 16));
+  /// Text('Hi', style: style(context)); // Dynamic
+  /// Text('Hi', style: style());        // Mobile-first
+  /// ```
+  TextStyle call([BuildContext? context]) {
+    if (context == null) return base;
+    return resolve(context);
+  }
 
   /// Resolves the appropriate text style based on current screen size.
   ///

@@ -115,20 +115,6 @@ class AdaptiveUserCard extends StatelessWidget {
 }
 ```
 
-### ResponsiveValue (Generic)
-A utility to change *values* (padding, numbers, strings, etc.) based on screen size without if/else logic. It features intelligent fallback (e.g., `large` falls back to `expanded` if undefined).
-
-**Example: Responsive Padding**
-```dart
-final padding = ResponsiveValue<EdgeInsets>(
-  compact: EdgeInsets.all(16),  // Mobile
-  medium: EdgeInsets.all(24),   // Tablet
-  large: EdgeInsets.all(32),    // Desktop
-).resolve(context);
-
-return Container(padding: padding, ...);
-```
-
 ---
 
 ## 4. Responsive Typography

@@ -24,6 +24,18 @@ class AppTheme {
     info: AppColors.info,
   );
 
+  /// Returns the visual density based on the platform.
+  static VisualDensity get _density {
+    // Pro Tip: Set your ThemeData to automatically switch density based on the platform.
+    if (kIsWeb) return VisualDensity.compact;
+    return switch (defaultTargetPlatform) {
+      TargetPlatform.linux ||
+      TargetPlatform.macOS ||
+      TargetPlatform.windows => VisualDensity.compact,
+      _ => VisualDensity.standard,
+    };
+  }
+
   /// The main Light Theme for the application.
   static ThemeData get light {
     final tokens = const StandardLightThemeGenerator().generate(seeds: _seeds);
@@ -31,7 +43,7 @@ class AppTheme {
       tokens,
       brightness: Brightness.light,
     ).copyWith(
-      visualDensity: VisualDensity.adaptivePlatformDensity,
+      visualDensity: _density,
       extensions: [AppDensityTokens.adaptive(defaultTargetPlatform)],
     );
   }
@@ -43,7 +55,7 @@ class AppTheme {
       tokens,
       brightness: Brightness.dark,
     ).copyWith(
-      visualDensity: VisualDensity.adaptivePlatformDensity,
+      visualDensity: _density,
       extensions: [AppDensityTokens.adaptive(defaultTargetPlatform)],
     );
   }

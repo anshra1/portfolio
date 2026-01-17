@@ -360,6 +360,55 @@ extension ResponsiveTypographyContext on BuildContext {
     final provider = dependOnInheritedWidgetOfExactType<_ResponsiveTypographyInherited>();
     return provider?.tokens ?? ResponsiveTokens.m3();
   }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Shortcuts for resolved styles (Auto-Resolves based on screen size)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Display Large - Resolved for current screen size.
+  TextStyle get displayLarge => responsiveTypography.displayLarge.resolve(this);
+
+  /// Display Medium - Resolved for current screen size.
+  TextStyle get displayMedium => responsiveTypography.displayMedium.resolve(this);
+
+  /// Display Small - Resolved for current screen size.
+  TextStyle get displaySmall => responsiveTypography.displaySmall.resolve(this);
+
+  /// Headline Large - Resolved for current screen size.
+  TextStyle get headlineLarge => responsiveTypography.headlineLarge.resolve(this);
+
+  /// Headline Medium - Resolved for current screen size.
+  TextStyle get headlineMedium => responsiveTypography.headlineMedium.resolve(this);
+
+  /// Headline Small - Resolved for current screen size.
+  TextStyle get headlineSmall => responsiveTypography.headlineSmall.resolve(this);
+
+  /// Title Large - Resolved for current screen size.
+  TextStyle get titleLarge => responsiveTypography.titleLarge.resolve(this);
+
+  /// Title Medium - Resolved for current screen size.
+  TextStyle get titleMedium => responsiveTypography.titleMedium.resolve(this);
+
+  /// Title Small - Resolved for current screen size.
+  TextStyle get titleSmall => responsiveTypography.titleSmall.resolve(this);
+
+  /// Body Large - Resolved for current screen size.
+  TextStyle get bodyLarge => responsiveTypography.bodyLarge.resolve(this);
+
+  /// Body Medium - Resolved for current screen size.
+  TextStyle get bodyMedium => responsiveTypography.bodyMedium.resolve(this);
+
+  /// Body Small - Resolved for current screen size.
+  TextStyle get bodySmall => responsiveTypography.bodySmall.resolve(this);
+
+  /// Label Large - Resolved for current screen size.
+  TextStyle get labelLarge => responsiveTypography.labelLarge.resolve(this);
+
+  /// Label Medium - Resolved for current screen size.
+  TextStyle get labelMedium => responsiveTypography.labelMedium.resolve(this);
+
+  /// Label Small - Resolved for current screen size.
+  TextStyle get labelSmall => responsiveTypography.labelSmall.resolve(this);
 }
 
 /// Provides [ResponsiveTokens] to descendants.

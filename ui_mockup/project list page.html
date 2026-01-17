@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>All Projects | Flutter Developer Portfolio</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8B5CF6", // A nice purple
+              "background-light": "#F7F8FA",
+              "background-dark": "#111827",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.75rem", // Slightly tighter rounded corners
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
+      }
+      /* Custom shadow for better modern lift effect */
+      .card-shadow {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      }
+      .dark .card-shadow {
+        box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.02),
+          0 2px 4px -2px rgba(255, 255, 255, 0.01);
+      }
+    </style>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 antialiased relative"
+  >
+    <!-- Header/Navigation Bar -->
+    <header
+      class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md shadow-sm border-b border-gray-200/50 dark:border-gray-800/50 transition duration-300"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <a
+          class="text-xl font-bold tracking-tight text-gray-900 dark:text-white z-50 relative flex items-center gap-2"
+          href="port.html"
+        >
+          <span class="material-symbols-outlined text-primary">arrow_back</span>
+          Back to Portfolio
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden sm:flex space-x-8 text-sm font-medium">
+          <a
+            class="text-primary font-semibold transition-colors"
+            href="#"
+            >All Projects</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+            href="port.html#contact"
+            >Contact</a
+          >
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobileMenuBtn"
+          class="sm:hidden p-2 text-gray-600 dark:text-gray-400 hover:text-primary z-50 relative focus:outline-none"
+          aria-label="Toggle menu"
+        >
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Menu -->
+      <div
+        id="mobileMenu"
+        class="fixed inset-0 bg-background-light dark:bg-background-dark z-40 transform translate-x-full transition-transform duration-300 ease-in-out sm:hidden flex flex-col items-center justify-center space-y-8 text-xl font-semibold"
+      >
+        <a
+          class="mobile-link text-gray-900 dark:text-white hover:text-primary transition-colors"
+          href="port.html"
+          >Home</a
+        >
+        <a
+          class="mobile-link text-primary font-bold transition-colors"
+          href="#"
+          >All Projects</a
+        >
+        <a
+          class="mobile-link text-gray-900 dark:text-white hover:text-primary transition-colors"
+          href="port.html#contact"
+          >Contact</a
+        >
+      </div>
+    </header>
+
+    <!-- Floating Action Button (Mobile Only) -->
+    <a
+      href="mailto:contact@example.com"
+      id="fab"
+      class="fixed bottom-6 right-6 z-30 bg-primary text-white p-4 rounded-full shadow-lg shadow-primary/40 hover:bg-purple-700 transition-transform transform hover:scale-110 active:scale-95 flex items-center justify-center"
+      aria-label="Contact Me"
+    >
+      <span class="material-symbols-outlined text-2xl">mail</span>
+    </a>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+      <main class="space-y-12">
+        <!-- Page Header -->
+        <section class="text-center max-w-3xl mx-auto">
+          <h1
+            class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white"
+          >
+            My Project <span class="text-primary">Archive</span>
+          </h1>
+          <p
+            class="mt-4 text-lg text-gray-600 dark:text-gray-400"
+          >
+            A complete collection of my mobile applications, open-source contributions, and experimental proofs-of-concept.
+          </p>
+        </section>
+
+        <!-- Projects Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Project 1 (Existing) -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="Multi-Device Sync Todo App screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnoyBahMCVWY4JDJWpt5ht4598UBIhG34NzAUYddEvzmAlReispu7GDrCi7FeRL-uANk1uGX6Y1jMJQ1BoWEhnb7nlJ47Kue8pO26UGUA--0JxylYrQCod2E3gmhVJJMmVwDBZ5wURBKEvHRJ6g_f7r7gQnOmzRV83kiOw7wkil6icDS_-_qE3xTTbsAErDRgDRMMKYHVT89ZSEOIuxvSW1bp9fNjprRsKkHUTJsKfihBT1YrZOev6clQ6g0CCiqmdV2f12J95HnA"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    Multi-Device Sync
+                  </h3>
+                  <span class="material-symbols-outlined text-gray-400 text-xl" title="Mobile App">smartphone</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  An offline-first app solving real-time, cost-effective data
+                  synchronization across devices using local-first architecture.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Hive</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Bloc</span>
+                </div>
+                <div class="mt-auto flex items-center gap-3">
+                  <a class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm" href="#">
+                    <span class="material-symbols-outlined text-lg">install_mobile</span> Download App
+                  </a>
+                  <a class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 2 (Existing) -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="BudsFeed project screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt619JCTTua3CL--bU4vV2bvJL4NWjSDMGAmzCYf_c3m8lnUFEmoXAARQkP4tfMn9KIkzJdM85rQ6cyKfTtf9Hc2dPe7cIgKi5WTs4FpmQFYTwqHLA2bH47AgV5e_NEOgsZhRAozGkjjrI-vih84mTd3FfCKODJw07YvjSrdfujktEG9rWtvaPqCDOqOj7_hKt3kfwLsVzT17YloyEsXTdBUI-VrFuSTnx8o_QM3ozLox2oOdOeWkbAYXJVN04XjZrZRE1LKlSB7Q"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                 <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    BudsFeed
+                  </h3>
+                   <span class="material-symbols-outlined text-gray-400 text-xl" title="Social Platform">groups</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  A community platform for launching, reviewing, and discussing
+                  new cannabis-related ideas and products.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Supabase</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Social</span>
+                </div>
+                <div class="mt-auto flex items-center gap-3">
+                  <a class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm" href="#">
+                    <span class="material-symbols-outlined text-lg">install_mobile</span> Download App
+                  </a>
+                  <a class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 3 (Existing) -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="Neo project screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVcgXN0sf4llZDsDtUNbcQjeYvat4EzklHL26HduBGeIz1Mddt8FcI2MJY2yESmQmmMJ1a48rz2PnAa9ImttnwkE9RDjvAVyQKFpZpl8q6JQ3FlwyxRGSDZyOYN21lMtKQMzX1ucUWdpC3W7fm4jIyjExVClhxrU6DJTuLXtE7j5v8hmpfqtB37Pr0HczbUiuvGp-xj4rECFtDP9b0axZCFGRDQOg15wUyr8ZI0zCzqlKyexh4_wxP7cimfG9z0XwmTehGpx_5v0Q"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                 <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    Neo Mentorship
+                  </h3>
+                   <span class="material-symbols-outlined text-gray-400 text-xl" title="Startup Tool">rocket_launch</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  A diverse mentorship community and startup accelerator that
+                  helps awesome junior engineers find mentorship.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Firebase</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">GetX</span>
+                </div>
+                <div class="mt-auto flex items-center gap-3">
+                  <a class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm" href="#">
+                    <span class="material-symbols-outlined text-lg">install_mobile</span> Download App
+                  </a>
+                  <a class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 4 (Example) -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="Crypto Wallet project screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://placehold.co/600x400/8B5CF6/ffffff?text=Crypto+Wallet"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                 <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    Defi Crypto Wallet
+                  </h3>
+                   <span class="material-symbols-outlined text-gray-400 text-xl" title="Finance">account_balance_wallet</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  A secure, non-custodial crypto wallet with Web3 integration and real-time market tracking charts.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Web3</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Charts</span>
+                </div>
+                <div class="mt-auto flex items-center gap-3">
+                  <a class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm" href="#">
+                    <span class="material-symbols-outlined text-lg">install_mobile</span> Download App
+                  </a>
+                  <a class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 5 (Example) -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="Food Delivery UI project screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://placehold.co/600x400/8B5CF6/ffffff?text=Food+Delivery+UI"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                 <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    TastyBites Delivery
+                  </h3>
+                   <span class="material-symbols-outlined text-gray-400 text-xl" title="Animation">animation</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  A complex UI kit featuring advanced hero animations, scroll-driven layouts, and custom painter effects.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Rive</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">UI Kit</span>
+                </div>
+                <div class="mt-auto flex items-center gap-3">
+                  <a class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm" href="#">
+                    <span class="material-symbols-outlined text-lg">install_mobile</span> Download App
+                  </a>
+                  <a class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 6 (Example) -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="FitTrack Pro project screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://placehold.co/600x400/8B5CF6/ffffff?text=FitTrack+Pro"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                 <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    FitTrack Pro
+                  </h3>
+                   <span class="material-symbols-outlined text-gray-400 text-xl" title="Health">monitor_heart</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  A health monitoring dashboard integrating with Apple HealthKit and Google Fit APIs for real-time step and heart rate data.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">HealthKit</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Provider</span>
+                </div>
+                <div class="mt-auto flex items-center gap-3">
+                  <a class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm" href="#">
+                    <span class="material-symbols-outlined text-lg">install_mobile</span> Download App
+                  </a>
+                  <a class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+      </main>
+
+      <!-- Footer (Simple version) -->
+      <footer class="mt-24 border-t border-gray-200 dark:border-gray-800 py-8 text-center text-gray-500 text-sm">
+        &copy; 2024 Flutter Developer Portfolio. All rights reserved.
+      </footer>
+    </div>
+
+    <!-- Mobile Menu Script (Copied from port.html) -->
+    <script>
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const menu = document.getElementById('mobileMenu');
+      const fab = document.getElementById('fab');
+      let isMenuOpen = false;
+
+      function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+          menu.classList.remove('translate-x-full');
+          document.body.style.overflow = 'hidden';
+          menuBtn.innerHTML = '<span class="material-symbols-outlined text-3xl">close</span>';
+          fab.style.display = 'none';
+        } else {
+          menu.classList.add('translate-x-full');
+          document.body.style.overflow = '';
+          menuBtn.innerHTML = '<span class="material-symbols-outlined text-3xl">menu</span>';
+          fab.style.display = 'flex';
+        }
+      }
+
+      menuBtn.addEventListener('click', toggleMenu);
+    </script>
+  </body>
+</html>

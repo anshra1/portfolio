@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>All Articles — Final UI/UX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen font-sans leading-relaxed">
+
+  <!-- Page Container -->
+  <div class="max-w-7xl mx-auto px-6 pt-16 pb-24 space-y-10">
+
+    <!-- Header Section -->
+    <div class="flex flex-col gap-6">
+      <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-extrabold tracking-tight">All Articles</h1>
+
+        <!-- Tag Dropdown -->
+        <div class="relative">
+          <button id="tagToggle" class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition flex items-center gap-2 shadow-sm">
+            Browse all tags
+            <span>⌄</span>
+          </button>
+
+          <div id="tagMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl rounded-lg p-3 space-y-2 text-sm">
+            <button class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">#workflow</button>
+            <button class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">#flutter</button>
+            <button class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">#design</button>
+            <button class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">#principle</button>
+            <button class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">#ai</button>
+            <button class="w-full text-left px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">#process</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search + Sort Bar -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <!-- Search Bar -->
+        <input type="text" placeholder="Search articles..." class="w-full lg:w-1/2 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary-300 dark:focus:ring-primary-700" />
+
+        <!-- Sorting -->
+        <div class="flex items-center gap-3 text-sm">
+          <span class="text-slate-600 dark:text-slate-400">Sort by:</span>
+          <button class="px-3 py-1.5 rounded-md border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">Newest</button>
+          <button class="px-3 py-1.5 rounded-md border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">Oldest</button>
+          <button class="px-3 py-1.5 rounded-md border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">Popular</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Skeleton Loader (Shown before content loads) -->
+    <div id="skeleton" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div class="animate-pulse bg-white dark:bg-slate-800 rounded-xl h-72"></div>
+      <div class="animate-pulse bg-white dark:bg-slate-800 rounded-xl h-72"></div>
+      <div class="animate-pulse bg-white dark:bg-slate-800 rounded-xl h-72"></div>
+    </div>
+
+    <!-- Grid Layout -->
+    <section id="articles" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+      <!-- Card 1 -->
+      <article class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-lg transition group cursor-pointer">
+        <div class="overflow-hidden">
+          <img src="https://placehold.co/600x320" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300" />
+        </div>
+        <div class="p-5">
+          <h2 class="text-lg font-semibold leading-tight group-hover:text-primary-700 dark:group-hover:text-primary-400 transition-colors">Component-first UI speeds development</h2>
+          <p class="mt-1 text-xs text-slate-500 uppercase">Nov 25, 2024 • 3 min read</p>
+          <div class="flex flex-wrap gap-1 mt-3 text-[11px]">
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700">#workflow</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700">#flutter</span>
+          </div>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300 line-clamp-3">Build reusable components first, then compose scalable UI.</p>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-lg transition group cursor-pointer">
+        <div class="overflow-hidden">
+          <img src="https://placehold.co/600x320" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300" />
+        </div>
+        <div class="p-5">
+          <h2 class="text-lg font-semibold leading-tight group-hover:text-primary-700 dark:group-hover:text-primary-400 transition-colors">Measure twice, cut once</h2>
+          <p class="mt-1 text-xs text-slate-500 uppercase">Nov 12, 2024 • 2 min read</p>
+          <div class="flex flex-wrap gap-1 mt-3 text-[11px]">
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700">#principle</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700">#design</span>
+          </div>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300 line-clamp-3">Think deeply before writing code. Good planning prevents rework.</p>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-lg transition group cursor-pointer">
+        <div class="overflow-hidden">
+          <img src="https://placehold.co/600x320" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300" />
+        </div>
+        <div class="p-5">
+          <h2 class="text-lg font-semibold leading-tight group-hover:text-primary-700 dark:group-hover:text-primary-400 transition-colors">AI as a thinking partner</h2>
+          <p class="mt-1 text-xs text-slate-500 uppercase">Dec 1, 2024 • 4 min read</p>
+          <div class="flex flex-wrap gap-1 mt-3 text-[11px]">
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700">#ai</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700">#process</span>
+          </div>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300 line-clamp-3">AI amplifies structured thinking. Clarity leads to better output.</p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-center gap-3 pt-8 text-sm">
+      <button class="px-3 py-1.
+<!-- Infinite Loading Trigger -->
+<div id="loadMoreTrigger" class="h-10"></div>
+
+<!-- Toast Notification -->
+<div id="toast" class="hidden fixed bottom-6 right-6 px-4 py-2 rounded-lg bg-slate-800 text-white shadow-lg text-sm">Action completed</div>
+
+<!-- Dark/Light Toggle -->
+<button id="themeToggle" class="fixed bottom-6 left-6 px-3 py-2 rounded-full bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 shadow text-sm">Toggle Theme</button>
+
+<script>
+// Tag Dropdown
+const tagToggle = document.getElementById('tagToggle');
+const tagMenu = document.getElementById('tagMenu');
+tagToggle.addEventListener('click', ()=>{ tagMenu.classList.toggle('hidden'); });
+
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+themeToggle.addEventListener('click', ()=>{
+  html.classList.toggle('dark');
+});
+
+// Skeleton to Content Loader
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('skeleton').classList.add('hidden');
+    document.getElementById('articles').classList.remove('hidden');
+  }, 800);
+});
+
+// Infinite Loading
+let loading = false;
+let articleCount = 3;
+const loadMoreTrigger = document.getElementById('loadMoreTrigger');
+
+const loadMore = () => {
+  if (loading) return;
+  loading = true;
+
+  const grid = document.getElementById('articles');
+  for (let i=0; i<3; i++) {
+    const card = grid.children[0].cloneNode(true);
+    grid.appendChild(card);
+  }
+  loading = false;
+};
+
+window.addEventListener('scroll', () => {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  if(scrollTop + clientHeight >= scrollHeight - 50){ loadMore(); }
+});
+
+// Search Filter
+const searchInput = document.querySelector('input[placeholder="Search articles..."]');
+searchInput.addEventListener('input',()=>{
+  const q = searchInput.value.toLowerCase();
+  const cards = document.querySelectorAll('#articles article');
+  cards.forEach(card=>{
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+});
+
+// Tag Filtering
+const tagButtons = tagMenu.querySelectorAll('button');
+tagButtons.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const tag = btn.textContent.trim();
+    const cards = document.querySelectorAll('#articles article');
+    cards.forEach(card=>{
+      const match = card.innerText.includes(tag);
+      card.style.display = match ? '' : 'none';
+    });
+    tagMenu.classList.add('hidden');
+  });
+});
+
+// Sorting
+const sortButtons = document.querySelectorAll('div.flex.items-center.gap-3 button');
+sortButtons[0].addEventListener('click',()=>showToast('Sorted by newest'));
+sortButtons[1].addEventListener('click',()=>showToast('Sorted by oldest'));
+sortButtons[2].addEventListener('click',()=>showToast('Sorted by popularity'));
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  setTimeout(()=> t.classList.add('hidden'), 2000);
+}
+
+</script>
+</body>
+</html>

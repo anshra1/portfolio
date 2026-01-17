@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" class="antialiased">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SyncFlow — Architecture & Project Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Subtle fade up animation for sections */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-enter {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-900 pb-24">
+
+  <!-- Main Content Wrapper -->
+  <main class="pt-16 pb-12">
+
+    <!-- Unified Container: Controls width for Title, Image, AND Content -->
+    <div class="max-w-4xl mx-auto px-6 space-y-10">
+
+      <!-- 1. App Title -->
+      <div class="animate-enter" style="animation-delay: 0.1s;">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 mb-2">SyncFlow</h1>
+        <p class="text-lg text-slate-500 font-medium">Real-time task synchronization engine.</p>
+      </div>
+
+      <!-- 2. First Image (Hero) - Now inside the same max-w-4xl container -->
+      <div class="animate-enter rounded-3xl overflow-hidden shadow-xl shadow-slate-200 border border-slate-100 relative group" style="animation-delay: 0.2s;">
+        <div class="aspect-video bg-slate-900 relative">
+           <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=2940&auto=format&fit=crop" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-700" alt="SyncFlow Interface Real World" />
+           <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent pointer-events-none"></div>
+        </div>
+      </div>
+
+      <!-- 3. Description -->
+      <div class="animate-enter prose prose-lg prose-slate text-slate-700 leading-relaxed max-w-none font-medium" style="animation-delay: 0.3s;">
+        <p>
+          Modern productivity users expect their data to be available everywhere, instantly. However, maintaining consistency across fragmented networks (subways, airplanes, spotty WiFi) is notoriously difficult.
+        </p>
+        <p>
+          The goal of SyncFlow was to build a system that feels "local-first" but "cloud-aware." We moved away from traditional REST APIs, which fail on unstable connections, and adopted an <strong>optimistic UI pattern</strong> powered by local databases and background synchronization queues.
+        </p>
+      </div>
+
+      <!-- 4. Core Stack -->
+      <div class="animate-enter" style="animation-delay: 0.4s;">
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Core Stack</div>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 shadow-sm">Flutter</span>
+          <span class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 shadow-sm">WebSockets</span>
+          <span class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 shadow-sm">CRDTs</span>
+          <span class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 shadow-sm">Node.js</span>
+          <span class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 shadow-sm">Redis</span>
+        </div>
+      </div>
+
+      <!-- 5. GitHub Button -->
+      <div class="animate-enter" style="animation-delay: 0.45s;">
+        <a href="#" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20 group">
+          <svg class="w-5 h-5 text-slate-300 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          View Source on GitHub
+        </a>
+      </div>
+
+      <!-- 6. Try it Yourself (Downloads) -->
+      <div class="animate-enter space-y-8 pt-8 pb-10 border-b border-slate-100" style="animation-delay: 0.5s;">
+
+        <h2 class="text-2xl font-bold text-slate-900">Try it Yourself</h2>
+
+        <!-- Card Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- Windows Card -->
+          <div class="flex flex-col gap-3 p-6 rounded-xl bg-white border border-slate-200 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/5 transition-all group">
+            <div class="flex items-center gap-3">
+              <svg class="w-7 h-7 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+              <p class="font-bold text-lg text-slate-900">Windows</p>
+            </div>
+            <p class="text-xs font-mono text-slate-500">Version: 1.2.0 (x64)</p>
+            <p class="text-xs font-mono text-slate-500">Size: 85 MB</p>
+            <button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-blue-50 text-blue-700 text-sm font-bold hover:bg-blue-100 hover:text-blue-800 transition-colors mt-auto border border-blue-100">
+              Download .exe
+            </button>
+          </div>
+
+          <!-- macOS Card -->
+          <div class="flex flex-col gap-3 p-6 rounded-xl bg-white border border-slate-200 hover:border-slate-400 hover:shadow-lg hover:shadow-slate-500/5 transition-all group">
+            <div class="flex items-center gap-3">
+              <svg class="w-7 h-7 text-slate-900" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.7-3.06 1.58-.69.8-1.27 2.06-1.12 3.17 1.17.09 2.36-.78 3.11-1.64z"/></svg>
+              <p class="font-bold text-lg text-slate-900">macOS</p>
+            </div>
+            <p class="text-xs font-mono text-slate-500">Version: 1.2.0 (Universal)</p>
+            <p class="text-xs font-mono text-slate-500">Size: 92 MB</p>
+            <button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-100 text-slate-900 text-sm font-bold hover:bg-slate-200 transition-colors mt-auto border border-slate-200">
+              Download .dmg
+            </button>
+          </div>
+
+          <!-- Linux Card -->
+          <div class="flex flex-col gap-3 p-6 rounded-xl bg-white border border-slate-200 hover:border-amber-300 hover:shadow-lg hover:shadow-amber-500/5 transition-all group">
+            <div class="flex items-center gap-3">
+              <svg class="w-7 h-7 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 8-4 8 4"/><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"/><path d="M14 22v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M18 5v17"/><path d="M6 5v17"/><circle cx="12" cy="9" r="2"/></svg>
+              <p class="font-bold text-lg text-slate-900">Linux</p>
+            </div>
+            <p class="text-xs font-mono text-slate-500">Version: 1.2.0 (AppImage)</p>
+            <p class="text-xs font-mono text-slate-500">Size: 88 MB</p>
+            <button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-amber-50 text-amber-700 text-sm font-bold hover:bg-amber-100 transition-colors mt-auto border border-amber-100">
+              Download
+            </button>
+          </div>
+
+          <!-- iOS Card -->
+          <div class="flex flex-col gap-3 p-6 rounded-xl bg-white border border-slate-200 hover:border-slate-400 hover:shadow-lg hover:shadow-slate-500/5 transition-all group">
+            <div class="flex items-center gap-3">
+              <svg class="w-7 h-7 text-slate-900" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.7-3.06 1.58-.69.8-1.27 2.06-1.12 3.17 1.17.09 2.36-.78 3.11-1.64z"/></svg>
+              <p class="font-bold text-lg text-slate-900">iOS</p>
+            </div>
+            <p class="text-xs font-mono text-slate-500">Version: 1.2.1</p>
+            <p class="text-xs font-mono text-slate-500">Requires iOS 15+</p>
+            <button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors mt-auto shadow-sm">
+              App Store
+            </button>
+          </div>
+
+          <!-- Android Card -->
+          <div class="flex flex-col gap-3 p-6 rounded-xl bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-500/5 transition-all group">
+            <div class="flex items-center gap-3">
+              <svg class="w-7 h-7 text-emerald-600" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0004.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0225 3.503c-1.4641-.6688-3.1321-1.0408-4.8925-1.0408-1.7445 0-3.4004.3668-4.8566 1.026l-2.007-3.476a.416.416 0 00-.5676-.1521.416.416 0 00-.1521.5676l1.9765 3.4264C2.9618 10.8967 0 14.8069 0 19.27h24c0-4.4936-3.0114-8.4164-6.1185-9.9486"/></svg>
+              <p class="font-bold text-lg text-slate-900">Android</p>
+            </div>
+            <p class="text-xs font-mono text-slate-500">Version: 1.2.1</p>
+            <p class="text-xs font-mono text-slate-500">Requires Android 8+</p>
+            <button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-emerald-50 text-emerald-700 text-sm font-bold hover:bg-emerald-100 hover:text-emerald-800 transition-colors mt-auto border border-emerald-100">
+              Google Play
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- 7. Features (System Architecture) -->
+      <div class="animate-enter" style="animation-delay: 0.6s;">
+        <div class="flex justify-between items-end mb-6">
+          <h2 class="text-2xl font-bold text-slate-900">System Architecture</h2>
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">High-Level Design</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <!-- Card 1 -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors group flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 19.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-slate-900 text-sm mb-1">WebSocket Layer</h3>
+              <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                Persistent bi-directional connection for real-time diff delivery. Falls back to long-polling automatically.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors group flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0 group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-slate-900 text-sm mb-1">Local-First (Hive/SQLite)</h3>
+              <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                All writes go to local DB first. The UI updates in &lt;16ms, completely decoupled from network latency.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors group flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-slate-900 text-sm mb-1">CRDT Resolution</h3>
+              <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                Conflict-free Replicated Data Types handle merge conflicts automatically when multiple devices edit offline.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors group flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0 group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-slate-900 text-sm mb-1">Multi-Platform</h3>
+              <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                95% shared codebase across iOS, Android, and Web using Flutter, reducing maintenance overhead.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

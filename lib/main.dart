@@ -16,25 +16,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final ThemeMode _themeMode = ThemeMode
-  .light;
+  final ThemeMode _themeMode = ThemeMode.light;
 
   @override
   Widget build(BuildContext context) {
     return ScreenSizeDetector(
-      child: Builder(
-        builder: (context) {
-          final responsiveTokens = ResponsiveTokens.m3();
-          final textTheme = responsiveTokens.toTextTheme(context);
-
-          return MaterialApp.router(
-            title: 'Portfolio & Talker Demo',
-            themeMode: _themeMode,
-            theme: AppTheme.light.copyWith(textTheme: textTheme),
-            darkTheme: AppTheme.dark.copyWith(textTheme: textTheme),
-            routerConfig: appRouter,
-          );
-        },
+      child: MaterialApp.router(
+        title: 'Portfolio & Talker Demo',
+        themeMode: _themeMode,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        routerConfig: appRouter,
       ),
     );
   }

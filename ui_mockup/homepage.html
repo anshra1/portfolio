@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Flutter Developer Portfolio</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8B5CF6", // A nice purple
+              "background-light": "#F7F8FA",
+              "background-dark": "#111827",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.75rem", // Slightly tighter rounded corners
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
+      }
+      /* Custom shadow for better modern lift effect */
+      .card-shadow {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      }
+      .dark .card-shadow {
+        box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.02),
+          0 2px 4px -2px rgba(255, 255, 255, 0.01);
+      }
+    </style>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 antialiased relative"
+  >
+    <!-- Header/Navigation Bar -->
+    <header
+      class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md shadow-sm border-b border-gray-200/50 dark:border-gray-800/50 transition duration-300"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <a
+          class="text-xl font-bold tracking-tight text-gray-900 dark:text-white z-50 relative"
+          href="#"
+          >Flutter Dev</a
+        >
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden sm:flex space-x-8 text-sm font-medium">
+          <a
+            class="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+            href="#projects"
+            >Projects</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+            href="#learnings"
+            >Learnings</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+            href="#about"
+            >About</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+            href="#contact"
+            >Contact</a
+          >
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobileMenuBtn"
+          class="sm:hidden p-2 text-gray-600 dark:text-gray-400 hover:text-primary z-50 relative focus:outline-none"
+          aria-label="Toggle menu"
+        >
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Menu -->
+      <div
+        id="mobileMenu"
+        class="fixed inset-0 bg-background-light dark:bg-background-dark z-40 transform translate-x-full transition-transform duration-300 ease-in-out sm:hidden flex flex-col items-center justify-center space-y-8 text-xl font-semibold"
+      >
+        <a
+          class="mobile-link text-gray-900 dark:text-white hover:text-primary transition-colors"
+          href="#projects"
+          >Projects</a
+        >
+        <a
+          class="mobile-link text-gray-900 dark:text-white hover:text-primary transition-colors"
+          href="#learnings"
+          >Learnings</a
+        >
+        <a
+          class="mobile-link text-gray-900 dark:text-white hover:text-primary transition-colors"
+          href="#about"
+          >About</a
+        >
+        <a
+          class="mobile-link text-gray-900 dark:text-white hover:text-primary transition-colors"
+          href="#contact"
+          >Contact</a
+        >
+      </div>
+    </header>
+
+    <!-- Floating Action Button (Mobile Only) -->
+    <a
+      href="mailto:contact@example.com"
+      id="fab"
+      class="fixed bottom-6 right-6 z-30 bg-primary text-white p-4 rounded-full shadow-lg shadow-primary/40 hover:bg-purple-700 transition-transform transform hover:scale-110 active:scale-95 sm:hidden flex items-center justify-center"
+      aria-label="Contact Me"
+    >
+      <span class="material-symbols-outlined text-2xl">mail</span>
+    </a>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <main class="space-y-20 md:space-y-32">
+        <!-- Hero Section -->
+        <section class="text-center pt-10">
+          <h1
+            class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white"
+          >
+            Crafting Experiences with a
+            <span class="text-primary">Flutter Developer</span>
+          </h1>
+          <p
+            class="mt-6 max-w-3xl mx-auto text-xl text-gray-600 dark:text-gray-400"
+          >
+            Building robust, intuitive, and beautiful cross-platform applications.
+            Explore my journey from elegant UI to powerful backend integrations.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4 px-4">
+            <a
+              class="group inline-flex justify-center items-center px-8 py-3 rounded-full bg-primary text-white font-semibold shadow-lg shadow-primary/30 hover:bg-purple-700 transition duration-300 transform hover:scale-105"
+              href="#projects"
+            >
+              View My Projects
+              <span class="material-symbols-outlined text-base ml-2">
+                arrow_right_alt
+              </span>
+            </a>
+            <a
+              class="inline-flex justify-center items-center px-8 py-3 rounded-full border border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 font-semibold hover:bg-gray-200/50 dark:hover:bg-gray-700/50 transition duration-300 transform hover:scale-105"
+              href="#learnings"
+            >
+              My Learnings
+            </a>
+          </div>
+
+          <!-- Social Icons -->
+          <div class="mt-8 flex justify-center items-center gap-6">
+            <!-- GitHub -->
+            <a
+              class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors transform hover:scale-110 duration-300"
+              href="#"
+              title="GitHub"
+            >
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
+              </svg>
+            </a>
+            <!-- LinkedIn -->
+            <a
+              class="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors transform hover:scale-110 duration-300"
+              href="#"
+              title="LinkedIn"
+            >
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path>
+              </svg>
+            </a>
+            <!-- Medium -->
+            <a
+              class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors transform hover:scale-110 duration-300"
+              href="#"
+              title="Medium"
+            >
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7.45 18.53h-.08c-.2 0-.37-.08-.5-.22l-1.9-2.13v2.2c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-6.95c0-.28.22-.5.5-.5s.5.22.5.5v2.88l1.83 2.05c.14.13.3.22.5.22h.08c.2 0 .4-.08.54-.22l3.43-3.65c.13-.13.3-.2.48-.2h.1c.2 0 .38.08.52.2l3.75 4.9c.14.18.15.4.04.6s-.3.3-.5.3h-.05c-.18 0-.35-.07-.48-.2L12.3 13l-3.3 3.52c-.14.14-.32.22-.55.22zm11.27-10.23c-1.3 0-2.35 1.05-2.35 2.35s1.05 2.35 2.35 2.35 2.35-1.05 2.35-2.35-1.05-2.35-2.35-2.35zm-5.7 0c-1.2 0-2.18.98-2.18 2.18s.98 2.18 2.18 2.18 2.18-.98 2.18-2.18-.98-2.18-2.18-2.18zm-5.87 0C6 8.3 5.02 9.28 5.02 10.48s.98 2.18 2.18 2.18 2.18-.98 2.18-2.18S8.3 8.3 7.15 8.3zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path>
+              </svg>
+            </a>
+          </div>
+        </section>
+
+        <!-- Projects Section (Only 2 items on mobile) -->
+        <section class="space-y-12" id="projects">
+          <h2
+            class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          >
+            My Flutter Creations
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Project 1 -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="Multi-Device Sync Todo App screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnoyBahMCVWY4JDJWpt5ht4598UBIhG34NzAUYddEvzmAlReispu7GDrCi7FeRL-uANk1uGX6Y1jMJQ1BoWEhnb7nlJ47Kue8pO26UGUA--0JxylYrQCod2E3gmhVJJMmVwDBZ5wURBKEvHRJ6g_f7r7gQnOmzRV83kiOw7wkil6icDS_-_qE3xTTbsAErDRgDRMMKYHVT89ZSEOIuxvSW1bp9fNjprRsKkHUTJsKfihBT1YrZOev6clQ6g0CCiqmdV2f12J95HnA"
+                />
+              </div>
+
+              <div class="flex-1 flex flex-col p-6 relative">
+                <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    Multi-Device Sync
+                  </h3>
+                  <span class="material-symbols-outlined text-gray-400 text-xl" title="Mobile App">smartphone</span>
+                </div>
+
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  An offline-first app solving real-time, cost-effective data
+                  synchronization across devices using local-first architecture.
+                </p>
+
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Hive</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Bloc</span>
+                </div>
+
+                <div class="mt-auto flex items-center gap-3">
+                  <a
+                    class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm"
+                    href="#"
+                  >
+                    <span class="material-symbols-outlined text-lg">install_mobile</span>
+                    Download App
+                  </a>
+                  <a
+                    class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    href="#"
+                    title="View Code on GitHub"
+                  >
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div
+              class="group flex flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="BudsFeed project screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt619JCTTua3CL--bU4vV2bvJL4NWjSDMGAmzCYf_c3m8lnUFEmoXAARQkP4tfMn9KIkzJdM85rQ6cyKfTtf9Hc2dPe7cIgKi5WTs4FpmQFYTwqHLA2bH47AgV5e_NEOgsZhRAozGkjjrI-vih84mTd3FfCKODJw07YvjSrdfujktEG9rWtvaPqCDOqOj7_hKt3kfwLsVzT17YloyEsXTdBUI-VrFuSTnx8o_QM3ozLox2oOdOeWkbAYXJVN04XjZrZRE1LKlSB7Q"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                 <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    BudsFeed
+                  </h3>
+                   <span class="material-symbols-outlined text-gray-400 text-xl" title="Social Platform">groups</span>
+                </div>
+
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  A community platform for launching, reviewing, and discussing
+                  new cannabis-related ideas and products.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Supabase</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Social</span>
+                </div>
+
+                 <div class="mt-auto flex items-center gap-3">
+                  <a
+                    class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm"
+                    href="#"
+                  >
+                    <span class="material-symbols-outlined text-lg">install_mobile</span>
+                    Download App
+                  </a>
+                  <a
+                    class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    href="#"
+                    title="View Code on GitHub"
+                  >
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 3 (HIDDEN ON MOBILE) -->
+            <div
+              class="hidden md:flex group flex-col rounded-xl overflow-hidden card-shadow bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:border-primary/50 transition duration-300"
+            >
+              <div class="h-56 overflow-hidden bg-gray-100 dark:bg-gray-900 relative">
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <img
+                  alt="Neo project screenshot"
+                  class="w-full h-full object-cover object-top transform transition-transform duration-500 group-hover:scale-110"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVcgXN0sf4llZDsDtUNbcQjeYvat4EzklHL26HduBGeIz1Mddt8FcI2MJY2yESmQmmMJ1a48rz2PnAa9ImttnwkE9RDjvAVyQKFpZpl8q6JQ3FlwyxRGSDZyOYN21lMtKQMzX1ucUWdpC3W7fm4jIyjExVClhxrU6DJTuLXtE7j5v8hmpfqtB37Pr0HczbUiuvGp-xj4rECFtDP9b0axZCFGRDQOg15wUyr8ZI0zCzqlKyexh4_wxP7cimfG9z0XwmTehGpx_5v0Q"
+                />
+              </div>
+              <div class="flex-1 flex flex-col p-6 relative">
+                 <div class="flex justify-between items-start mb-2">
+                   <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                    Neo Mentorship
+                  </h3>
+                   <span class="material-symbols-outlined text-gray-400 text-xl" title="Startup Tool">rocket_launch</span>
+                </div>
+
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                  A diverse mentorship community and startup accelerator that
+                  helps awesome junior engineers find mentorship.
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Flutter</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Firebase</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">GetX</span>
+                </div>
+
+                 <div class="mt-auto flex items-center gap-3">
+                  <a
+                    class="flex-1 inline-flex justify-center items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-purple-700 transition-colors shadow-sm"
+                    href="#"
+                  >
+                    <span class="material-symbols-outlined text-lg">install_mobile</span>
+                    Download App
+                  </a>
+                  <a
+                    class="inline-flex justify-center items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    href="#"
+                    title="View Code on GitHub"
+                  >
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center pt-4">
+            <button
+              class="px-8 py-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 inline-flex items-center gap-2 transform hover:scale-105"
+            >
+              Show More Projects
+              <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Learnings Section -->
+        <section class="space-y-12" id="learnings">
+          <h2
+            class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          >
+            My Learning Journey
+          </h2>
+          <p
+            class="mt-4 text-xl text-gray-600 dark:text-gray-400 max-w-3xl leading-relaxed"
+          >
+            Snippets from my daily dev log. I document the advanced techniques, specific bug fixes, and architectural patterns I discover while building applications.
+          </p>
+
+          <!-- Grid of cards -->
+          <div id="insightsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Article 1 -->
+            <article class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden card-shadow border border-transparent hover:border-primary transition duration-300 transform hover:scale-[1.01]">
+              <img src="https://placehold.co/600x320/8B5CF6/ffffff?text=FLUTTER+UI+PATTERNS" class="w-full h-40 object-cover" alt="Component-first UI speeds development thumbnail" />
+              <div class="p-6">
+                <h3 class="text-xl font-bold leading-snug text-gray-900 dark:text-white">Component-first UI speeds development</h3>
+                <p class="mt-1 text-xs text-gray-500 uppercase tracking-wide">Nov 25, 2024 • 3 min read</p>
+                <div class="flex flex-wrap gap-2 mt-4 text-xs">
+                  <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">#UI/UX</span>
+                  <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">#Flutter</span>
+                </div>
+                <p class="mt-4 text-base text-gray-600 dark:text-gray-400 leading-relaxed">Build reusable components first, then compose pages for scalable UI architecture.</p>
+                <button data-open="a1" class="open-article mt-6 inline-flex items-center gap-2 px-6 py-2 rounded-full text-sm font-semibold bg-primary text-white shadow-md shadow-primary/20 hover:bg-purple-700 transition duration-300">
+                  Read Insight
+                  <span class="material-symbols-outlined text-base">arrow_right_alt</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Article 2 -->
+            <article class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden card-shadow border border-transparent hover:border-primary transition duration-300 transform hover:scale-[1.01]">
+              <img src="https://placehold.co/600x320/8B5CF6/ffffff?text=RIVERPOD+STATE" class="w-full h-40 object-cover" alt="Avoiding State Management Pitfalls thumbnail" />
+              <div class="p-6">
+                <h3 class="text-xl font-bold leading-snug text-gray-900 dark:text-white">Avoiding State Management Pitfalls</h3>
+                <p class="mt-1 text-xs text-gray-500 uppercase tracking-wide">Nov 12, 2024 • 5 min read</p>
+                <div class="flex flex-wrap gap-2 mt-4 text-xs">
+                  <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">#Riverpod</span>
+                  <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">#Architecture</span>
+                </div>
+                <p class="mt-4 text-base text-gray-600 dark:text-gray-400 leading-relaxed">A deep dive into common errors when using Riverpod and how to structure your providers for safety.</p>
+                <button data-open="a2" class="open-article mt-6 inline-flex items-center gap-2 px-6 py-2 rounded-full text-sm font-semibold bg-primary text-white shadow-md shadow-primary/20 hover:bg-purple-700 transition duration-300">
+                  Read Insight
+                  <span class="material-symbols-outlined text-base">arrow_right_alt</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Article 3 (HIDDEN ON MOBILE) -->
+            <article class="hidden md:block bg-white dark:bg-gray-800 rounded-lg overflow-hidden card-shadow border border-transparent hover:border-primary transition duration-300 transform hover:scale-[1.01]">
+              <img src="https://placehold.co/600x320/8B5CF6/ffffff?text=BACKEND+INTEGRATION" class="w-full h-40 object-cover" alt="Supabase vs. Firebase for Flutter thumbnail" />
+              <div class="p-6">
+                <h3 class="text-xl font-bold leading-snug text-gray-900 dark:text-white">Supabase vs. Firebase for Flutter</h3>
+                <p class="mt-1 text-xs text-gray-500 uppercase tracking-wide">Dec 1, 2024 • 4 min read</p>
+                <div class="flex flex-wrap gap-2 mt-4 text-xs">
+                  <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">#Backend</span>
+                  <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">#Cloud</span>
+                </div>
+                <p class="mt-4 text-base text-gray-600 dark:text-gray-400 leading-relaxed">Comparing the pros and cons of using Supabase versus traditional Firebase for your next mobile project.</p>
+                <button data-open="a3" class="open-article mt-6 inline-flex items-center gap-2 px-6 py-2 rounded-full text-sm font-semibold bg-primary text-white shadow-md shadow-primary/20 hover:bg-purple-700 transition duration-300">
+                  Read Insight
+                  <span class="material-symbols-outlined text-base">arrow_right_alt</span>
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="text-center pt-8">
+            <a
+              class="px-8 py-3 rounded-full border border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 font-semibold hover:bg-gray-200/50 dark:hover:bg-gray-700/50 transition duration-300 inline-flex items-center gap-2 transform hover:scale-105"
+              href="#"
+            >
+              View All Learnings
+              <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section
+          class="bg-white dark:bg-gray-800 p-8 sm:p-12 rounded-lg card-shadow"
+          id="about"
+        >
+          <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-center"
+          >
+            <div class="md:col-span-2">
+              <h2
+                class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-6"
+              >
+                About Me
+              </h2>
+              <div
+                class="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-400 space-y-4"
+              >
+                <p>
+                  Hi, I'm **[Your Name Here]**, a dedicated
+                  **Flutter Mobile Developer** passionate about building
+                  beautiful, high-performance applications. My journey is rooted
+                  in the belief that great user experience starts with clean,
+                  efficient code that runs flawlessly across all platforms.
+                </p>
+                <p>
+                  I specialize in transforming complex requirements into smooth,
+                  engaging, and scalable mobile solutions. I thrive on solving
+                  difficult UI/UX challenges and leveraging the full power of the
+                  Dart ecosystem.
+                </p>
+              </div>
+            </div>
+            <!-- Photo Placeholder - Enhanced Styling -->
+            <div class="flex justify-center items-center">
+              <div
+                class="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-center p-4 ring-4 ring-primary ring-offset-8 ring-offset-background-light dark:ring-offset-background-dark card-shadow transform transition duration-300 hover:scale-105"
+              >
+                <span class="text-primary dark:text-purple-300 font-bold text-lg"
+                  >Your Photo / Avatar</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- What I Know Section -->
+        <section class="space-y-12">
+          <h2
+            class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          >
+            Core Expertise & Technologies
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+            <!-- Skill 1 -->
+            <div
+              class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow border border-gray-200 dark:border-gray-700 transition duration-300 transform hover:scale-[1.02] hover:ring-1 hover:ring-primary"
+            >
+              <div
+                class="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-full mb-2 sm:mb-4 shadow-md"
+              >
+                <span class="material-symbols-outlined text-white"
+                  >account_tree</span
+                >
+              </div>
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                State Management
+              </h3>
+              <p class="hidden sm:block text-gray-600 dark:text-gray-400 text-sm">
+                Adept at architecting complex applications using **BloC, Riverpod, and Provider**, ensuring scalable, event-driven state and maintainable codebases.
+              </p>
+            </div>
+            <!-- Skill 2 -->
+            <div
+              class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow border border-gray-200 dark:border-gray-700 transition duration-300 transform hover:scale-[1.02] hover:ring-1 hover:ring-primary"
+            >
+              <div
+                class="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-full mb-2 sm:mb-4 shadow-md"
+              >
+                <span class="material-symbols-outlined text-white"
+                  >cloud_queue</span
+                >
+              </div>
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Backend Integration
+              </h3>
+              <p class="hidden sm:block text-gray-600 dark:text-gray-400 text-sm">
+                Extensive experience in integrating with **Firebase (Firestore, Auth)** and **Supabase** for real-time data, user management, and scalable infrastructure.
+              </p>
+            </div>
+            <!-- Skill 3 -->
+            <div
+              class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow border border-gray-200 dark:border-gray-700 transition duration-300 transform hover:scale-[1.02] hover:ring-1 hover:ring-primary"
+            >
+              <div
+                class="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-full mb-2 sm:mb-4 shadow-md"
+              >
+                <span class="material-symbols-outlined text-white"
+                  >storage</span
+                >
+              </div>
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Offline Capabilities
+              </h3>
+              <p class="hidden sm:block text-gray-600 dark:text-gray-400 text-sm">
+                Proficient in utilizing **Hive** for fast, lightweight, and efficient
+                local data storage, crucial for robust offline-first architecture and seamless user experiences.
+              </p>
+            </div>
+            <!-- Skill 4 -->
+            <div
+              class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow border border-gray-200 dark:border-gray-700 transition duration-300 transform hover:scale-[1.02] hover:ring-1 hover:ring-primary"
+            >
+              <div
+                class="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-full mb-2 sm:mb-4 shadow-md"
+              >
+                <span class="material-symbols-outlined text-white"
+                  >desktop_windows</span
+                >
+              </div>
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Cross-Platform & Web
+              </h3>
+              <p class="hidden sm:block text-gray-600 dark:text-gray-400 text-sm">
+                Solid understanding of web technologies and Dart's compile-to-JS features for optimizing **Flutter web and desktop** deployments, enabling true cross-platform reach.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer
+      class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-12"
+      id="contact"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-8"
+      >
+        <div class="text-center space-y-3">
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
+            Looking for a Flutter Engineer?
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 max-w-xl">
+            I'm currently open to new opportunities. Let's discuss how I can contribute scalable, high-performance code to your mobile engineering team.
+          </p>
+        </div>
+        <a
+          class="px-8 py-3 rounded-full border border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-300 transform hover:scale-105"
+          href="mailto:contact@example.com"
+          >Get In Touch</a
+        >
+        <div class="flex items-center gap-6 pt-4">
+          <a
+            class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors transform hover:scale-110 duration-300"
+            href="#"
+            title="GitHub"
+          >
+            <span class="sr-only">GitHub</span>
+            <svg
+              aria-hidden="true"
+              class="h-6 w-6"
+              fill="currentColor"
+              role="img"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+              ></path>
+            </svg>
+          </a>
+          <a
+            class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors transform hover:scale-110 duration-300"
+            href="#"
+            title="LinkedIn"
+          >
+            <span class="sr-only">LinkedIn</span>
+            <svg
+              aria-hidden="true"
+              class="h-6 w-6"
+              fill="currentColor"
+              role="img"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors transform hover:scale-110 duration-300"
+            href="#"
+            title="Medium"
+          >
+            <span class="sr-only">Medium</span>
+            <svg
+              aria-hidden="true"
+              class="h-6 w-6"
+              fill="currentColor"
+              role="img"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7.45 18.53h-.08c-.2 0-.37-.08-.5-.22l-1.9-2.13v2.2c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-6.95c0-.28.22-.5.5-.5s.5.22.5.5v2.88l1.83 2.05c.14.13.3.22.5.22h.08c.2 0 .4-.08.54-.22l3.43-3.65c.13-.13.3-.2.48-.2h.1c.2 0 .38.08.52.2l3.75 4.9c.14.18.15.4.04.6s-.3.3-.5.3h-.05c-.18 0-.35-.07-.48-.2L12.3 13l-3.3 3.52c-.14.14-.32.22-.55.22zm11.27-10.23c-1.3 0-2.35 1.05-2.35 2.35s1.05 2.35 2.35 2.35 2.35-1.05 2.35-2.35-1.05-2.35-2.35-2.35zm-5.7 0c-1.2 0-2.18.98-2.18 2.18s.98 2.18 2.18 2.18 2.18-.98 2.18-2.18-.98-2.18-2.18-2.18zm-5.87 0C6 8.3 5.02 9.28 5.02 10.48s.98 2.18 2.18 2.18 2.18-.98 2.18-2.18S8.3 8.3 7.15 8.3zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"
+              ></path>
+            </svg>
+          </a>
+        </div>
+        <p class="text-xs text-gray-500 pt-8">
+          &copy; 2024 Flutter Developer Portfolio. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Inline reader drawer (Copied from homePage_article.html) -->
+    <div
+      id="readerDrawer"
+      class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center p-6 pointer-events-none"
+    >
+      <div
+        id="drawerBackdrop"
+        class="absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-300 pointer-events-auto"
+        aria-hidden="true"
+      ></div>
+
+      <article
+        id="drawerPanel"
+        class="relative reader bg-white dark:bg-gray-900 rounded-lg shadow-2xl max-h-[90vh] overflow-auto w-full sm:w-3/4 lg:w-2/3 pointer-events-auto p-8 transform transition duration-500"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="drawerTitle"
+      >
+        <button
+          id="drawerClose"
+          class="absolute top-4 right-4 rounded-full p-2 text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+          aria-label="Close article"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <header id="drawerHeader" class="mb-6">
+          <h3 id="drawerTitle" class="text-3xl font-bold text-gray-900 dark:text-white"></h3>
+          <p id="drawerMeta" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></p>
+        </header>
+
+        <div id="drawerBody" class="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300"></div>
+
+        <footer class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6 text-sm text-gray-500">
+          <div class="flex items-center justify-between">
+            <div>Author: <strong>[Your Name Here]</strong></div>
+            <div>Reading time: <span id="readingTime">—</span></div>
+          </div>
+        </footer>
+      </article>
+    </div>
+
+    <!-- JavaScript for Article Drawer & Mobile Menu -->
+    <script>
+      const articles = {
+        a1: {
+          title: "Component-first UI speeds development",
+          meta: "UI/UX • Flutter • November 25, 2024",
+          body: `<p>On a recent project, I began by composing small, reusable widgets rather than constructing full screens. Within hours, page-building became almost effortless. Each screen was simply an assembly of proven components, reducing bugs and making iterative UI work significantly faster.</p>
+               <p>Small components are easier to test, read, and reuse. A component-first approach creates long-term momentum in development. Focus on creating atomic Flutter widgets that can be styled and extended independently before moving on to complex screen layouts.</p>
+               <h4>Key takeaway for Flutter developers:</h4>
+               <ul>
+                 <li>**Atomic Design:** Break down large features into small, testable widgets.</li>
+                 <li>**Reusability:** Promote widgets into a central library for quick access.</li>
+                 <li>**Performance:** Smaller widget trees are generally easier for Flutter's rendering engine to optimize.</li>
+               </ul>`,
+        },
+        a2: {
+          title: "Avoiding State Management Pitfalls",
+          meta: "Riverpod • Architecture • November 12, 2024",
+          body: `<p>State management is the trickiest part of building scalable Flutter apps. I've found that over-scoping providers in Riverpod is the most common mistake. Instead of making everything a global provider, scope your data access as tightly as possible.</p>
+               <p>This prevents unnecessary rebuilds and makes it trivial to track where data is consumed and modified. By using autoDispose modifiers and family providers, you can ensure your app's memory footprint remains low and performance high.</p>
+               <p>A poorly managed state can cripple performance, leading to frustrating micro-stutters and increased memory usage that users immediately notice.</p>`,
+        },
+        a3: {
+          title: "Supabase vs. Firebase for Flutter",
+          meta: "Backend • Cloud • December 1, 2024",
+          body: `<p>Choosing a backend can be tough. Firebase is the established giant, offering incredible stability and integration with Flutter. However, Supabase offers the power of a real PostgreSQL database with a friendly real-time layer.</p>
+               <p>For projects requiring complex relational queries and an open-source ethos, Supabase is a strong contender. For projects needing a rapid MVP with no-code functions and a massive ecosystem, Firebase often wins.</p>
+               <p>I recommend mapping out your data structure complexity first. Simple key/value stores suggest Firestore/Firebase, while complex many-to-many relationships point toward Supabase's PostgreSQL.</p>`,
+        },
+      };
+
+      // --- Drawer Logic ---
+      const drawer = document.getElementById("readerDrawer");
+      const drawerBackdrop = document.getElementById("drawerBackdrop");
+      const drawerPanel = document.getElementById("drawerPanel");
+      const drawerTitle = document.getElementById("drawerTitle");
+      const drawerMeta = document.getElementById("drawerMeta");
+      const drawerBody = document.getElementById("drawerBody");
+      const readingTimeEl = document.getElementById("readingTime");
+      const closeBtn = document.getElementById("drawerClose");
+
+      function estimateReadingTime(html) {
+        const words = html.replace(/<[^>]+>/g, "").trim().split(/\s+/).length;
+        return Math.max(1, Math.round(words / 200)) + " min";
+      }
+
+      function openArticle(id) {
+        const a = articles[id];
+        drawerTitle.textContent = a.title;
+        drawerMeta.textContent = a.meta;
+        drawerBody.innerHTML = a.body;
+        readingTimeEl.textContent = estimateReadingTime(a.body);
+
+        drawer.classList.remove("hidden");
+        setTimeout(() => {
+          drawerBackdrop.classList.remove("opacity-0");
+          document.body.style.overflow = "hidden";
+        }, 10);
+      }
+
+      function closeArticle() {
+        drawerBackdrop.classList.add("opacity-0");
+        document.body.style.overflow = "";
+        setTimeout(() => {
+          drawer.classList.add("hidden");
+          drawerBody.innerHTML = "";
+        }, 300);
+      }
+
+      document.querySelectorAll(".open-article").forEach((btn) => {
+        btn.addEventListener("click", () => openArticle(btn.dataset.open));
+      });
+
+      closeBtn.addEventListener("click", closeArticle);
+      drawerBackdrop.addEventListener("click", closeArticle);
+
+      // --- Mobile Menu Logic ---
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const menu = document.getElementById('mobileMenu');
+      const menuLinks = document.querySelectorAll('.mobile-link');
+      const fab = document.getElementById('fab'); // Get the FAB element
+      let isMenuOpen = false;
+
+      function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+          menu.classList.remove('translate-x-full');
+          document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+          menuBtn.innerHTML = '<span class="material-symbols-outlined text-3xl">close</span>';
+          fab.style.display = 'none'; // Hide FAB when menu is open
+        } else {
+          menu.classList.add('translate-x-full');
+          document.body.style.overflow = '';
+          menuBtn.innerHTML = '<span class="material-symbols-outlined text-3xl">menu</span>';
+          fab.style.display = 'flex'; // Show FAB when menu is closed
+        }
+      }
+
+      menuBtn.addEventListener('click', toggleMenu);
+
+      // Close menu when a link is clicked
+      menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (isMenuOpen) toggleMenu();
+        });
+      });
+    </script>
+  </body>
+</html>

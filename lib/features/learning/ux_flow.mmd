@@ -1,0 +1,61 @@
+flowchart TD
+
+    %% 1. EXTERNAL SYSTEMS (Top/Distinct)
+    subgraph External_Systems [External Destinations]
+        Soc((Social Platforms))
+        DL((GitHub / App Stores))
+    end
+
+    %% 2. SCREEN SUBGRAPHS
+
+    %% Homepage Subgraph
+    subgraph Home_View [Homepage Screen]
+        H[Homepage Hero]
+        F[Contact Footer]
+    end
+
+    %% Project Domain Subgraphs
+    subgraph PList_View [Project List Screen]
+        PL[Project List Grid]
+    end
+
+    subgraph PDet_View [Project Detail Screen]
+        PD[Project Detail Content]
+    end
+
+    %% Article Domain Subgraphs
+    subgraph AList_View [Article List Screen]
+        AL[Article List Grid]
+    end
+
+    subgraph APage_View [Article Screen]
+        AP[Article Content]
+    end
+
+    %% 3. INTERACTIONS (Verb: Action)
+
+    %% Entry
+    User((User)) -->|Load: Webpage| H
+
+    %% Homepage Interactions
+    H -->|Scroll: To Bottom| F
+    H -->|Click: View Projects| PL
+    H -->|Click: View Learnings| AL
+    H -->|Click: Project Card| PD
+    H -->|Click: Article Card| AP
+
+    %% External Links from Home
+    H -->|Click: Social Icons| Soc
+    F -->|Click: Social Icons| Soc
+
+    %% Project List Interactions
+    PL -->|Click: Project Card| PD
+    PL -->|Click: Contact| F
+
+    %% Article List Interactions
+    AL -->|Click: Article Card| AP
+
+    %% Cross-Navigation (Forward intent only)
+    AP -->|Click: View Projects| H
+
+    %% External Downloads

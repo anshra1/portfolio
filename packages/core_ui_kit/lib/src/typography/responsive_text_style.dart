@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-import '../responsive/breakpoint_configuration.dart';
+import '../responsive_layout/breakpoint_configuration.dart';
 import 'font_scaling_configuration.dart';
-import '../responsive/screen_size_detector.dart';
-import '../responsive/window_size_class.dart';
+import '../responsive_layout/screen_size_detector.dart';
+import '../responsive_layout/window_size_class.dart';
 
 /// A text style that adapts based on screen size.
 ///

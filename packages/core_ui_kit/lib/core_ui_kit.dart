@@ -3,9 +3,9 @@ library;
 // Foundation
 export 'src/foundation/foundation.dart';
 // Responsive - Core
-export 'src/responsive/breakpoint_configuration.dart';
-export 'src/responsive/screen_size_detector.dart';
-export 'src/responsive/window_size_class.dart';
+export 'src/responsive_layout/breakpoint_configuration.dart';
+export 'src/responsive_layout/screen_size_detector.dart';
+export 'src/responsive_layout/window_size_class.dart';
 // Responsive - Typography
 export 'src/typography/font_scaling_configuration.dart';
 export 'src/typography/responsive_text_style.dart';
@@ -23,7 +23,6 @@ export 'src/themes/tokens/system_tokens.dart';
 export 'src/widgets/atoms/buttons/kit_base_button.dart';
 export 'src/widgets/atoms/buttons/kit_button_size.dart';
 export 'src/widgets/atoms/buttons/kit_button_state.dart';
-export 'src/widgets/atoms/buttons/kit_button_tokens.dart';
 export 'src/widgets/atoms/buttons/kit_destructive_button.dart';
 export 'src/widgets/atoms/buttons/kit_ghost_button.dart';
 export 'src/widgets/atoms/buttons/kit_icon_button.dart';

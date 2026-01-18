@@ -1,4 +1,4 @@
-// 
+//
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -6,10 +6,11 @@ import 'package:portfolio/core/services/analytics/analytics_service.dart';
 
 /// Concrete implementation of [AnalyticsService] using Firebase Analytics.
 class FirebaseAnalyticsService implements AnalyticsService {
-  final FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
+  late final FirebaseAnalytics _firebaseAnalytics;
 
   @override
   Future<void> initialize() async {
+    _firebaseAnalytics = FirebaseAnalytics.instance;
     // Firebase Analytics initializes automatically with Firebase.initializeApp(),
     // but we can log that it's ready or set default properties here.
     await _firebaseAnalytics.setAnalyticsCollectionEnabled(true);

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../responsive/window_size_class.dart';
+import '../responsive_layout/window_size_class.dart';
 
 /// Typography categories as defined by Material Design 3.
 enum TypographyCategory {

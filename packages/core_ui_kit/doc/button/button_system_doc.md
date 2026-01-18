@@ -13,7 +13,8 @@ The button system is built on a compositional architecture using `KitBaseButton`
 - **Declarative Logic:** Uses `WidgetStateProperty` for hover, focus, and disabled effects.
 - **Built-in Icons:** Native support for `leading` and `trailing` widgets with standardized spacing.
 - **Elevation Management:** Elevation automatically drops to zero when buttons are inactive/loading.
-- **Centralized Tokens:** All radii, padding, and elevation values are managed in `KitButtonTokens`.
+- **Shape System:** Uses `KitButtonShape` (`pill`, `rectangular`, `rounded`) to control border radius.
+- **Direct Customization:** Supports overriding shape, border radius, and elevation directly in constructors.
 
 ## Components
 

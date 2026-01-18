@@ -1,14 +1,9 @@
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_shape.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
-import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
-enum SocialBrand {
-  google,
-  apple,
-  facebook,
-  github,
-}
+enum SocialBrand { google, apple, facebook, github }
 
 /// A specialized button for social logins.
 /// specific styling for different providers.
@@ -17,7 +12,9 @@ class KitSocialButton extends StatelessWidget {
   final SocialBrand brand;
   final KitButtonState state;
   final String? text; // Optional override
-  final Size? fixedSize;
+  final KitButtonShape shape;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
 
   const KitSocialButton({
     super.key,
@@ -25,7 +22,9 @@ class KitSocialButton extends StatelessWidget {
     required this.brand,
     this.state = KitButtonState.enabled,
     this.text,
-    this.fixedSize,
+    this.shape = KitButtonShape.pill,
+    this.borderRadius,
+    this.padding,
   });
 
   @override
@@ -67,72 +66,36 @@ class KitSocialButton extends StatelessWidget {
         break;
     }
 
-        return KitBaseButton(
+    return KitBaseButton(
+      onPressed: onPressed,
+      state: state,
+      backgroundColor: bgColor,
+      foregroundColor: fgColor,
+      borderSide: border,
+      elevation: 1,
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      borderRadius: borderRadius,
+      shape: shape,
+      child: Row(
+        children: [
+          // Icon on the left
+          Icon(iconData, size: 24),
 
-          onPressed: onPressed,
-
-          state: state,
-
-          backgroundColor: bgColor,
-
-          foregroundColor: fgColor,
-
-          borderSide: border,
-
-          elevation: 1,
-
-          fixedSize: fixedSize,
-
-          minimumSize: const Size(double.infinity, 48), // Social buttons usually full width in auth forms
-
-          padding: KitButtonTokens.paddingCompact,
-
-          borderRadius: BorderRadius.circular(KitButtonTokens.radius),
-
-          child: Row(
-
-            children: [
-
-              // Icon on the left
-
-              Icon(iconData, size: 24),
-
-              
-
-              // Centered Text
-
-              Expanded(
-
-                child: Text(
-
-                  text ?? label,
-
-                  textAlign: TextAlign.center,
-
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-
-                  overflow: TextOverflow.ellipsis, // Prevent overflow
-
-                ),
-
-              ),
-
-              
-
-              // Invisible spacer on the right to balance the icon's width
-
-              // ensuring the text is perfectly centered relative to the button
-
-              const SizedBox(width: 24), 
-
-            ],
-
+          // Centered Text
+          Expanded(
+            child: Text(
+              text ?? label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+              overflow: TextOverflow.ellipsis, // Prevent overflow
+            ),
           ),
 
-        );
-
-      }
-
-    }
-
-    
+          // Invisible spacer on the right to balance the icon's width
+          // ensuring the text is perfectly centered relative to the button
+          const SizedBox(width: 24),
+        ],
+      ),
+    );
+  }
+}

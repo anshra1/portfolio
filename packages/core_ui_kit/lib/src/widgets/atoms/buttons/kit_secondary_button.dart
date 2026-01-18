@@ -1,7 +1,7 @@
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_base_button.dart';
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_shape.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_size.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
-import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A secondary button used for alternative actions.
@@ -13,8 +13,9 @@ class KitSecondaryButton extends StatelessWidget {
   final Widget? trailing;
   final KitButtonState state;
   final KitButtonSize size;
-  final Size? fixedSize;
-  final Size? minimumSize;
+  final KitButtonShape shape;
+  final double? elevation;
+  final BorderRadius? borderRadius;
 
   const KitSecondaryButton({
     super.key,
@@ -24,8 +25,9 @@ class KitSecondaryButton extends StatelessWidget {
     this.trailing,
     this.state = KitButtonState.enabled,
     this.size = KitButtonSize.medium,
-    this.fixedSize,
-    this.minimumSize,
+    this.shape = KitButtonShape.pill,
+    this.elevation = 0.0,
+    this.borderRadius,
   });
 
   @override
@@ -33,17 +35,16 @@ class KitSecondaryButton extends StatelessWidget {
     final theme = Theme.of(context);
     return KitBaseButton(
       onPressed: onPressed,
-      child: child,
       leading: leading,
       trailing: trailing,
       state: state,
       size: size,
+      shape: shape,
       backgroundColor: theme.colorScheme.secondaryContainer,
       foregroundColor: theme.colorScheme.onSecondaryContainer,
-      elevation: KitButtonTokens.elevationNone,
-      fixedSize: fixedSize,
-      minimumSize: minimumSize,
-      borderRadius: BorderRadius.circular(KitButtonTokens.radius),
+      elevation: elevation,
+      borderRadius: borderRadius,
+      child: child,
     );
   }
 }

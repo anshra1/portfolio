@@ -5,11 +5,8 @@ class HomePageTablet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Tablet Home')),
-      body: const Center(
-        child: Text('Tablet Layout'),
-      ),
+    return Container(
+      child: null,
     );
   }
 }

@@ -1,10 +1,10 @@
+import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_shape.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_size.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
-import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A customizable base button that serves as the foundation for other button types.
-/// Uses [ElevatedButton] internally to leverage Material Design's built-in 
+/// Uses [ElevatedButton] internally to leverage Material Design's built-in
 /// behaviors for hover, focus, and elevation.
 class KitBaseButton extends StatelessWidget {
   /// The callback that is called when the button is tapped or otherwise activated.
@@ -27,7 +27,10 @@ class KitBaseButton extends StatelessWidget {
   /// The size of the button. Defaults to [KitButtonSize.medium].
   final KitButtonSize size;
 
-  /// The background color of the button. 
+  /// The shape of the button. Defaults to [KitButtonShape.pill].
+  final KitButtonShape shape;
+
+  /// The background color of the button.
   /// Can be a [Color] or a [WidgetStateProperty<Color?>].
   final dynamic backgroundColor;
 
@@ -40,20 +43,15 @@ class KitBaseButton extends StatelessWidget {
   final dynamic borderSide;
 
   /// The border radius of the button.
+  /// If provided, this overrides the [shape] parameter.
   final BorderRadius? borderRadius;
 
-  /// The padding of the button content. 
+  /// The padding of the button content.
   /// If null, it is determined by [size].
   final EdgeInsetsGeometry? padding;
 
   /// The elevation of the button.
   final double? elevation;
-
-  /// The minimum size of the button.
-  final Size? minimumSize;
-
-  /// The fixed size of the button.
-  final Size? fixedSize;
 
   /// Focus node for keyboard interaction.
   final FocusNode? focusNode;
@@ -66,14 +64,13 @@ class KitBaseButton extends StatelessWidget {
     this.trailing,
     this.state = KitButtonState.enabled,
     this.size = KitButtonSize.medium,
+    this.shape = KitButtonShape.pill,
     this.backgroundColor,
     this.foregroundColor,
     this.borderSide,
     this.borderRadius,
     this.padding,
     this.elevation,
-    this.minimumSize,
-    this.fixedSize,
     this.focusNode,
   });
 
@@ -103,36 +100,50 @@ class KitBaseButton extends StatelessWidget {
     // If disabled or loading, we remove elevation to make it look "flat" and inactive
     final double? effectiveElevation = (isDisabled || isLoading) ? 0.0 : elevation;
 
+    OutlinedBorder effectiveShape;
+    if (borderRadius != null) {
+      effectiveShape = RoundedRectangleBorder(borderRadius: borderRadius!);
+    } else {
+      switch (shape) {
+        case KitButtonShape.pill:
+          effectiveShape = const StadiumBorder();
+          break;
+        case KitButtonShape.rectangular:
+          effectiveShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(4));
+          break;
+        case KitButtonShape.rounded:
+          effectiveShape = RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          );
+          break;
+      }
+    }
+
     return ElevatedButton(
       onPressed: effectiveOnPressed,
       focusNode: focusNode,
-      style: ElevatedButton.styleFrom(
-        elevation: effectiveElevation,
-        padding: effectivePadding,
-        minimumSize: minimumSize,
-        fixedSize: fixedSize,
-        shape: borderRadius != null
-            ? RoundedRectangleBorder(borderRadius: borderRadius!)
-            : null,
-      ).copyWith(
-        backgroundColor: resolveColor(backgroundColor),
-        foregroundColor: resolveColor(foregroundColor),
-        side: resolveBorder(borderSide),
-      ),
-      child: isLoading 
-          ? _buildLoadingIndicator(context) 
-          : _buildContent(),
+      style:
+          ElevatedButton.styleFrom(
+            elevation: effectiveElevation,
+            padding: effectivePadding,
+            shape: effectiveShape,
+          ).copyWith(
+            backgroundColor: resolveColor(backgroundColor),
+            foregroundColor: resolveColor(foregroundColor),
+            side: resolveBorder(borderSide),
+          ),
+      child: isLoading ? _buildLoadingIndicator(context) : _buildContent(),
     );
   }
 
   EdgeInsetsGeometry _getPaddingForSize(KitButtonSize size) {
     switch (size) {
       case KitButtonSize.small:
-        return KitButtonTokens.paddingSmall;
-      case KitButtonSize.large:
-        return KitButtonTokens.paddingLarge;
+        return const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
       case KitButtonSize.medium:
-      return KitButtonTokens.paddingMedium;
+        return const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
+      case KitButtonSize.large:
+        return const EdgeInsets.symmetric(horizontal: 32, vertical: 16);
     }
   }
 
@@ -160,7 +171,7 @@ class KitBaseButton extends StatelessWidget {
   Widget _buildLoadingIndicator(BuildContext context) {
     // We try to match the spinner color to the foreground color (text color)
     final theme = Theme.of(context);
-    
+
     Color spinnerColor;
     if (foregroundColor is Color) {
       spinnerColor = foregroundColor;

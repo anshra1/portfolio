@@ -5,11 +5,8 @@ class HomePageMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Mobile Home')),
-      body: const Center(
-        child: Text('Mobile Layout'),
-      ),
+    return Container(
+      child: null,
     );
   }
 }

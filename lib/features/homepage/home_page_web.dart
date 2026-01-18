@@ -5,11 +5,8 @@ class HomePageWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Web Home')),
-      body: const Center(
-        child: Text('Web / Desktop Layout'),
-      ),
+    return Container(
+      child: null,
     );
   }
 }

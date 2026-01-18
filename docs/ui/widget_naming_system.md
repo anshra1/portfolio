@@ -8,6 +8,42 @@ This document is the **single source of truth** for the Presentation Layer.
 
 ---
 
+## 0.1 UI Rules Integration
+
+This widget naming system works in conjunction with the UI architectural rules. Each widget category must follow specific rule documents:
+
+### Widget Categories → UI Rules Mapping
+
+| Widget Category | UI Rule Document | What It Must Follow |
+|----------------|------------------|---------------------|
+| `_visual`, `_unit`, `_action`, `_control`, `_input`, `_view` | [Component Rules](ui_rules/component.md) | Size-agnostic, container-neutral, no breakpoint logic |
+| `_layout` | [Layout Rules](ui_rules/layout.md) | Control space/structure, know breakpoints, arrange components |
+| `_page` | [Page Rules](ui_rules/page.md) | Compose sections, own routing, delegate to layouts |
+
+### Quick Reference
+
+**All widgets except `_layout` and `_page` are "components"** and must:
+- ✅ Be size-agnostic (no width/height)
+- ✅ Work in any container (ListView, GridView, Row, Column)
+- ✅ Not know about breakpoints
+- ✅ Not use MediaQuery for sizing
+- ✅ Degrade gracefully
+
+**`_layout` widgets** must:
+- ✅ Know about breakpoints
+- ✅ Control component sizing and spacing
+- ✅ Arrange `_view` widgets
+
+**`_page` widgets** must:
+- ✅ Compose sections
+- ✅ Delegate to `_layout` for responsive behavior
+- ✅ Not style components
+- ✅ Not contain responsive logic directly
+
+**See also:** [Responsive Rules](ui_rules/responsive.md) for breakpoint patterns and responsive design principles.
+
+---
+
 ## 1. Core Philosophy (Non‑Negotiable)
 
 1. **Rendering and Intent are separate concerns.**

@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:portfolio/core/di/injection.dart';
 import 'package:portfolio/core/services/talker_service.dart';
-import 'package:portfolio/features/homepage/home_page.dart';
+import 'package:portfolio/features/homepage/presentation/page/home_page.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 final appRouter = GoRouter(

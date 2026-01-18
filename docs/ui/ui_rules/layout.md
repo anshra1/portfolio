@@ -4,6 +4,37 @@
 
 ---
 
+## Widget System Mapping
+
+The following **widget category** from the [Widget Naming System](../widget_naming_system.md) represents **"layouts"** and **MUST** follow all rules in this document:
+
+| Widget Category | Suffix | Purpose |
+|----------------|--------|---------|
+| **Responsive Layout** | `_layout` | Breakpoint-specific arrangement of components |
+
+**Examples:**
+- `home_layout_mobile.dart` - Mobile responsive layout
+- `home_layout_tablet.dart` - Tablet responsive layout
+- `home_layout_web.dart` - Desktop/web responsive layout
+
+**Layout widgets are responsible for:**
+- ✅ Knowing about breakpoints
+- ✅ Arranging components (`_view`, `_unit`, etc.)
+- ✅ Defining spacing between components
+- ✅ Controlling component sizes
+- ✅ Structural organization
+
+**Layout widgets must NOT:**
+- ❌ Style components internally
+- ❌ Contain business logic
+- ❌ Listen to state (that's `_view`'s job)
+
+**Related:**
+- See [Component Rules](component.md) for what components can/cannot do
+- See [Page Rules](page.md) for how pages delegate to layouts
+
+---
+
 ## Table of Contents
 
 1. [Layout Responsibilities](#layout-responsibilities)

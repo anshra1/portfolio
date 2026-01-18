@@ -4,6 +4,53 @@
 
 ---
 
+## Widget System Mapping
+
+The following **widget category** from the [Widget Naming System](../widget_naming_system.md) represents **"pages"** and **MUST** follow all rules in this document:
+
+| Widget Category | Suffix | Purpose |
+|----------------|--------|---------|
+| **Page** | `_page` | Screen entry point and composition root |
+
+**Examples:**
+- `home_page.dart` - Home screen entry point
+- `dashboard_page.dart` - Dashboard screen entry point
+- `settings_page.dart` - Settings screen entry point
+
+**Page widgets are responsible for:**
+- ✅ Composition of sections
+- ✅ Routing and navigation
+- ✅ Data wiring (BlocProvider, state management setup)
+- ✅ Delegating to `_layout` for responsive behavior
+- ✅ Scaffold/AppBar setup
+
+**Page widgets must NOT:**
+- ❌ Define visual tokens (colors, spacing values)
+- ❌ Style components
+- ❌ Contain responsive logic directly (delegate to `_layout`)
+- ❌ Listen to state (that's `_view`'s job)
+- ❌ Contain business logic
+
+**Typical page structure:**
+```dart
+_page
+  ↓ Provides BlocProvider/DI
+  ↓ Sets up Scaffold
+  ↓ Delegates to:
+_layout (responsive variants)
+  ↓ Arranges:
+_view (state-driven sections)
+  ↓ Composes:
+_unit, _visual, _action, _control, _input
+```
+
+**Related:**
+- See [Layout Rules](layout.md) for what layouts do
+- See [Component Rules](component.md) for what components do
+- See [Responsive Rules](responsive.md) for breakpoint patterns
+
+---
+
 ## Table of Contents
 
 1. [Page Responsibilities](#page-responsibilities)

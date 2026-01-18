@@ -4,6 +4,27 @@
 
 ---
 
+## Widget System Mapping
+
+The following **widget categories** from the [Widget Naming System](../widget_naming_system.md) are considered **"components"** and **MUST** follow all rules in this document:
+
+| Widget Category | Suffix | Component Type |
+|----------------|--------|----------------|
+| **Static Widget** | `_visual` | Pure static components with no parameters |
+| **Reusable Widget** | `_unit` | Display-only components that accept values |
+| **User Action** | `_action` | Components that trigger logic layer intents |
+| **Local Control** | `_control` | Components with ephemeral UI state |
+| **Controller Adapter** | `_input` | Components that manage UI controllers |
+| **State-Driven Widget** | `_view` | Components that listen to state (special case*) |
+
+**Special case for `_view`:** While `_view` widgets follow component rules (size-agnostic, container-neutral, etc.), they have one exception: they can listen to state via BlocBuilder/Consumer and perform conditional rendering. All other component rules still apply.
+
+**NOT components** (exempt from these rules):
+- ❌ `_layout` - Responsive layouts (follow [Layout Rules](layout.md))
+- ❌ `_page` - Screen entry points (follow [Page Rules](page.md))
+
+---
+
 ## Table of Contents
 
 1. [Component Responsibilities](#component-responsibilities)

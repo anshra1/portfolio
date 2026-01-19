@@ -1,13 +1,14 @@
 import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/typography/typography.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HeroTitleVisual extends StatelessWidget {
   const HeroTitleVisual({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final baseStyle = context.displayMedium.copyWith(
+    final baseStyle = GoogleFonts.inter(
+      textStyle: context.displayMedium,
       fontWeight: FontWeight.w800,
       height: 1.1,
       letterSpacing: -0.5,

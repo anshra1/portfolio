@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/theme/theme.dart' show MaterialTheme;
 
 /// Centralized definition of application seed colors.
-/// These seeds are used by the theme generator to create the full color palette.
+///
+/// DEPRECATED: This class is no longer used by the new [MaterialTheme] system.
+/// Refer to [MaterialTheme] in `lib/core/theme/theme.dart` for color definitions.
+@Deprecated('Use MaterialTheme in theme.dart instead')
 class AppColors {
   const AppColors._();
 

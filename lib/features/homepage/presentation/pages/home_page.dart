@@ -9,18 +9,20 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenSizeBuilder(
-      builder: (context, size) {
-        if (size.isDesktop) {
-          return const WebLayout();
-        }
+    return Scaffold(
+      body: ScreenSizeBuilder(
+        builder: (context, size) {
+          if (size.isDesktop) {
+            return const WebLayout();
+          }
 
-        if (size.isTablet) {
-          return const TabletLayout();
-        }
+          if (size.isTablet) {
+            return const TabletLayout();
+          }
 
-        return const MobileLayout();
-      },
+          return const MobileLayout();
+        },
+      ),
     );
   }
 }

@@ -1,28 +1,17 @@
-import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/app_colors.dart';
+import 'package:portfolio/core/theme/app_typography.dart';
 import 'package:portfolio/core/theme/density/density.dart';
+import 'package:portfolio/core/theme/theme.dart';
 
 /// Centralized manager for Application Themes.
 ///
-// ignore: comment_references
-/// Uses [core_ui_kit] generators to produce consistent Light and Dark themes
-/// based on the seeds defined in [AppColors].
+/// Uses the manual [MaterialTheme] class to produce consistent Light and Dark themes.
 class AppTheme {
   const AppTheme._();
 
-  static const _seeds = ReferenceTokens(
-    primary: AppColors.primary,
-    secondary: AppColors.secondary,
-    tertiary: AppColors.tertiary,
-    neutral: AppColors.neutral,
-    neutralVariant: AppColors.neutralVariant,
-    error: AppColors.error,
-    success: AppColors.success,
-    warning: AppColors.warning,
-    info: AppColors.info,
-  );
+  /// The centralized material theme definition.
+  static const _materialTheme = MaterialTheme(AppTypography.base);
 
   /// Returns the visual density based on the platform.
   static VisualDensity get _density {
@@ -38,11 +27,7 @@ class AppTheme {
 
   /// The main Light Theme for the application.
   static ThemeData get light {
-    final tokens = const StandardLightThemeGenerator().generate(seeds: _seeds);
-    return SystemTokensConverter.toThemeData(
-      tokens,
-      brightness: Brightness.light,
-    ).copyWith(
+    return _materialTheme.lightHighContrast().copyWith(
       visualDensity: _density,
       extensions: [AppDensityTokens.adaptive(defaultTargetPlatform)],
     );
@@ -50,11 +35,7 @@ class AppTheme {
 
   /// The main Dark Theme for the application.
   static ThemeData get dark {
-    final tokens = const StandardDarkThemeGenerator().generate(seeds: _seeds);
-    return SystemTokensConverter.toThemeData(
-      tokens,
-      brightness: Brightness.dark,
-    ).copyWith(
+    return _materialTheme.darkHighContrast().copyWith(
       visualDensity: _density,
       extensions: [AppDensityTokens.adaptive(defaultTargetPlatform)],
     );

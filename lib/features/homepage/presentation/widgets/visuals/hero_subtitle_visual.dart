@@ -1,4 +1,6 @@
+import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/theme/typography/typography.dart';
 
 class HeroSubtitleVisual extends StatelessWidget {
   const HeroSubtitleVisual({super.key});
@@ -7,7 +9,7 @@ class HeroSubtitleVisual extends StatelessWidget {
   Widget build(BuildContext context) {
     return SelectableText(
       'Building robust, intuitive, and beautiful cross-platform applications. Explore my journey from elegant UI to powerful backend integrations.',
-      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+      style: context.titleLarge.copyWith(
         color: Theme.of(context).colorScheme.onSurfaceVariant,
         height: 1.5,
         fontWeight: FontWeight.w400,

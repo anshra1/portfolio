@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/theme/density/density_extensions.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/actions/hero_primary_action.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/actions/hero_secondary_action.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/units/social_links_unit.dart';
@@ -16,31 +17,31 @@ class TabletLayout extends StatelessWidget {
           // Hero Section
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32,
-              vertical: 64,
+            padding: EdgeInsets.symmetric(
+              horizontal: context.spacing.xl,
+              vertical: context.spacing.xxl + context.spacing.md,
             ),
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 900),
                 child: Column(
                   children: [
-                    const SizedBox(height: 40),
+                    SizedBox(height: context.spacing.xl + context.spacing.sm),
                     const HeroTitleVisual(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: context.spacing.lg),
                     const HeroSubtitleVisual(),
-                    const SizedBox(height: 40),
+                    SizedBox(height: context.spacing.xl + context.spacing.sm),
                     // Actions in Row for tablet
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         HeroPrimaryAction(onPressed: () {}),
-                        const SizedBox(width: 16),
+                        SizedBox(width: context.spacing.md),
                         HeroSecondaryAction(onPressed: () {}),
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    SizedBox(height: context.spacing.xl),
                     const SocialLinksUnit(),
                   ],
                 ),

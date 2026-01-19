@@ -1,12 +1,14 @@
+import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/theme/density/density_extensions.dart';
+import 'package:portfolio/core/theme/typography/typography.dart';
 
 class HeroSecondaryAction extends StatelessWidget {
-  final VoidCallback onPressed;
-
   const HeroSecondaryAction({
-    super.key,
     required this.onPressed,
+    super.key,
   });
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +19,17 @@ class HeroSecondaryAction extends StatelessWidget {
         side: BorderSide(
           color: Theme.of(context).colorScheme.outline,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+        padding: EdgeInsets.symmetric(
+          horizontal: context.spacing.xl,
+          vertical: context.spacing.lg,
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(context.radius.xl * 10),
         ),
       ),
-      child: const Text(
+      child: Text(
         'My Learnings',
-        style: TextStyle(
-          fontSize: 16,
+        style: context.labelLarge.copyWith(
           fontWeight: FontWeight.w600,
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density_extensions.dart';
 
 class HeroPrimaryAction extends StatelessWidget {
   const HeroPrimaryAction({
@@ -11,33 +10,19 @@ class HeroPrimaryAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(
-          horizontal: context.spacing.xl,
-          vertical: context.spacing.lg,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(context.radius.xl * 10),
-        ),
-        elevation: 8,
-        shadowColor: Theme.of(context).primaryColor.withValues(alpha: 0.3),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'View My Projects',
-            style: context.labelLarge.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: KitPrimaryButton(
+        onPressed: onPressed,
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        trailing: const Icon(Icons.arrow_right_alt, size: 20),
+        child: Text(
+          'View My Projects',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
-          SizedBox(width: context.spacing.sm),
-          Icon(Icons.arrow_right_alt, size: context.sizes.iconSm),
-        ],
+        ),
       ),
     );
   }

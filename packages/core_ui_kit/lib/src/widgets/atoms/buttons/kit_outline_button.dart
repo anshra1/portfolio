@@ -14,6 +14,7 @@ class KitOutlineButton extends StatelessWidget {
   final KitButtonShape shape;
   final Color? color;
   final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
 
   const KitOutlineButton({
     super.key,
@@ -25,6 +26,7 @@ class KitOutlineButton extends StatelessWidget {
     this.shape = KitButtonShape.pill,
     this.color,
     this.borderRadius,
+    this.padding,
   });
 
   @override
@@ -48,6 +50,7 @@ class KitOutlineButton extends StatelessWidget {
         return BorderSide(color: effectiveColor);
       }),
       borderRadius: borderRadius,
+      padding: padding,
       child: child,
     );
   }

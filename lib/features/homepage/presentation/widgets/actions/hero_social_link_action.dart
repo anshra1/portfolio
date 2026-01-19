@@ -1,5 +1,5 @@
+import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density_extensions.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class HeroSocialLinkAction extends StatelessWidget {
@@ -15,16 +15,11 @@ class HeroSocialLinkAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return KitIconButton(
       onPressed: () => launchUrlString(url),
       icon: Icon(icon),
       tooltip: label,
-      style: IconButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
-        hoverColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-        padding: EdgeInsets.all(context.spacing.sm + context.spacing.xs),
-      ),
-      iconSize: context.sizes.iconMd,
+      iconSize: 24, // Standard size per request
     );
   }
 }

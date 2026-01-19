@@ -14,6 +14,7 @@ class KitPrimaryButton extends StatelessWidget {
   final KitButtonShape shape;
   final double? elevation;
   final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
 
   const KitPrimaryButton({
     super.key,
@@ -25,6 +26,7 @@ class KitPrimaryButton extends StatelessWidget {
     this.shape = KitButtonShape.pill,
     this.elevation = 2.0,
     this.borderRadius,
+    this.padding,
   });
 
   @override
@@ -40,6 +42,7 @@ class KitPrimaryButton extends StatelessWidget {
       foregroundColor: theme.colorScheme.onPrimary,
       elevation: elevation,
       borderRadius: borderRadius,
+      padding: padding,
       child: child,
     );
   }

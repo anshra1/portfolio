@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:portfolio/features/homepage/presentation/widgets/layouts/hero_actions_layout.dart'; // Missing file
-import 'package:portfolio/features/homepage/presentation/widgets/units/social_links_unit.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/visuals/hero_subtitle_visual.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/visuals/hero_title_visual.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_subtitle_visual.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_title_visual.dart';
+// import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_actions_layout.dart'; // Missing file
+import 'package:portfolio/features/homepage/presentation/widgets/hero_section/social_links_unit.dart';
 
-class HeroLayout extends StatelessWidget {
-  const HeroLayout({super.key});
+class HeroSection extends StatelessWidget {
+  const HeroSection({super.key});
 
   @override
   Widget build(BuildContext context) {

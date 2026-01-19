@@ -23,7 +23,7 @@ This widget naming system works in conjunction with the UI architectural rules. 
 
 ### Quick Reference
 
-**Pure components** (`_visual`, `_unit`, `_action`, `_control`, `_input`) must:
+**Pure components** (`_visual`, `_unit`, `_action`, `_control`, `_input`, `_section`) must:
 - ✅ Be size-agnostic (no width/height)
 - ✅ Work in any container (ListView, GridView, Row, Column)
 - ✅ Not know about breakpoints
@@ -301,6 +301,7 @@ Every widget **class and file** MUST follow:
 | `_action` | User Action | Triggers logic layer intent |
 | `_control` | Local Control | Ephemeral UI state only |
 | `_input` | Controller Adapter | Owns UI controllers |
+| `_section` | Section Container | Top-level section composing other widgets |
 
 ---
 
@@ -449,6 +450,41 @@ class ProfileStatRowUnit extends StatelessWidget {
 - `stat_display_unit.dart`
 
 > **Note:** `kit_` widgets are implicitly primitive and may omit `_unit` suffix.
+
+---
+
+### 4.2b Section Container — `_section`
+
+**Definition:** A high-level composite widget that defines a major area of the page (e.g. Hero, Footer).
+
+**Purpose:** Groups multiple smaller components (`_visual`, `_action`, `_unit`) into a coherent block.
+
+**Rules:**
+✅ **Allowed:**
+- Compose multiple widgets
+- Use `context` (Theme, Breakpoints via Layouts)
+
+❌ **Forbidden:**
+- Business Logic (use `_view` if it needs to listen to BLoC)
+- Complex Layout Logic (delegate to `_layout` if complex)
+
+**Examples:**
+```dart
+// ✅ VALID
+class HeroSection extends StatelessWidget {
+  const HeroSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        HeroTitleVisual(),
+        HeroActionsLayout(),
+      ],
+    );
+  }
+}
+```
 
 ---
 

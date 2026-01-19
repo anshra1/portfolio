@@ -21,6 +21,7 @@ export 'src/typography/responsive_text_style.dart';
 export 'src/typography/responsive_tokens.dart';
 // Widgets
 export 'src/widgets/atoms/buttons/kit_base_button.dart';
+export 'src/widgets/atoms/buttons/kit_button_shape.dart';
 export 'src/widgets/atoms/buttons/kit_button_state.dart';
 export 'src/widgets/atoms/buttons/kit_destructive_button.dart';
 export 'src/widgets/atoms/buttons/kit_ghost_button.dart';
@@ -30,6 +31,7 @@ export 'src/widgets/atoms/buttons/kit_outline_button.dart';
 export 'src/widgets/atoms/buttons/kit_primary_button.dart';
 export 'src/widgets/atoms/buttons/kit_secondary_button.dart';
 export 'src/widgets/atoms/buttons/kit_social_button.dart';
+export 'src/widgets/atoms/buttons/kit_tertiary_button.dart';
 export 'src/widgets/atoms/inputs/kit_text_field.dart';
 export 'src/widgets/atoms/loaders/kit_loader.dart';
 export 'src/widgets/atoms/separators/kit_divider.dart';

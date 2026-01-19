@@ -3,9 +3,9 @@ import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_shape.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
 import 'package:flutter/material.dart';
 
-/// A secondary button used for alternative actions.
-/// Typically has a muted background color.
-class KitSecondaryButton extends StatelessWidget {
+/// A tertiary button used for contrasting accents or less prominent actions.
+/// Typically uses the tertiary container color from the theme.
+class KitTertiaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
   final Widget? leading;
@@ -16,7 +16,7 @@ class KitSecondaryButton extends StatelessWidget {
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
 
-  const KitSecondaryButton({
+  const KitTertiaryButton({
     super.key,
     required this.onPressed,
     required this.child,
@@ -38,8 +38,8 @@ class KitSecondaryButton extends StatelessWidget {
       trailing: trailing,
       state: state,
       shape: shape,
-      backgroundColor: theme.colorScheme.secondaryContainer,
-      foregroundColor: theme.colorScheme.onSecondaryContainer,
+      backgroundColor: theme.colorScheme.tertiaryContainer,
+      foregroundColor: theme.colorScheme.onTertiaryContainer,
       elevation: elevation,
       borderRadius: borderRadius,
       padding: padding,

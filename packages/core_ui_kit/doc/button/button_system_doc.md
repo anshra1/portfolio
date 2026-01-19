@@ -24,24 +24,27 @@ High-emphasis button for main actions. Uses `primary` color and `elevationPrimar
 ### 2. KitSecondaryButton
 Medium-emphasis action. Uses `secondaryContainer` colors and is flat by default.
 
-### 3. KitDestructiveButton
+### 3. KitTertiaryButton
+Contrasting accent or less prominent action. Uses `tertiaryContainer` colors and is flat by default.
+
+### 4. KitDestructiveButton
 For dangerous actions (Delete/Remove).
 - **Default:** Solid error color with `elevationPrimary`.
 - **Outlined:** Transparent with an error-colored border.
 
-### 4. KitOutlineButton
+### 5. KitOutlineButton
 Medium-low emphasis. Transparent background with a themed border.
 
-### 5. KitGhostButton
+### 6. KitGhostButton
 Low-emphasis text-only button. No background or border.
 
-### 6. KitLinkButton
+### 7. KitLinkButton
 Hyperlink style using `TextButton` foundation for perfect inline alignment.
 
-### 7. KitIconButton
+### 8. KitIconButton
 Standardized circular or square icon buttons. Wraps `IconButton` but adheres to kit `iconSize`.
 
-### 8. KitSocialButton
+### 9. KitSocialButton
 Standardized login buttons for Google, Apple, Facebook, and GitHub. Uses a balanced `Row` layout to ensure branding icons and text are perfectly aligned without overlap.
 
 ## Usage Example

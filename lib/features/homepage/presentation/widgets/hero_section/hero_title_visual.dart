@@ -15,8 +15,8 @@ class HeroTitleVisual extends StatelessWidget {
       color: Theme.of(context).colorScheme.onSurface,
     );
 
-    return SelectableText.rich(
-      TextSpan(
+    return RichText(
+      text: TextSpan(
         style: baseStyle,
         children: [
           const TextSpan(text: 'Crafting Experiences with a '),

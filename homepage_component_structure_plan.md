@@ -24,14 +24,16 @@
 ## 3. ProjectsSection
 *Responsibility: Showcasing portfolio items*
 - `ProjectsSection` (Main Container)
-    - `SectionHeader` (Title + Subtitle)
-    - `ProjectGrid`
-    - `ProjectCard`
-        - `ProjectThumbnail`
-        - `ProjectCardHeader`
-        - `ProjectTechStack`
-        - `ProjectActionButtons`
-    - `ViewMoreButton`
+    - `SectionHeader` (Title "My Flutter Creations")
+    - `ProjectGrid` (Responsive Grid: 1col mobile, 2col tablet, 3col desktop)
+        - `ProjectCard` (Repeated)
+            - `ProjectThumbnail` (Image with hover gradient)
+            - `ProjectCardContent` (Padding container)
+                - `ProjectCardHeader` (Title + AppType Icon)
+                - `ProjectDescription` (Truncated text)
+                - `ProjectTechStack` (Wrap of Chips)
+                - `ProjectActionButtons` (Download + GitHub Link)
+    - `ViewMoreProjectsButton` (Centered "Show More" button)
 
 ## 4. LearningsSection
 *Responsibility: Educational content and blog snippets*

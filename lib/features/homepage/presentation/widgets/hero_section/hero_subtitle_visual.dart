@@ -8,10 +8,10 @@ class HeroSubtitleVisual extends StatelessWidget {
   Widget build(BuildContext context) {
     return SelectableText(
       'Building robust, intuitive, and beautiful cross-platform applications. Explore my journey from elegant UI to powerful backend integrations.',
-      style: context.titleMedium.copyWith(
+      style: context.titleLarge.copyWith(
         color: Theme.of(context).colorScheme.onSurfaceVariant,
 
-        fontWeight: FontWeight.w400,
+        // fontWeight: FontWeight.w400,
       ),
       textAlign: TextAlign.center,
     );

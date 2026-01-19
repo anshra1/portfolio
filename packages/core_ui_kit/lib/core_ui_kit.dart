@@ -6,10 +6,6 @@ export 'src/foundation/foundation.dart';
 export 'src/responsive_layout/breakpoint_configuration.dart';
 export 'src/responsive_layout/screen_size_detector.dart';
 export 'src/responsive_layout/window_size_class.dart';
-// Responsive - Typography
-export 'src/typography/font_scaling_configuration.dart';
-export 'src/typography/responsive_text_style.dart';
-export 'src/typography/responsive_tokens.dart';
 // Converters
 export 'src/themes/converters/system_tokens_converter.dart';
 // Generators
@@ -19,9 +15,12 @@ export 'src/themes/generators/theme_generator.dart';
 // Tokens
 export 'src/themes/tokens/reference_tokens.dart';
 export 'src/themes/tokens/system_tokens.dart';
+// Responsive - Typography
+export 'src/typography/font_scaling_configuration.dart';
+export 'src/typography/responsive_text_style.dart';
+export 'src/typography/responsive_tokens.dart';
 // Widgets
 export 'src/widgets/atoms/buttons/kit_base_button.dart';
-export 'src/widgets/atoms/buttons/kit_button_size.dart';
 export 'src/widgets/atoms/buttons/kit_button_state.dart';
 export 'src/widgets/atoms/buttons/kit_destructive_button.dart';
 export 'src/widgets/atoms/buttons/kit_ghost_button.dart';

@@ -16,23 +16,37 @@ This widget naming system works in conjunction with the UI architectural rules. 
 
 | Widget Category | UI Rule Document | What It Must Follow |
 |----------------|------------------|---------------------|
-| `_visual`, `_unit`, `_action`, `_control`, `_input`, `_view` | [Component Rules](ui_rules/component.md) | Size-agnostic, container-neutral, no breakpoint logic |
+| `_visual`, `_unit`, `_action`, `_control`, `_input` | [Component Rules](ui_rules/component.md) | Size-agnostic, container-neutral, no breakpoint logic |
+| `_view` | [View Rules](ui_rules/view.md) | State projection, compose components, stateless |
 | `_layout` | [Layout Rules](ui_rules/layout.md) | Control space/structure, know breakpoints, arrange components |
 | `_page` | [Page Rules](ui_rules/page.md) | Compose sections, own routing, delegate to layouts |
 
 ### Quick Reference
 
-**All widgets except `_layout` and `_page` are "components"** and must:
+**Pure components** (`_visual`, `_unit`, `_action`, `_control`, `_input`) must:
 - ✅ Be size-agnostic (no width/height)
 - ✅ Work in any container (ListView, GridView, Row, Column)
 - ✅ Not know about breakpoints
-- ✅ Not use MediaQuery for sizing
+- ✅ Not use MediaQuery for breakpoint logic (proportional sizing OK)
 - ✅ Degrade gracefully
+- ✅ Not listen to state
+
+> **Note on `_visual`:** Can use `context` to access Flutter-provided values (Theme, MediaQuery, Localizations) but cannot accept user-provided constructor parameters.
+
+**`_view` widgets** must:
+- ✅ Listen to state (BlocBuilder, Consumer)
+- ✅ Project state to components
+- ✅ Be stateless (no local state)
+- ✅ Compose pure components
+- ✅ Can nest other `_view` widgets (they are independent data connectors)
+- ✅ Not control layout/breakpoints
+
+> **Note on `_view`:** This is an optional **data connector layer**, not a UI building block. Build your UI with components first, then wrap with `_view` when external state is needed. Only widgets that fetch external data need the `_view` suffix.
 
 **`_layout` widgets** must:
 - ✅ Know about breakpoints
 - ✅ Control component sizing and spacing
-- ✅ Arrange `_view` widgets
+- ✅ Arrange `_view` widgets and components
 
 **`_page` widgets** must:
 - ✅ Compose sections
@@ -41,6 +55,54 @@ This widget naming system works in conjunction with the UI architectural rules. 
 - ✅ Not contain responsive logic directly
 
 **See also:** [Responsive Rules](ui_rules/responsive.md) for breakpoint patterns and responsive design principles.
+
+---
+
+## Architectural Overview
+
+### Four-Layer Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Layer 1: _page (Screen Entry Point)                   │
+│  - Routing & DI setup                                   │
+│  - Composes layouts                                     │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│  Layer 2: _layout (Responsive Structure)                │
+│  - Breakpoint logic                                     │
+│  - Component sizing & spacing                           │
+│  - Arranges components                                  │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│  Layer 3: Components (Pure Building Blocks)             │
+│  - _visual, _unit (Display)                             │
+│  - _action (Intent triggers)                            │
+│  - _control (Local state)                               │
+│  - _input (Controller quarantine)                       │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│  Optional: _view (Data Connector)                       │
+│  - Wraps components when external state is needed       │
+│  - Listens to state (BlocBuilder, Consumer)             │
+│  - Added LAST after UI is designed with components      │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Key Separation Principles
+
+| Concern | Layer Responsible |
+|---------|------------------|
+| **State Listening** | `_view` only |
+| **Breakpoint Logic** | `_layout` only |
+| **Routing** | `_page` only |
+| **Visual Styling** | Components only |
+| **User Interaction** | Components only |
+
+**Critical Rule:** Components never listen to state. Views never control layout. Layouts never listen to state. Pages never define styles.
 
 ---
 
@@ -174,20 +236,29 @@ ProfileCardUnit(
 )
 ```
 
+> **Exception for `kit_` Primitives:** Design system widgets (`kit_*`) like `KitButton`, `KitCard`, etc. are exempt from this rule. They are infrastructure primitives and require callbacks to function. This rule applies to feature widgets (`login_*`, `app_*`) only.
+
 ---
 
 ## 2. Classification Logic (Order of Operations)
 
 Apply these rules **top‑down**. First match wins.
 
-1. **Parameters:** No instance fields → **Static Widget (`_visual`)**
-2. **Parameters:** Accepts values only (one‑way) → **Reusable Widget (`_unit`)**
-3. **Behavior:** Listens to Logic State → **State‑Driven Widget (`_view`)**
-4. **Behavior:** Owns a UI Controller → **Controller Adapter (`_input`)**
-5. **Interaction:** Local UI state only → **Local Control (`_control`)**
-6. **Interaction:** Triggers Logic Layer → **User Action Widget (`_action`)**
-7. **Scope:** Screen entry point → **Page (`_page`)**
-8. **Scope:** Responsive/breakpoint variant → **Layout (`_layout`)**
+### Layer Classification (Check First)
+
+1. **Scope:** Screen entry point → **Page (`_page`)**
+2. **Scope:** Responsive/breakpoint arrangement → **Layout (`_layout`)**
+3. **Behavior:** Listens to Logic State → **State Projection (`_view`)**
+
+### Component Classification (Then Check)
+
+4. **Parameters:** No instance fields → **Static Widget (`_visual`)**
+5. **Parameters:** Accepts values only (one‑way) → **Reusable Widget (`_unit`)**
+6. **Behavior:** Owns a UI Controller → **Controller Adapter (`_input`)**
+7. **Interaction:** Local UI state only → **Local Control (`_control`)**
+8. **Interaction:** Triggers Logic Layer → **User Action Widget (`_action`)**
+
+> **Rationale:** Layers (_page, _layout, _view) are evaluated first because they have broader scope and responsibilities. Components are pure building blocks evaluated last.
 
 > **Escape Hatch:** If a widget fits two categories, split it into two widgets.
 
@@ -213,16 +284,23 @@ Every widget **class and file** MUST follow:
 
 ### 3.2 Suffix Rules (Category)
 
+#### Layers
+
+| Suffix | Category | Purpose |
+| --- | --- | --- |
+| `_page` | Page | Screen entry point |
+| `_layout` | Responsive Layout | Breakpoint‑specific arrangement |
+| `_view` | State Projection | Listens to state, projects to components |
+
+#### Components
+
 | Suffix | Category | Purpose |
 | --- | --- | --- |
 | `_visual` | Static Widget | Pure static rendering, no parameters |
 | `_unit` | Reusable Widget | Display‑only, accepts values |
-| `_view` | State‑Driven Widget | Listens to state, projects to UI |
-| `_control` | Local Control | Ephemeral UI state only |
 | `_action` | User Action | Triggers logic layer intent |
+| `_control` | Local Control | Ephemeral UI state only |
 | `_input` | Controller Adapter | Owns UI controllers |
-| `_layout` | Responsive Layout | Breakpoint‑specific arrangement |
-| `_page` | Page | Screen entry point |
 
 ---
 
@@ -282,9 +360,15 @@ class LoginHeaderVisual extends StatelessWidget {
 
 ---
 
-### 4.2 Reusable Widgets — `_unit`
+### 4.2 getting data from from parent Widgets — `_unit`
 
-**Definition:** Dumb building blocks with **one‑way data flow** (parent → child only).
+**Definition:** Dumb building blocks that **receive data from parent** via constructor parameters. One‑way data flow only (parent → child).
+
+**Core Concept:** A `_unit` widget is **given** data, it doesn't fetch or manage it. The parent decides what data to pass down.
+
+**Constraints:**
+
+- Stateless only
 
 **Rules:**
 
@@ -460,13 +544,14 @@ class UserAvatarView extends StatelessWidget {
   }
 }
 
-// ❌ INVALID - Nested _view
+// ✅ VALID - Nested _view widgets are allowed
+// Each _view is an independent data connector
 class DashboardMainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DashboardHeaderView(), // ❌ _view inside _view forbidden
-        DashboardChartsView(),
+        DashboardHeaderView(), // ✅ Independent data connector for UserBloc
+        DashboardChartsView(), // ✅ Independent data connector for AnalyticsBloc
       ],
     );
   }
@@ -772,19 +857,30 @@ class EmailInput extends StatefulWidget {
 
 ### 4.7 Responsive Layout — `_layout`
 
-**Definition:** Breakpoint‑specific arrangement of `_view` widgets.
+**Definition:** Breakpoint‑specific arrangement of widgets.
 
 **Purpose:** Handle responsive/adaptive UI without polluting `_page` or `_view`.
+
+**Layout Scope:**
+
+`_layout` widgets can exist at two levels:
+
+| Scope | Location | Purpose | Example |
+|-------|----------|---------|--------|
+| **Page-level** | `page_layout/` | How the entire page arranges | `home_page_web_layout.dart` |
+| **Component-level** | `widgets/widget_layout/` | How a component arranges internally | `order_card_expanded_layout.dart` |
+
+> **Key Principle:** Components remain size-agnostic. The **parent layout** decides which component layout variant to use.
 
 **Rules:**
 
 ✅ **Allowed:**
-- Arrange `_view` widgets
+- Arrange components and `_view` widgets
 - Breakpoint‑specific composition
 - Responsive sizing/positioning
 
 ❌ **Forbidden:**
-- State listening (use `_view` instead)
+- State listening (use `_view` wrapper instead)
 - Business logic
 - Heavy rendering (delegate to `_view`)
 
@@ -972,39 +1068,23 @@ class DashboardPage extends StatelessWidget {
 
 ---
 
-## 5. Folder Structure (Canonical)
+## 5. Folder Structure
 
-```
-lib/
-├── core/
-│   └── presentation/
-│       ├── models/              # ViewModels
-│       └── widgets/
-│           ├── visuals/
-│           ├── units/
-│           ├── controls/
-│           ├── actions/
-│           └── inputs/
-│
-├── features/
-│   └── auth/
-│       └── presentation/
-│           ├── models/          # Feature-specific ViewModels
-│           ├── pages/
-│           ├── layouts/         # Responsive variants
-│           └── widgets/
-│               ├── visuals/
-│               ├── units/
-│               ├── views/
-│               ├── controls/
-│               ├── actions/
-│               └── inputs/
-│
-└── packages/
-    └── core_ui_kit/
-        └── src/
-            └── widgets/         # kit_ widgets
-```
+For detailed folder organization, see: **[Widget Folder Structure](widget_folder_structure.md)**
+
+**Quick Summary:**
+
+| Widget Type | Folder |
+|-------------|--------|
+| `_page` | `pages/` |
+| `_layout` (page-level) | `page_layout/` |
+| `_layout` (component-level) | `widgets/widget_layout/` |
+| `_view` | `widgets/views/` |
+| `_visual` | `widgets/visuals/` |
+| `_unit` | `widgets/units/` |
+| `_action` | `widgets/actions/` |
+| `_control` | `widgets/controls/` |
+| `_input` | `widgets/inputs/` |
 
 ---
 
@@ -1125,31 +1205,19 @@ class OrderCardUnit extends StatelessWidget { // ✅ Stateless
 }
 ```
 
-### ❌ 6. Nested `_view` widgets
+### ✅ 6. Nested `_view` widgets (Now Allowed)
+
+`_view` widgets can contain other `_view` widgets since they are **independent data connectors**, not UI building blocks.
 
 ```dart
-// ❌ FORBIDDEN
+// ✅ ALLOWED - Each _view connects to its own data source
 class DashboardMainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DashboardHeaderView(), // ❌ _view inside _view
-        DashboardChartsView(),
+        DashboardHeaderView(), // ✅ Connects to UserBloc
+        DashboardChartsView(), // ✅ Connects to AnalyticsBloc
       ],
-    );
-  }
-}
-
-// ✅ CORRECT - Use _page or _layout to compose views
-class DashboardPage extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          DashboardHeaderView(), // ✅ _page composes _view
-          DashboardChartsView(),
-        ],
-      ),
     );
   }
 }
@@ -1164,13 +1232,17 @@ class DashboardPage extends StatelessWidget {
 ```
 START: I need to create a widget
   ↓
+Is it a screen entry point?
+  YES → _page
+  NO ↓
+  
+Is it a responsive/breakpoint variant?
+  YES → _layout
+  NO ↓
+
 Does it accept ANY parameters?
   NO → _visual
   YES ↓
-  
-Does it listen to state (BLoC/Provider)?
-  YES → _view
-  NO ↓
   
 Does it have user interaction?
   NO → _unit
@@ -1183,28 +1255,33 @@ Does it own a Controller?
 Does interaction affect logic layer?
   NO → _control
   YES → _action
-  
-Is it a screen entry point?
-  YES → _page
-  NO ↓
-  
-Is it a responsive variant?
-  YES → _layout
-  NO → Re-evaluate (likely _unit)
+
+─────────────────────────────────────
+AFTER UI IS BUILT:
+─────────────────────────────────────
+Does this component need external state?
+  YES → Wrap with _view (data connector)
+  NO → Keep as pure component
 ```
 
 ---
 
 ## 8. One‑Line Mental Model
 
-- `_visual` → Pure static, hardcoded content
-- `_unit` → Receives values, displays them (one-way)
-- `_view` → Listens to state, renders logical section
-- `_control` → Toggles pixels, local state only
-- `_action` → Fires intent to logic layer
-- `_input` → Manages controllers in quarantine
-- `_layout` → Arranges views by breakpoint
-- `_page` → Entry point, DI setup, composes views
+### Layers (Broad Scope)
+
+- `_page` → Screen entry point, routing, DI setup, composes sections
+- `_layout` → Breakpoint-aware, arranges views/components responsively
+- `_view` → State listener, projects logic state to UI components
+
+### Components (Pure Building Blocks)
+
+- `_visual` → Pure static, hardcoded content (no parameters)
+- `_unit` → Receives values, displays them (one-way data)
+- `_action` → Fires intent to logic layer (user interactions)
+- `_control` → Ephemeral UI state only (toggles, tabs)
+- `_input` → Manages controllers in quarantine (TextField, etc.)
+
 
 ---
 
@@ -1215,16 +1292,17 @@ Is it a responsive variant?
 ```
 _page
   ↓
-  ├─ _layout (responsive)
-  │    ↓
-  │    └─ _view (multiple)
-  └─ _view (multiple)
+  └─ _layout (responsive)
        ↓
-       ├─ _visual
-       ├─ _unit
-       ├─ _control
-       ├─ _action
-       └─ _input
+       └─ Components
+            ├─ _visual
+            ├─ _unit
+            ├─ _control
+            ├─ _action
+            └─ _input
+
+Components can be wrapped with _view when external state is needed.
+_view widgets can contain other _view widgets (independent data connectors).
 
 _unit
   ↓
@@ -1235,10 +1313,10 @@ _unit
 
 **Forbidden Compositions:**
 
-- ❌ `_view` → `_view` (no nested views)
 - ❌ `_visual` → anything (must be self-contained)
 - ❌ `_action` → `_action` (no nested actions)
-- ❌ `_unit` → `_view` (units can't listen to state)
+- ❌ `_unit` → `_view` (units can't listen to state directly — use slots)
+- ❌ `_layout` → state listening (use `_view` wrapper if layout decision needs state)
 
 ---
 

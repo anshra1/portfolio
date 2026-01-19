@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:portfolio/features/homepage/presentation/view_models/skill.dart';
+import 'package:portfolio/features/homepage/presentation/models/skill.dart';
 
 class Profile extends Equatable {
   const Profile({

@@ -1,6 +1,5 @@
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_base_button.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_shape.dart';
-import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_size.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +11,6 @@ class KitDestructiveButton extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final KitButtonState state;
-  final KitButtonSize size;
   final KitButtonShape shape;
   final bool outlined;
   final double? elevation;
@@ -25,7 +23,6 @@ class KitDestructiveButton extends StatelessWidget {
     this.leading,
     this.trailing,
     this.state = KitButtonState.enabled,
-    this.size = KitButtonSize.medium,
     this.shape = KitButtonShape.pill,
     this.outlined = false,
     this.elevation,
@@ -45,7 +42,6 @@ class KitDestructiveButton extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         state: state,
-        size: size,
         shape: shape,
         backgroundColor: Colors.transparent,
         foregroundColor: errorColor,
@@ -66,7 +62,6 @@ class KitDestructiveButton extends StatelessWidget {
       leading: leading,
       trailing: trailing,
       state: state,
-      size: size,
       shape: shape,
       backgroundColor: errorColor,
       foregroundColor: onErrorColor,

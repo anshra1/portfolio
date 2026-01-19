@@ -1,5 +1,4 @@
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_shape.dart';
-import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_size.dart';
 import 'package:core_ui_kit/src/widgets/atoms/buttons/kit_button_state.dart';
 import 'package:flutter/material.dart';
 
@@ -23,9 +22,6 @@ class KitBaseButton extends StatelessWidget {
 
   /// The current state of the button. Defaults to [KitButtonState.enabled].
   final KitButtonState state;
-
-  /// The size of the button. Defaults to [KitButtonSize.medium].
-  final KitButtonSize size;
 
   /// The shape of the button. Defaults to [KitButtonShape.pill].
   final KitButtonShape shape;
@@ -63,7 +59,6 @@ class KitBaseButton extends StatelessWidget {
     this.leading,
     this.trailing,
     this.state = KitButtonState.enabled,
-    this.size = KitButtonSize.medium,
     this.shape = KitButtonShape.pill,
     this.backgroundColor,
     this.foregroundColor,
@@ -95,7 +90,8 @@ class KitBaseButton extends StatelessWidget {
 
     final VoidCallback? effectiveOnPressed = (isDisabled || isLoading) ? null : onPressed;
 
-    EdgeInsetsGeometry effectivePadding = padding ?? _getPaddingForSize(size);
+    EdgeInsetsGeometry effectivePadding =
+        padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
 
     // If disabled or loading, we remove elevation to make it look "flat" and inactive
     final double? effectiveElevation = (isDisabled || isLoading) ? 0.0 : elevation;
@@ -134,17 +130,6 @@ class KitBaseButton extends StatelessWidget {
           ),
       child: isLoading ? _buildLoadingIndicator(context) : _buildContent(),
     );
-  }
-
-  EdgeInsetsGeometry _getPaddingForSize(KitButtonSize size) {
-    switch (size) {
-      case KitButtonSize.small:
-        return const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
-      case KitButtonSize.medium:
-        return const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
-      case KitButtonSize.large:
-        return const EdgeInsets.symmetric(horizontal: 32, vertical: 16);
-    }
   }
 
   Widget _buildContent() {

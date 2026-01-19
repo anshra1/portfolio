@@ -15,11 +15,9 @@ The following **widget categories** from the [Widget Naming System](../widget_na
 | **User Action** | `_action` | Components that trigger logic layer intents |
 | **Local Control** | `_control` | Components with ephemeral UI state |
 | **Controller Adapter** | `_input` | Components that manage UI controllers |
-| **State-Driven Widget** | `_view` | Components that listen to state (special case*) |
-
-**Special case for `_view`:** While `_view` widgets follow component rules (size-agnostic, container-neutral, etc.), they have one exception: they can listen to state via BlocBuilder/Consumer and perform conditional rendering. All other component rules still apply.
 
 **NOT components** (exempt from these rules):
+- ❌ `_view` - State projection layer (follow [View Rules](view.md))
 - ❌ `_layout` - Responsive layouts (follow [Layout Rules](layout.md))
 - ❌ `_page` - Screen entry points (follow [Page Rules](page.md))
 

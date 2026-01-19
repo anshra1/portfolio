@@ -1,13 +1,20 @@
-class ProjectVM {
+import 'package:flutter/foundation.dart';
+
+@immutable
+class ProjectViewModel {
+  final String id;
   final String title;
   final String description;
   final String imageUrl;
-  final List<String> tags;
+  final List<String> techStack;
+  final String? appType;
 
-  const ProjectVM({
+  const ProjectViewModel({
+    required this.id,
     required this.title,
     required this.description,
     required this.imageUrl,
-    required this.tags,
+    required this.techStack,
+    this.appType,
   });
 }

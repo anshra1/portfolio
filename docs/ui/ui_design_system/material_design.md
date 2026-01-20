@@ -148,8 +148,9 @@ These rules may only be violated if the user explicitly asks for:
 
 ### 8.4 Colors
 *   **Source**: `Theme.of(context).colorScheme`
-*   **Rule**: Use semantic color roles.
-*   **Strict Adherence**: Material Design 3 roles (`primary`, `onPrimary`, `surface`, `onSurfaceVariant`, etc.).
+*   **Rule**: Use semantic color roles. **Follow Material Design 3 color guidelines.**
+*   **Strict Adherence**: Material Design 3 roles (`primary`, `onPrimary`, `surface`, `onSurface`, `onSurfaceVariant`, `outline`, `error`, etc.).
+*   **Forbidden**: Hardcoded `Color(0xFF...)` or `Colors.red` values.
 
 ### 8.5 Cards
 *   **Source**: `package:core_ui_kit`

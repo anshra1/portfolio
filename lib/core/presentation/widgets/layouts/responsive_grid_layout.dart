@@ -18,7 +18,7 @@ class ResponsiveGridLayout extends StatelessWidget {
         var crossAxisCount = 1;
         if (width >= 1024) {
           crossAxisCount = 3;
-        } else if (width >= 768) {
+        } else if (width >= 600) {
           crossAxisCount = 2;
         }
 

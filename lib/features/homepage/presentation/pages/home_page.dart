@@ -11,12 +11,18 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenSizeBuilder(
+        breakpoints: const BreakpointConfiguration(
+          compact: 380,
+          medium: 768,
+          expanded: 1024,
+          large: 1280,
+        ),
         builder: (context, size) {
-          if (size.isDesktop) {
+          if (size.isExpanded) {
             return const WebLayout();
           }
 
-          if (size.isTablet) {
+          if (size.isMedium) {
             return const TabletLayout();
           }
 

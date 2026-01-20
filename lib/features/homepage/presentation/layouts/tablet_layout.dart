@@ -7,7 +7,6 @@ import 'package:portfolio/features/homepage/presentation/widgets/hero_section/he
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/social_links_unit.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/learnings_section.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_section.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/learnings_section.dart';
 
 class TabletLayout extends StatelessWidget {
   const TabletLayout({super.key});

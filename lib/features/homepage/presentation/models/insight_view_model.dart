@@ -2,14 +2,6 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class InsightViewModel {
-  final String id;
-  final String imageUrl;
-  final String title;
-  final String date;
-  final String readTime;
-  final List<String> tags;
-  final String description;
-
   const InsightViewModel({
     required this.id,
     required this.imageUrl,
@@ -19,4 +11,12 @@ class InsightViewModel {
     required this.tags,
     required this.description,
   });
+  
+  final String id;
+  final String imageUrl;
+  final String title;
+  final String date;
+  final String readTime;
+  final List<String> tags;
+  final String description;
 }

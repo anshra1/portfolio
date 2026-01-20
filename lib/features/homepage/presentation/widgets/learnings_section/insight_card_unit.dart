@@ -114,7 +114,7 @@ class _InsightCardUnitState extends State<InsightCardUnit> {
                       // Title
                       Text(
                         widget.viewModel.title,
-                        style: context.headlineSmall.copyWith(
+                        style: context.titleLarge.copyWith(
                           fontWeight: FontWeight.bold,
                           color: _isHovered
                               ? theme.primaryColor
@@ -151,10 +151,12 @@ class _InsightCardUnitState extends State<InsightCardUnit> {
                               borderRadius: BorderRadius.circular(999),
                             ),
                             child: Text(
-                              '#$tag',
+                              tag.toUpperCase(),
                               style: context.labelSmall.copyWith(
                                 color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                                letterSpacing: 0.5,
                               ),
                             ),
                           );

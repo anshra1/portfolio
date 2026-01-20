@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/presentation/widgets/layouts/responsive_grid_layout.dart';
 import 'package:portfolio/features/homepage/presentation/models/project_display_model.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/project_card_unit.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_grid_layout.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_section_header_visual.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/view_more_projects_action.dart';
 
@@ -55,7 +55,7 @@ class ProjectsSection extends StatelessWidget {
             children: [
               const ProjectsSectionHeaderVisual(),
               const SizedBox(height: 32), // space-y-12 = 3rem = 48px
-              ResponsiveGridLayouts(
+              ResponsiveGridLayout(
                 children: projects
                     .map(
                       (p) => ProjectCardUnit(

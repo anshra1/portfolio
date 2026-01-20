@@ -1,5 +1,6 @@
-import 'package:core_ui_kit/core_ui_kit.dart'; // Assuming KitButtons are here
 import 'package:flutter/material.dart';
+import 'package:portfolio/core/presentation/widgets/buttons/portfolio_outline_button.dart';
+import 'package:portfolio/core/presentation/widgets/buttons/portfolio_outline_button.dart';
 
 class ViewMoreProjectsAction extends StatelessWidget {
   const ViewMoreProjectsAction({required this.onPressed, super.key});
@@ -17,17 +18,10 @@ class ViewMoreProjectsAction extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 16), // pt-4
       child: Center(
-        child: SizedBox(
-          height: 48,
-          child: KitOutlineButton(
-            onPressed: onPressed,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32,
-              vertical: 12,
-            ), // px-8 py-3
-            trailing: const Icon(Icons.arrow_forward, size: 20),
-            child: const Text('Show More Projects'),
-          ),
+        child: PortfolioOutlineButton(
+          text: 'Show More Projects',
+          icon: Icons.arrow_forward_rounded,
+          onPressed: onPressed,
         ),
       ),
     );

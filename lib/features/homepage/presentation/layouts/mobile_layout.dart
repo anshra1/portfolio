@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density_extensions.dart';
+import 'package:portfolio/core/theme/density/density_context.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_primary_action.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_secondary_action.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_subtitle_visual.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_title_visual.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/social_links_unit.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_section.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/learnings_section.dart';
 
 class MobileLayout extends StatelessWidget {
   const MobileLayout({super.key});
@@ -45,7 +46,7 @@ class MobileLayout extends StatelessWidget {
             ),
           ),
           const ProjectsSection(),
-          // TODO: Add LearningsSection
+          const LearningsSection(),
           // TODO: Add AboutSection
           // TODO: Add ExpertiseSection
           // TODO: Add SiteFooter

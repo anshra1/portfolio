@@ -25,7 +25,7 @@ class HeroSection extends StatelessWidget {
               SizedBox(height: 24), // mt-6
               HeroSubtitleVisual(),
               SizedBox(height: 40), // mt-10
-              // HomepageHeroActionsLayout(), // Missing widget
+
               SizedBox(height: 32), // mt-8
               SocialLinksUnit(),
             ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'overlay_example.dart';
-import 'underrated_widgets.dart';
+import 'package:portfolio/features/learning/overlay_example.dart';
+import 'package:portfolio/features/learning/underrated_widgets.dart';
 
 void main() {
   runApp(const LearningApp());
@@ -38,9 +38,9 @@ class LearningHomePage extends StatelessWidget {
             subtitle: const Text('Demonstrates usage of Overlays'),
             trailing: const Icon(Icons.arrow_forward),
             onTap: () {
-              Navigator.push(
+              Navigator.push<void>(
                 context,
-                MaterialPageRoute(
+                MaterialPageRoute<void>(
                   builder: (context) => const OverlayLearningExample(),
                 ),
               );
@@ -54,7 +54,7 @@ class LearningHomePage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                MaterialPageRoute<void>(
                   builder: (context) => const UnderratedWidgetsExample(),
                 ),
               );

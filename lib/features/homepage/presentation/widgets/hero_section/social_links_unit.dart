@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density_extensions.dart';
+import 'package:portfolio/core/theme/density/density_context.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/hero_social_link_action.dart';
 
 class SocialLinksUnit extends StatelessWidget {

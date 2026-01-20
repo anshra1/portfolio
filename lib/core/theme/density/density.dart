@@ -28,7 +28,6 @@ import 'package:flutter/material.dart' show VisualDensity;
 
 export 'app_density_tokens.dart';
 export 'density_context.dart';
-export 'density_extensions.dart';
 export 'density_mode.dart';
 export 'density_radius.dart';
 export 'density_sizes.dart';

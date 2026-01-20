@@ -154,11 +154,8 @@ These rules may only be violated if the user explicitly asks for:
 *   **Strict Adherence**: Material Design 3 roles (`primary`, `onPrimary`, `surface`, `onSurface`, `onSurfaceVariant`, `outline`, `error`, etc.).
 *   **Forbidden**: Hardcoded `Color(0xFF...)` or `Colors.red` values.
 
-### 8.5 Cards
-*   **Source**: `package:core_ui_kit`
-*   **Rule**: Use `KitCard` instead of `Card`.
 
-### 8.6 Standard Imports
+### 8.5 Standard Imports
 Always include these when building UI:
 ```dart
 import 'package:portfolio/core/theme/theme.dart'; // or specific typography/density paths

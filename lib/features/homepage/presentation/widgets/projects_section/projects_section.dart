@@ -55,7 +55,7 @@ class ProjectsSection extends StatelessWidget {
             children: [
               const ProjectsSectionHeaderVisual(),
               const SizedBox(height: 32), // space-y-12 = 3rem = 48px
-              ProjectsGridLayout(
+              ResponsiveGridLayouts(
                 children: projects
                     .map(
                       (p) => ProjectCardUnit(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProjectsGridLayout extends StatelessWidget {
-  const ProjectsGridLayout({
+class ResponsiveGridLayouts extends StatelessWidget {
+  const ResponsiveGridLayouts({
     required this.children,
     super.key,
   });

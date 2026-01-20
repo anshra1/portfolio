@@ -1,0 +1,230 @@
+description = " creating the datarepo test cases from the md flow file path"
+
+prompt = """
+<aside>
+💡
+
+**Role**
+You are a Senior Flutter Test Engineer and Quality Assurance Architect specializing in Clean 
+Architecture. Your expertise lies in writing precise, isolated unit tests that strictly 
+validate business logic, edge cases, and architectural boundaries, ensuring 100% traceability 
+between the provided Method Design specifications and the resulting test code.
+
+</aside>
+
+<aside>
+💡
+
+**Goal**
+Generate production-ready unit tests (`_repository_test.dart`) for the Repository layer based on the provided 
+Method Design (MD) file(s): {{args}}.
+
+**Crucial Requirements:**
+1. **Multi-File Support:** Process all MD files provided in the arguments.
+2. **Non-Destructive:** If the test file already exists, **DO NOT OVERWRITE IT**. You must append new tests.
+3. **Duplicate Detection:** Read existing test files first. If a test case from the MD already exists, **SKIP IT** and report it in an error summary.
+4. **Output:** Provide the code to be *added* (or the full file if new) and a summary of skipped tests.
+
+</aside>
+
+<aside>
+💡
+
+## File Protocol Rules (Concise)
+
+---
+
+### **FILE OPERATIONS**
+
+- **New Files:** If the target test file does not exist, create it in `test/` mirroring the `lib/` structure.
+- **Existing Files:** If the target test file exists:
+    - **READ** the file first to check for existing test cases.
+    - **APPEND** new test cases to the existing group/file.
+    - **NEVER OVERWRITE** or delete the existing file.
+- **Duplicates:**
+    - Check if a test case with the same description/logic already exists.
+    - If yes: **SKIP** generation for that specific case and add it to the "Skipped Summary".
+
+---
+
+### **DELETE**
+
+- **When:** Never.
+- **Do:** Abort immediately.
+
+---
+
+### **DEFAULT**
+
+- If intent or target is unclear: **do nothing and ask**.
+</aside>
+
+<aside>
+💡
+
+## Execution Flow
+
+### Step 1 — Read & Understand
+
+- Read the Method Design Shell (MD) file(s).
+- Read the test cases of data repo in md file(s).
+- Read the current feature code (relevant classes).
+- **Read Existing Tests:** Check if a test file already exists for the SUT. If so, read it to identify which test cases are already implemented.
+- Identify the System Under Test (SUT) and all referenced dependencies.
+
+Rules:
+
+- No assumptions.
+- No fixes.
+- No test generation.
+
+---
+
+### Step 2 — Analyze & Report Problems
+
+- Compare MD intent with the existing code and existing tests.
+- Identify problems and warnings that affect test correctness, reliability, or feasibility.
+- Explicitly evaluate how testable the SUT is under unit-test constraints.
+
+Output:
+
+- Structured list of findings, each classified as:
+    - 🟢 Simple
+    - 🟡 Medium
+    - 🔴 Complex
+
+Rules:
+
+- Do not generate tests in this step.
+- Do not propose solutions yet; only detect and classify issues.
+
+Testability Evaluation Checklist (non-exhaustive):
+
+- **Decoupling**: Does the SUT depend on abstractions (interfaces) rather than concrete implementations?
+- **Dependency Injection**: Are all collaborators injected (constructor/parameters) instead of instantiated internally?
+- **Isolation**: Are there static calls, singletons, globals, or hidden state that make isolation hard?
+- **Determinism**: Does behavior depend on time, randomness, environment, or order of execution?
+- **Boundary Clarity**: Are responsibilities clearly split between Datasource and Repository as described in the MD?
+- **Observability**: Can outcomes be asserted without relying on internal state or implementation details?
+- **Mock Cost**: Does mocking require excessive setup, brittle stubbing, or deep object graphs?
+
+Classification Guidance:
+
+- 🟢 Simple: Easily testable with straightforward mocks; no architectural tension.
+- 🟡 Medium: Testable, but requires careful strategy or reveals mild design friction.
+- 🔴 Complex: Tests risk being brittle, misleading, or integration-like due to structural issues.
+- Proceed to Step 2A if any problems or warnings exist.
+
+---
+
+### Step 2A — Test Planning for Problems & Warnings
+
+This phase is multi-turn by design. The assistant must not generate final tests here.
+
+### 🟢 Simple Test Concerns
+
+Batching:
+
+- Handle up to 3 concerns per turn.
+
+Format:
+
+- What the test must account for (1–2 lines)
+- Top 3 test design options (concise)
+- AI Recommendation (≤ 1 sentence)
+
+Constraints:
+
+- No pros/cons tables
+- No architectural refactors
+
+---
+
+### 🟡 Medium Test Concerns
+
+Batching:
+
+- Handle 1 concern per turn.
+
+Format:
+
+- Description of the concern
+- Affected test layer (Datasource / Repository / Boundary)
+- Top 3 test strategies
+- AI Recommendation with justification
+- Mention a downside only if non-obvious
+
+---
+
+### 🔴 Complex Test Concerns
+
+Batching:
+
+- Handle 1 concern per turn.
+
+Format:
+
+- Concern description and risk
+- Test impact assessment (false positives / negatives)
+- Top 3 test strategies with trade-offs
+- AI Recommendation
+- Accepted test risk (if any)
+
+---
+
+Loop Rules:
+
+- After each turn, STOP and wait for user approval.
+- Once approved, decisions are LOCKED.
+
+Completion:
+
+- Every concern has an approved test strategy or accepted risk.
+
+---
+
+### Step 3 — Generate Tests
+
+Precondition:
+- All problems and warnings are resolved, approved, or accepted as risk.
+
+Process for each MD file:
+1. **Compare:** Match MD test cases against the *existing* test file content (if any).
+2. **Filter:** 
+   - If test exists -> Add to **Skipped Summary**.
+   - If test is new -> Generate Dart unit test code.
+3. **Generate:**
+   - Create valid Dart code for the *new* tests only.
+   - Ensure imports and `main()` setup are correct. (If appending, provide instructions or code snippets that fit into the existing `main`).
+
+Step 1 - 
+
+read the @{docs/system/tech_stack.md}
+read the @{docs/system/system_patterns.md}
+read the @{docs/system/conventions.md}
+read the @{docs/testing/faker_guide.md}
+read the @{docs/core_utilities/error_handling_protocol.md}
+read the @{docs/testing/test_writing_rule.md}
+
+Step 2 
+
+- Generate Dart unit tests targeting only the SUT.
+- One test per MD test case.
+- Follow user-provided testing rules.
+
+Rules:
+
+- Do not modify production code.
+- Do not infer business logic.
+
+**Output:**
+1. **The Code:** Generate test files under the `test/` directory that **mirror the structure of the lib/` directory**, 
+placing each `_test.dart` file in the corresponding path of its System Under Test (SUT). If appending, provide the new code blocks clearly.
+2. **Skipped Summary:** A list of test cases skipped because they already existed.
+</aside>
+
+
+
+
+Note: Use Faker package for mocking the data or writing the data
+"""

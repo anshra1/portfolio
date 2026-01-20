@@ -1,0 +1,142 @@
+description = "coverting the domain repo with datasources to domain repo code"
+
+prompt = """
+<aside>
+💡
+
+# GOAL
+
+**Synthesize the `DataRepositoryImpl`** by acting as the intelligent "Decision Bridge" between the abstract Data Layer and the Domain Layer. You must **Complete or Generate** the implementation by analyzing the **Domain Repository Contract** against the **Current Codebase State**.
+
+{{args}} - this is md file path for this feature and file path of features location in clean architecture format
+
+**1. Gap Analysis (Smart Completion)**
+
+- **Compare** the required methods in the `DomainRepository` interface against the existing `DataRepositoryImpl` (if provided).
+- **Identify** strictly the missing methods.
+    - *If the file is new:* Generate the complete class with all methods.
+    - *If partial implementation exists:* Generate **only** the missing method implementations to be appended.
+
+**2. Decision Logic Enforcement (The "Brain" Role)**
+
+- **Source of Truth:** Use the **Feature Specification (Markdown)** to determine the Repository's active role.
+- **Logic Injection:** If the Markdown requires filtering, sorting, or pagination that the abstract Data Source *cannot* handle directly, you must implement this logic **in-memory** within the Repository (e.g., fetching a full list and applying `.where()`, `.sort()`, or `.skip()`/`.take()`).
+
+**3. Architectural Compliance**
+
+- **Type Transformation:** strictly convert `Model` objects (from Data Source) into `Entity` objects (for Domain) using `.toEntity()`.
+- **Error Translation:** Wrap all Data Source calls in `try/catch` blocks. Map specific technical **Exceptions** (e.g., `NetworkException`, `ServerException`) to the exact Domain **Failures** defined in the "Feature-Level Failures" section of the Markdown.
+- **Edge Case Handling:** Implement the specific "Offline Behavior" (Fail-fast vs. Cache) and empty-state handling requested in the Markdown.
+</aside>
+
+<aside>
+💡
+
+# SUCCESS CRITERIA
+
+**1. Functional Completeness**
+
+- **Gap Filling:** The output must strictly provide implementations for **all** methods defined in the `DomainRepository` but missing from the `DataRepositoryImpl`.
+- **Logic Fidelity:** If the Markdown specifies filtering (e.g., "Search by Title") or pagination (e.g., "Infinite Scroll"), the code must explicitly contain the logic to execute this (e.g., `.where(...)`, `.skip(...)`), rather than assuming the Data Source handles it.
+
+**2. Architectural Integrity**
+
+- **Strict Mapping:** Every success path must return `Right(Entity)` (using `.toEntity()`), never `Right(Model)`.
+- **Precise Error Handling:** Every `catch` block must map a specific Data Source `Exception` to the exact `Failure` type defined in the Feature Specification (e.g., `ServerException` $\rightarrow$ `ServerFailure`). Generic "catch-all" errors are not acceptable unless specified.
+
+**3. Code Quality & Safety**
+
+- **Safety Guards:** All external calls must be wrapped in `try-catch` blocks.
+- **Null Safety:** The code must handle potential null values from the Data Source (e.g., empty lists) according to the "Edge Cases" section of the Markdown (e.g., returning an empty list instead of throwing).
+- **Context Awareness:** The output must use the exact class names and variable names provided in the context (e.g., `remoteDataSource`, `networkInfo`).
+</aside>
+
+<aside>
+💡
+
+# EXECUTION FLOW
+
+**1. ANALYZE (The Gap Analysis)**
+
+- **Input Check:** Review the provided `DomainRepository` interface and the existing `DataRepositoryImpl` (if any).
+- **Identify Missing Methods:** List exactly which methods are defined in the Domain but missing or incomplete in the Data implementation.
+- **Determine Strategy:**
+    - *New File:* Prepare to write the full class.
+    - *Existing File:* Prepare to write **only** the missing methods.
+
+**2. EXTRACT LOGIC (The "Smart Repo" Check)**
+
+- **Scan the Feature Spec (Markdown):** Look for specific business rules regarding data retrieval.
+    - *Does it say "Search by X"?* If the Datasource lacks a search parameter, plan to use `.where()` in Dart.
+    - *Does it say "Sort by Y"?* Plan to use `.sort()` in Dart.
+    - *Does it say "Infinite Scroll"?* Plan to calculate pagination offsets (`skip`/`take`).
+
+**3. IMPLEMENT (The Coding Phase)**
+
+- **Method Signature:** Implement the overrides strictly matching the Domain Interface.
+- **The "Try" Block:**
+    - Call the `remoteDataSource`.
+    - Apply any "Smart Logic" (filtering/sorting) identified in Step 2.
+    - Convert the result using `.toEntity()` (for single items) or `.map((e) => e.toEntity()).toList()` (for lists).
+    - Return `Right(result)`.
+- **The "Catch" Block:**
+    - Catch specific exceptions (e.g., `ServerException`).
+    - Return `Left(ServerFailure())` as defined in the Markdown.
+
+**4. FINALIZE**
+
+- **Safety Check:** Ensure no `null` values are force-unwrapped unless guaranteed.
+- **Import Check:** Add necessary package imports for Models, Entities, Failures, and the Datasource.
+</aside>
+
+<aside>
+💡
+
+# DEFINITION OF DONE
+
+- **Contract Fulfilled:** Every method defined in the `DomainRepository` interface has a concrete implementation. No `UnimplementedError` or missing overrides remain.
+- **Architecture Enforced:** The code strictly returns `Right(Entity)` (via `.toEntity()`) and `Left(Failure)`. No raw `Models` or `Exceptions` leak out of the class.
+- **Logic Implemented:** Any business logic required by the Markdown (filtering, sorting, pagination) is explicitly written in Dart code.
+- **Safety Guaranteed:** All external Data Source calls are wrapped in `try-catch` blocks with precise error mapping.
+</aside>
+
+<aside>
+💡
+
+# FILE HANDLING PROTOCOL
+
+**1. CREATE**
+
+- **Trigger:** The file does not exist in the current codebase.
+- **Action:** Generate the **ENTIRE** file content (imports, class definition, and all methods).
+- **Target:** `lib/features/[feature_name]/data/repositories/[repo_name]_impl.dart`
+
+**2. READ (Inspection)**
+
+- **Trigger:** The file exists, and the task requires verification against the Domain Interface.
+- **Action:** **ANALYZE ONLY.** Compare existing methods against the interface.
+- **Constraint:** Do **NOT** modify, output, or reproduce the code.
+
+**3. UPDATE (Patch)**
+
+- **Trigger:** The file exists but is missing specific methods defined in the Domain Interface.
+- **Action:** Generate **ONLY** the missing methods.
+- **Constraint:** Do **NOT** rewrite, refactor, or duplicate existing code. Use markers to indicate insertion points.
+
+**4. DELETE (Forbidden)**
+
+- **Trigger:** The operation requires deletion or a full destructive overwrite of an existing file.
+- **Action:** **ABORT OPERATION IMMEDIATELY.** Return an **ERROR SUMMARY** explaining the conflict.
+- **Reason:** Destructive operations are strictly prohibited to prevent data loss.
+
+**5. DEFAULT SAFETY**
+
+- **Trigger:** The AI is uncertain about the file state or the required action.
+- **Action:** **DO NOTHING.** Pause and request clarification from the user.
+</aside>
+
+@{docs/system/conventions.md}
+@{docs/system/system_patterns.md}
+@{docs/system/data_domain_standard_examples.md}
+@{docs/core_utilities/error_handling_protocol.md}
+"""

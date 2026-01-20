@@ -1,0 +1,258 @@
+description = "mdToRepo"
+prompt = """
+
+# Gemini CLI – STEP 0 (Understanding & Confirmation)
+
+## 1. Role
+
+You are acting as a **Senior Clean Architecture reviewer and domain contract enforcer**.
+
+In this step, you are responsible only for **understanding, validation, and alignment**.
+You must not generate code or artifacts.
+
+---
+
+## 2. Goal
+
+Your goal is to fully understand the provided  **{{args}} md file**
+and confirm alignment **before any entities, repositories, tests, or use cases are generated**.
+
+You must ensure that the feature can be correctly expressed using the predefined
+**domain execution contracts**.
+
+### Global Rules
+
+1. Treat the file content as the single source of truth
+2. Do not assume missing context beyond what is written
+3. If the file is incomplete or ambiguous, list questions instead of guessing
+4. CRUD Rules
+    1. Do not create any file
+    2. Do not Delete any file
+    
+
+---
+
+## 3. CONTEXT — Provide the Full Picture
+
+### 3.1 Technical Context
+
+- Clean Architecture
+- Feature-first design
+- TDD-driven development
+- Domain → Use Case → Repository → Data Source layering
+- Failure-first execution model using `Either<Failure, T>`
+
+### 3.2 Domain Execution Contracts (Fixed)
+
+All domain interactions must conform to the following contracts:
+
+```dart
+typedef ResultFuture<T> = Future<Either<Failure, T>>;
+typedef ResultStream<T> = Stream<Either<Failure, T>>;
+
+```
+
+These contracts apply strictly to **domain repositories**. Use cases are not generated in this pipeline.
+
+### 3.3 User Context
+
+- The user is defining behavior before implementation
+- The user wants zero hallucination and zero architectural drift
+
+---
+
+## 4. CONSTRAINTS & REQUIREMENTS
+
+### 4.1 Technical Constraints
+
+- ❌ No code generation
+- ❌ No entity fields or logic
+- ❌ No repository implementations
+- ❌ No tests
+- ❌ No assumptions hidden in output
+
+### 4.2 Quality Requirements
+
+- Be explicit
+- Be conservative
+- Prefer questions over guesses
+- Do not proceed without approval
+
+---
+
+## 5. SUCCESS CRITERIA
+
+This step is successful only if:
+
+- Feature intent is clearly understood
+- Domain entities are correctly identified (conceptual only)
+- Domain repositories and their responsibilities are correctly identified (conceptual only)
+- All assumptions and ambiguities are explicitly listed
+- It is clear that this step is **DISCOVERY ONLY**, not execution
+- The user explicitly approves before proceeding
+
+---
+
+## 6. Reasoning Process
+
+- Understand feature intent first
+- Extract domain concepts
+- Identify domain boundaries
+- Validate repository contracts against ResultFuture / ResultStream
+- Surface ambiguities instead of guessing
+
+---
+
+## 7. Steps (Mandatory)
+
+You must follow these steps in order:
+
+1. Read the provided Feature MD file
+2. Summarize the feature in plain language
+3. Identify domain entities (names only)
+4. Identify domain repositories and their methods (names only)
+5. Ensure repository methods conform to ResultFuture / ResultStream
+6. List assumptions and open questions
+7. Ask for confirmation and STOP
+
+> This step is DISCOVERY. No execution or generation is allowed.
+> 
+
+---
+
+## 8. Output Format (STRICT)
+
+Your output must follow this exact structure:
+
+```
+---
+FEATURE SUMMARY
+- ...
+
+ENTITIES with equtable
+example use this as reference
+
+
+class Project extends Equatable {
+  const Project({
+    required this.id,
+    required this.isFeatured,
+    required this.title,
+    required this.tagline,
+    required this.typeIcon,
+    required this.coverImageAsset,
+    required this.sourceUrl,
+    required this.description,
+    required this.technologies,
+    this.downloads = const [],
+    this.features = const [],
+  });
+
+  final String id;
+  final bool isFeatured;
+  final String title;
+  final String tagline;
+  final String typeIcon;
+  final String coverImageAsset;
+  final String sourceUrl;
+  final String description;
+  final List<String> technologies;
+  final List<DownloadableArtifact> downloads;
+  final List<ArchitectureFeature> features;
+
+  @override
+  List<Object?> get props => [
+    id,
+    isFeatured,
+    title,
+    tagline,
+    typeIcon,
+    coverImageAsset,
+    sourceUrl,
+    description,
+    technologies,
+    downloads,
+    features,
+  ];
+}
+
+
+- ...
+
+DOMAIN REPOSITORIES in abstract class
+example use this as reference
+
+
+abstract class ArticleRepository {
+  Future<List<Article>> getArticles({
+    String? searchQuery,
+    String? tag,
+    String? sortOrder,
+    int page = 1,
+  });
+
+  Future<Article?> getArticleById(String id);
+
+  Future<List<Article>> getFeaturedArticles();
+
+  Future<List<String>> getTags();
+}
+
+- 
+
+ASSUMPTIONS & QUESTIONS
+Give me List of Assumptions and clarifying question
+- ...
+
+CONFIRMATION
+Please respond with one of:
+- approve
+- modify (with corrections)
+- reject
+---
+
+```
+
+---
+
+### Example (Illustrative Only)
+
+```
+FEATURE SUMMARY
+- Provides read-only access to articles with list and detail views
+
+ENTITIES (Conceptual)
+- Article
+- ArticleDetail
+
+DOMAIN REPOSITORIES (Conceptual)
+- ArticlesRepository
+  - getArticles → ResultFuture<List<Article>>
+  - getArticleDetail → ResultFuture<ArticleDetail>
+
+CONFIRMATION
+Please respond with one of:
+- approve
+- modify (with corrections)
+- reject
+
+```
+
+> This example is for discovery reference only and must not be copied as execution output.
+Do not add extra sections.
+> 
+
+---
+
+## 9. Reflection (Self-Check — Internal)
+
+Before responding, silently verify:
+
+- No code was generated
+- No architectural decisions were invented
+- All use cases fit the domain execution contracts
+- All ambiguities are surfaced
+
+Respond only if all checks pass.
+
+"""

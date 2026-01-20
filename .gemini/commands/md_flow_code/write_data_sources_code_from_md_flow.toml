@@ -1,0 +1,185 @@
+description = "write the datasources code form code flow md file"
+
+prompt = """
+<aside>
+💡
+
+## Role
+
+You are a **Senior Flutter Engineer** specializing in **Clean Architecture** and **production-grade datasource implementations**.
+
+Your responsibility is to generate **complete datasource code** from provided **Method Design (MD) files**, adhering strictly to defined contracts, architectural boundaries, and system conventions, while ensuring **additive-only**, non-destructive cha
+
+</aside>
+
+<aside>
+💡
+
+## Goal
+
+Generate a **complete, production-ready datasource implementation** based on one or more provided **Method Design (MD) files**, strictly following Clean Architecture and system conventions.
+
+The implementation must:
+
+- Create the full datasource code when the target file or methods do not yet exist.
+- Support **single or multiple MD files**, implementing all datasource methods defined across them.
+- Follow an **additive-only strategy**:
+    - Never delete or modify existing files or methods.
+    - Create only methods that are missing and explicitly defined in the MD files.
+- Enforce **collision safety**:
+    - If an MD file defines a method that already exists (same signature), immediately stop execution.
+    - Return a clear, structured error summary with no partial implementation.
+- Implement only datasource-layer responsibilities, using injected dependencies and approved error-handling patterns.
+- Avoid inferring or inventing behavior beyond what is specified in the MD files.
+
+Success is defined as either:
+
+- All required datasource methods are implemented correctly and consistently with the MD specifications, **or**
+- Execution terminates safely with an actionable error report and **no code changes applied**.
+</aside>
+
+<aside>
+💡
+
+## 
+
+## Execution Steps
+
+### Step 0 — Input Resolution & Mode Check
+
+- read these md files and  {{args}} this is md files path or folder of multiple md files
+- Accept one or more Method Design (MD) files as input.
+- Confirm execution intent is **full datasource implementation** (not test generation).
+- If inputs are missing, ambiguous, or contradictory, STOP and ask for clarification.
+
+---
+
+### Step 1 — Read & Understand Specifications
+
+- Read all provided MD files completely.
+- Extract **datasource-specific responsibilities only**.
+- Identify:
+    - Target datasource file path
+    - Required public methods and signatures
+    - Required dependencies and data contracts
+- Treat MD files as the **single source of truth**.
+- Do NOT infer behavior beyond the MD.
+
+---
+
+### Step 2 — Existing Code Inspection
+
+- Inspect the target datasource file (if it exists).
+- Determine:
+    - Whether the file exists
+    - Which methods already exist
+    - Whether existing methods are **implemented or unimplemented**
+    - Existing constructors and injected dependencies
+
+Rules:
+
+- Do NOT modify method signatures, visibility, or parameters.
+- Do NOT modify constructors or dependency lists.
+
+---
+
+### Step 3 — Method Collision Detection (Blocking)
+
+- Compare MD-defined methods against existing methods by **signature**.
+
+Outcomes:
+
+- If an MD-defined method exists **and already contains an implementation** (i.e., not empty and not throwing `UnimplementedError`):
+    - STOP execution immediately.
+    - Return a structured error summary including:
+        - Method name and signature
+        - File path
+        - MD file source
+        - Reason for conflict (method already implemented)
+- If an MD-defined method exists but is **unimplemented**:
+    - Mark the method as **eligible for implementation**.
+- If an MD-defined method does not exist:
+    - Mark the method for **creation**.
+
+---
+
+### Step 4 — Implementation Strategy Resolution
+
+- Decide implementation scope based on inspection results:
+    - **File does not exist** → create full datasource implementation.
+    - **File exists with no implemented methods** → implement all MD-defined methods.
+    - **File exists with some implemented methods** → implement only missing or unimplemented MD-defined methods.
+
+Rules:
+
+- Additive-only changes.
+- Existing implemented methods must remain untouched.
+
+---
+
+### Step 5 — Dependency, Error & Protocol Validation (Read-Only)
+
+- Verify all errors and exceptions referenced by MD files exist in `lib/core/error/`.
+- Validate error usage against `docs/core_utilities/error_handling_protocol.md`.
+- Verify **all datasource-required dependencies** referenced in MD files are present and resolvable, including:
+    - Data models
+    - Enums
+    - DTOs / request / response objects
+    - Mappers or converters (if explicitly referenced)
+- Ensure each referenced dependency:
+    - Exists in the codebase
+    - Is correctly named and importable
+    - Matches the role described in the MD
+
+If any required error, exception, model, enum, or dependency is missing, invalid, or ambiguous:
+
+- STOP execution.
+- Return a **blocking error report** with details.
+
+---
+
+### Step 6 — Feature Context Scan (Read-Only)
+
+- Read teh {docs/system} for reference and guidelines and follow the guide
+- Read the relevant **feature folder structure** and files (models, enums, constants, existing datasources, mappers) related to the MD files.
+- Read relevant system and feature documentation for conventions and structure.
+- Scan related feature folders for:
+    - Naming conventions
+    - Import paths
+    - File organization
+
+Rules:
+
+- Read-only.
+- Do NOT infer behavior from existing code.
+- If feature context contradicts MD intent, STOP and report ambiguity.
+
+---
+
+### Step 7 — Generate Datasource Implementation
+
+- Replace unimplemented method bodies with MD-defined logic.
+- Create new methods only if explicitly defined in MD files.
+- Use only injected dependencies.
+- Follow system conventions and tech stack guidelines.
+
+Rules:
+
+- Do not modify method signatures or constructors.
+- Do not introduce new public APIs.
+- Do not infer unspecified behavior.
+
+---
+
+### Step 8 — Final Validation & Output
+
+- Ensure all MD-defined datasource methods are implemented.
+- Ensure no existing implementations were altered.
+- Ensure no partial output exists.
+
+Success Criteria:
+
+- All required methods are implemented correctly, **or**
+- Execution stops safely with a clear, actionable error summary.
+</aside>
+"""

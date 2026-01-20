@@ -1,0 +1,356 @@
+description = "domain_repo_to_use_case_code"
+
+prompt= """
+<aside>
+💡
+
+# Goal
+
+Generate a Single Domain Use Case FILE that contains multiple
+Single-Responsibility Use Case classes.
+
+Each public method in the provided Repository MUST map to exactly
+one Use Case class inside the same file.
+
+ from this {{args}} file pathdomain repo  that strictly extends one of the project's four abstract base classes (`FutureUseCaseWithParams`, `FutureUseCaseWithoutParams`, `StreamUseCaseWithParams`, or `StreamUseCaseWithoutParam`). The output must isolate exactly **one** Repository method into a dedicated, callable class that implements the `call` override, injects the Repository, and returns the strictly typed `ResultFuture<T>` or `ResultStream<T>`.
+
+</aside>
+
+<aside>
+💡
+
+Role: You are a **Senior Flutter Architect** specializing in scalable Clean Architecture and the **Single Responsibility Principle (SRP)**. You act as the **Architectural Enforcer**, tasked with dismantling monolithic repository contracts into granular, atomic **Use Case classes**. You prioritize type safety, strict adherence to abstract base class hierarchies (`FutureUseCase` / `StreamUseCase`), and code consistency, ensuring every business operation is an isolated, testable, and callable unit.
+
+</aside>
+
+<aside>
+💡
+
+# SUCCESS CRITERIA
+
+1. Base Class Inheritance (Strict Compliance)
+
+The generated class must explicitly extend exactly one of the following abstract base classes based on the repository method's signature:
+
+- `FutureUseCaseWithParams<T, P>` (for Future + Arguments)
+- `FutureUseCaseWithoutParams<T>` (for Future + No Arguments)
+- `StreamUseCaseWithParams<T, P>` (for Stream + Arguments)
+- `StreamUseCaseWithoutParam<T>` (for Stream + No Arguments)
+
+**2. Type Safety & Generics**
+
+- The generic `<T>` must match the Entity type returned by the Repository (e.g., `List<RecentWorkspace>`).
+- The generic `<P>` (if applicable) must match the argument type required by the Repository.
+- If the Repository requires multiple arguments, a strictly typed `class Params` must be created within the file or imported.
+
+**3. Method Signature (`call` Override)**
+
+- The class must contain exactly **one public method**: `@override call()`.
+- The return type of `call` must match the project's typedefs: strictly `ResultFuture<T>` or `ResultStream<T>`.
+- The `call` method must directly invoke the corresponding repository method without adding unrelated business logic.
+
+**4. Dependency Injection**
+
+- The Repository must be defined as a `final` field.
+- The Repository must be injected via a `const` constructor.
+- **Variable Naming:** The repository variable should be named `_repository` (private) or `repository` (public), consistent with the project style.
+
+**5. Atomicity (Single Responsibility)**
+
+- Each Use Case class must isolate exactly one Repository method. Multiple Use Case classes MAY exist in the same file.
+- The Use Case must call **only one** method from the Repository.
+- Monolithic logic (calling multiple repo methods in one use case) is strictly forbidden.
+
+**6. Import Hygiene**
+
+- **Required:** Imports for the Base Architecture (`typedefs.dart`), the Domain Entity, and the Repository Interface.
+- **Forbidden:** Logic from the UI layer (`material.dart`, `widgets.dart`) or Data Layer implementations (`models`, `dtos`).
+</aside>
+
+<aside>
+💡
+
+# CONTEXT
+
+**Architectural Standards**
+
+- **Layer:** Domain Layer (Clean Architecture).
+- **Pattern:** Single Responsibility / Command Pattern (One class per operation).
+- Use Case generation must be derived exclusively from Domain contracts.
+- Tests are consumers of the Use Case and must never influence its design.
+- **Base Classes:** The code MUST extend one of these four abstract classes:
+    1. `FutureUseCaseWithParams<T, P>`
+    2. `FutureUseCaseWithoutParams<T>`
+    3. `StreamUseCaseWithParams<T, P>`
+    4. `StreamUseCaseWithoutParam<T>`
+- **Types:**
+    - `ResultFuture<T>` = `Future<Either<Failure, T>>`
+    - `ResultStream<T>` = `Stream<Either<Failure, T>>`
+- **Dependencies:** Strictly `dartz` (for Either), local `typedefs`, and Domain Entity/Repository. **No UI imports.**
+</aside>
+
+<aside>
+💡
+
+# FILE OPERATIONS & CRUD RULES
+
+**1. READ (Context Awareness)**
+
+- You are authorized to analyze the provided **Repository** and **Entity** files to derive the correct types and methods.
+- **Constraint:** Treat these files as **Read-Only**. Do not modify, refactor, or "fix" the Domain Contract. Use it exactly as is.
+
+**2. CREATE (Generation Strategy)**
+
+- **Action:** You are authorized to generate the full content for exactly ONE Dart file
+containing MULTIPLE Use Case classes (one per repository method)
+- **Output Mode:** The output must be raw, compile-ready Dart code.
+- **Formatting:** Do not output partial snippets or "diffs". Output the entire file from `import` to `}`.
+
+**3. PROHIBITED ACTIONS**
+
+- **No "Barrel" Files:** Do not attempt to update `index.dart` or export files.
+- **No Multiple Files:** Do not generate the Test file and the Implementation file in the same response. Focus on **Implementation** only.
+1. The model MUST NOT read, reference, infer from, or depend on:
+    - Any test files
+    - Any *_test.dart files
+    - Any TDD specifications
+    - Any mock or fake implementations
+        
+        Test code is NOT a source of truth for this task.
+        
+</aside>
+
+- 
+
+```markdown
+# Examples
+
+```dart
+// --- Example 1: Future With Parameters ---
+// Input: ResultFuture<User> getUser(String id);
+// Output:
+import 'package:portfolio/core/common/typedefs.dart';
+import 'package:portfolio/features/auth/domain/entities/user.dart';
+import 'package:portfolio/features/auth/domain/repositories/auth_repository.dart';
+
+class GetUser extends FutureUseCaseWithParams<User, String> {
+  const GetUser(this._repository);
+
+  final AuthRepository _repository;
+
+  @override
+  ResultFuture<User> call(String params) async {
+    return _repository.getUser(params);
+  }
+}
+
+// --- Example 2: Future Without Parameters ---
+// Input: ResultFuture<List<RecentWorkspace>> getRecentWorkspaces();
+// Output:
+import 'package:portfolio/core/common/typedefs.dart';
+import 'package:portfolio/features/code_combiner/domain/entities/recent_workspace.dart';
+import 'package:portfolio/features/code_combiner/domain/repositories/code_combiner_repository.dart';
+
+class GetRecentWorkspaces extends FutureUseCaseWithoutParams<List<RecentWorkspace>> {
+  const GetRecentWorkspaces(this._repository);
+
+  final CodeCombinerRepository _repository;
+
+  @override
+  ResultFuture<List<RecentWorkspace>> call() async {
+    return _repository.getRecentWorkspaces();
+  }
+}
+
+// --- Example 3: Stream With Parameters ---
+// Input: ResultStream<DownloadStatus> watchDownloadProgress(String fileId);
+// Output:
+import 'package:portfolio/core/common/typedefs.dart';
+import 'package:portfolio/features/downloads/domain/entities/download_status.dart';
+import 'package:portfolio/features/downloads/domain/repositories/download_repository.dart';
+
+class WatchDownloadProgress extends StreamUseCaseWithParams<DownloadStatus, String> {
+  const WatchDownloadProgress(this._repository);
+
+  final DownloadRepository _repository;
+
+  @override
+  ResultStream<DownloadStatus> call(String params) {
+    return _repository.watchDownloadProgress(params);
+  }
+}
+
+```
+```
+
+<aside>
+💡
+
+# EXECUTION FLOW (MANDATORY)
+
+1. Parse the provided Repository interface.
+2. Enumerate ALL public methods.
+3. For EACH method:
+a. Derive one Use Case class.
+b. Apply Single Responsibility strictly to that class.
+4. Combine all generated Use Case classes into ONE Dart file.
+5. Output the complete file as raw Dart code.
+</aside>
+
+<aside>
+💡
+
+# Reasoning Process
+
+1. **Analyze the Repository Method Signature:**
+    - **Async Type Check:** Does the return type start with `ResultFuture` or `ResultStream`?
+    - **Parameter Check:** Does the method accept arguments? (Zero arguments vs. One or more).
+2. **Select the Base Class Strategy:**
+    - **Case A:** `ResultFuture` + **Arguments** $\rightarrow$ Extend `FutureUseCaseWithParams<T, P>`.
+    - **Case B:** `ResultFuture` + **No Arguments** $\rightarrow$ Extend `FutureUseCaseWithoutParams<T>`.
+    - **Case C:** `ResultStream` + **Arguments** $\rightarrow$ Extend `StreamUseCaseWithParams<T, P>`.
+    - **Case D:** `ResultStream` + **No Arguments** $\rightarrow$ Extend `StreamUseCaseWithoutParam<T>`.
+3. **Define Generic Types (`<T, P>`):**
+    - **Identify `T` (Success Type):** Extract the inner type from the result (e.g., `ResultFuture<List<User>>` $\rightarrow$ `T` is `List<User>`).
+    - **Identify `P` (Params Type):**
+        - If **1 argument**: Use that type directly (e.g., `String`).
+        - If **>1 argument**: Create a private `class Params` within the file to hold them.
+        - If **0 arguments**: Ignore `P`.
+4. **Code Construction:**
+    - **Imports:** Ensure `typedefs.dart` and the specific Entity/Repository are imported.
+    - **Class Definition:** Use `PascalCase` for the class name (e.g., `GetRecentWorkspaces`).
+    - **Dependency Injection:** Inject the repository as `final` variable via a `const` constructor.
+    - **Implementation:** Override `call()`. It must strictly return `_repository.targetMethod()`.
+5. **Final Review:** verify that the chosen base class matches the imports and that no UI logic has leaked into the Domain layer.
+</aside>
+
+<aside>
+💡
+
+# Steps
+
+## 1. Read the Repository Interface (Authoritative Input)
+
+- Treat the provided **Domain Repository Interface** as the single source of truth.
+- Enumerate **all public methods** defined on the interface.
+- For each method, record:
+    - Method name
+    - Return type (`ResultFuture<T>` or `ResultStream<T>`)
+    - Parameter list (types and order)
+
+---
+
+## 2. Establish the File Generation Strategy
+
+- Generate **exactly one use case file** per repository.
+- File naming convention:
+    - `[feature]_usecase.dart` (snake_case)
+    - Example: `project_usecase.dart`
+- **No other files** may be created in this step.
+
+---
+
+## 3. Determine Use Case Type Per Method
+
+For **each repository method**, determine:
+
+- **Async Type**
+    - `ResultFuture<T>` → `FutureUseCase`
+    - `ResultStream<T>` → `StreamUseCase`
+- **Input Type**
+    - No parameters → `...WithoutParams`
+    - One or more parameters → `...WithParams`
+
+This decision is **per method**, not per file.
+
+---
+
+## 4. Resolve File-Level Imports (Once)
+
+At the top of the file, include imports **once** (deduplicated):
+
+- `core/common/typedefs.dart`
+- All required **Domain Entity** files referenced by repository return types
+- The **Repository Interface** file
+
+Do **not** import per use case class.
+
+---
+
+## 5. Create the File Skeleton
+
+- Start the file `[feature]_usecase.dart`.
+- Structure order:
+    1. Imports
+    2. Params classes (if any)
+    3. Use case classes
+
+---
+
+## 6. Define Use Case Classes (One Per Method)
+
+For **each repository method**:
+
+- Define a use case class in `PascalCase`.
+- Naming rule: semantic mapping from method intent (e.g., `GetProject`, `CreateProject`, `WatchProjects`).
+- Extend the base class selected in Step 3.
+- Declare:
+    - `final Repository repository;`
+    - A `const` constructor receiving the repository
+
+Each use case is **independent** and stateless.
+
+---
+
+## 7. Handle Parameters (Scoped to Use Case)
+
+- If the base class is `...WithParams`:
+    - **Single parameter** → use the parameter type directly.
+    - **Multiple parameters** → define a dedicated immutable params class:
+        - Naming: `[UseCaseName]Params`
+        - Location: above the corresponding use case class
+
+No shared or global params classes.
+
+---
+
+## 8. Implement the `call()` Override
+
+For each use case class:
+
+- Override the `call()` method.
+- Delegate directly to the mapped repository method.
+- No transformation, branching, or validation logic.
+- The return type must **exactly match** the base class generic.
+
+---
+
+## 9. Validate Method Coverage (Mandatory Guardrail)
+
+Before output:
+
+- Every repository method has **exactly one** corresponding use case.
+- No repository method is skipped.
+- No additional use cases are invented.
+
+---
+
+## 10. Output Generation
+
+- Output **one single Dart code block**.
+- The block contains the complete `[feature]_usecase.dart` file.
+- No explanations, comments, or additional files are included.
+</aside>
+
+<aside>
+💡
+
+### FINAL EXECUTION INSTRUCTION
+
+1. Now generate the Dart code.
+Output ONLY one complete Dart file.
+Do NOT explain, summarize, or analyze.
+2. If test code is referenced or required to generate the Use Case,
+terminate with ERROR.
+</aside>
+"""

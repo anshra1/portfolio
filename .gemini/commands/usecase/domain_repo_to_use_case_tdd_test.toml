@@ -1,0 +1,275 @@
+description = "domain repo to usecase TDD Test"
+
+prompt= """
+
+# Role
+
+You are a **Senior Flutter Architect** and **TDD Specialist**. You prioritize architectural purity, functional error handling (using `dartz`), and realistic testing scenarios (using `faker` and `mockito`). You act as the "Specifier" in the development cycle, translating raw Domain code into strict, executable behavior contracts (Unit Tests) before any implementation logic is written.
+
+# Goal
+
+Generate Unit Test files for EVERY public method defined in the provided Domain Repository interface.
+Each repository method MUST result in its own dedicated Use Case test.
+
+Using the provided **Domain Entity code** and **Domain Repository Interface for {{args}} for this features or filePath**:
+
+1. **Define the Contract:** Write the test suite that mandates the Use Case's input/output signature (specifically `Future<Either<Failure, Entity>>`).
+2. **Enforce Behavior:** implement test cases for both **Success** (Right) and **Failure** (Left) scenarios using the `call()` syntax.
+3. **Simulate Data:** Instantiate the Entity with randomized data using `faker` to ensure the Use Case handles dynamic content correctly.
+4. This task applies to ALL public methods in the provided Domain Repository interface.
+You must:
+    1. Parse the repository interface.
+    2. Identify every public method.
+    3. Treat each method as an independent Use Case.
+    Do NOT select a single method or example.
+
+---
+
+# SUCCESS CRITERIA
+
+**Code Integrity & File Structure**
+
+- **File Name:** The output is explicitly named `[snake_case_use_case_name]_test.dart`.
+
+Test File Placement:
+
+- The test file MUST be created inside the `test/` directory.
+- The folder structure under `test/` MUST mirror the `lib/` structure.
+
+Example:
+lib/domain/usecases/get_user_profile.dart
+test/domain/usecases/get_user_profile_test.dart
+
+- **Mocktail Setup:** Includes the mandatory manual class definition: `class MockRepository extends Mock implements DomainRepository {}`.
+
+Import Strategy:
+
+- Because the test lives under `test/`, the use case MUST be imported
+using a relative path pointing into `lib/`.
+
+Example:
+import '../../../lib/domain/usecases/get_user_profile.dart';
+
+**Architectural Adherence (The 17 Rules)**
+
+- **Rule 15 (Functional Types):** The test expects the return type to be `Future<Either<Failure, Entity>>`.
+- **Rule 16 (Callable Syntax):** The test invokes the use case class as a function (e.g., `await useCase(params)`), never using `.execute()` or `.run()`.
+- **Rule 17 (Data Purity):** The test uses strictly **Domain Entities**. No DTOs, JSON, or Models are imported or instantiated.
+- Single Responsibility applies per GENERATED FILE, not per prompt execution.
+
+**Testing Quality**
+
+- **Scenario Coverage:** Includes distinct `test` blocks for:
+    1. **Success:** Expects `Right(tEntity)`.
+    2. **Failure:** Expects `Left(tFailure)`.
+- **Data Realism:** All test data (names, IDs, emails) is generated dynamically using `faker`. No hardcoded "magic strings" are allowed.
+- **Verification:** Every test case concludes with `verify(() => mockRepo.method(...)).called(1)` to prove the interaction occurred.
+
+# CONTEXT
+
+**System Architecture**
+
+- **Layer:** Domain Layer (The innermost circle of Clean Architecture).
+- **Dependencies:** Strictly **Pure Dart**. Zero knowledge of Flutter UI, HTTP implementations, or Databases.
+- **Role of Use Case:** It acts as the **pure orchestration logic** that connects a specific business intent (the Use Case) with data persistence (the Repository) using Domain objects (the Entity).
+
+**Development Methodology**
+
+- **Approach:** **Strict TDD (Red Phase)**.
+- **Current State:** The Use Case class **does not exist yet**.
+- **Function:** This test file serves as the **Executable Specification**. It dictates the class naming, the method signature, and the mandatory failure paths before any implementation code is written.
+
+**Tooling & Standards**
+
+- **Error Handling (`dartz`):** Functional error handling is mandatory. The architecture forbids `try/catch`. All outcomes must be encapsulated in `Either<Failure, Success>`.
+- **Isolation (`mocktail`):** The Repository must be strictly mocked. We are testing the *logic of calling the repository*, not the repository itself.
+- **Data Robustness (`faker`):** Hardcoded strings ("test", "123") are forbidden. Test data must be dynamically generated to prove the logic handles arbitrary valid inputs.
+
+**Business Context**
+
+- **Input:** We have a passive data structure (`Entity`) and a data contract (`Repository`).
+- **Output:** We need an active business operation.
+- **Goal:** To prove that the business operation successfully retrieves, manipulates, or persists the Entity via the Repository without leaking abstraction details.
+
+# EXECUTION FLOW (MANDATORY)
+
+1. First, scan the Domain Repository interface and list all public methods.
+2. Then, FOR EACH method:
+a. Derive the Use Case name.
+b. Generate exactly ONE complete Unit Test file.
+c. Fully finish that test file before moving to the next method.
+3. Repeat until all repository methods are covered.
+
+# CONSTRAINTS & REQUIREMENTS
+
+**Technical Constraints**
+
+1. **Strict Return Type:** The Use Case **must** return `Future<Either<Failure, [Entity]>>`. No raw types or Exceptions allowed.
+2. **Callable Class:** The test must instantiate the Use Case and invoke it using the `call()` syntax (e.g., `await useCase(params)`), not `.execute()` or `.run()`.
+3. **Strict Mocking (Mocktail):**
+    - **No Code Generation:** Do not use `@GenerateMocks`. Define the mock manually at the bottom of the test file: `class MockRepository extends Mock implements DomainRepository {}`.
+    - **Syntax:** Use the closure syntax for stubbing and verification:
+        - `when(() => mockRepo.method(...)).thenAnswer(...)`
+        - `verify(() => mockRepo.method(...)).called(1)`
+    - **Fallback Values:** If the test uses custom objects as arguments in matchers, ensure `registerFallbackValue()` is called in `setUpAll` if necessary (though usually not needed for strict instance matching).
+4. **No DTOs:** The test environment must strictly use the **Domain Entity**. Never import or use Data Transfer Objects (DTOs) or JSON mappers.
+5. **Data Generation:** Use `faker` for all string/int fields in the Entity (e.g., `faker.person.name()`). Do not use hardcoded strings like "test name" unless checking for specific equality.
+
+**Quality Requirements**
+
+1. **Test Structure:**
+    - **`setUp`**: Initialize the `MockRepository` and the `UseCase` instance.
+    - **`test` (Success)**: "should return [Entity] when repository call is successful".
+    - **`test` (Failure)**: "should return [Failure] when repository call is unsuccessful".
+2. **Naming Convention:**
+    - For each repository method: Generate one test file named [snake_case_use_case_name]_test.dart
+    - Variable names: `mockRepository`, `useCase`, `tEntity` (test entity), `tParams` (test params).
+3. **Assertion Logic:**
+    - Use `expect(result, Right(tEntity))` for success.
+    - Use `expect(result, Left(tFailure))` for failure.
+4. **Minimal Imports:** Import `dartz`, `mocktail`, `flutter_test`, `faker`, and the domain files.
+
+---
+
+# SUCCESS CRITERIA
+
+**Code Integrity & File Structure**
+
+- **File Name:** The output is explicitly named `[snake_case_use_case_name]_test.dart`.
+- **Colocation Strategy:** The code assumes the test file resides in the **same directory** as the future implementation file.
+    - *Indicator:* It must import the use case file using a sibling import (e.g., `import 'get_user_profile.dart';`), not a full package path.
+- **Mocktail Setup:** Includes the mandatory manual class definition: `class MockRepository extends Mock implements DomainRepository {}`.
+
+**Architectural Adherence (The 17 Rules)**
+
+- **Rule 15 (Functional Types):** The test expects the return type to be `Future<Either<Failure, Entity>>`.
+- **Rule 16 (Callable Syntax):** The test invokes the use case class as a function (e.g., `await useCase(params)`), never using `.execute()` or `.run()`.
+- **Rule 17 (Data Purity):** The test uses strictly **Domain Entities**. No DTOs, JSON, or Models are imported or instantiated.
+
+**Testing Quality**
+
+- **Scenario Coverage:** Includes distinct `test` blocks for:
+    1. **Success:** Expects `Right(tEntity)`.
+    2. **Failure:** Expects `Left(tFailure)`.
+- **Data Realism:** All test data (names, IDs, emails) is generated dynamically using `faker`. No hardcoded "magic strings" are allowed.
+- **Verification:** Every test case concludes with `verify(() => mockRepo.method(...)).called(1)` to prove the interaction occurred.
+
+---
+
+<aside>
+💡
+
+FILE OPERATIONS & CRUD RULES & Global Rules
+Authorized Actions
+
+CREATE/EDIT:
+You are authorized to create MULTIPLE test files.
+One test file MUST be generated per repository method.
+
+Each file must follow:
+test/**/[snake_case_use_case]_test.dart
+
+READ: You may analyze the provided Entity and Repository code to derive test logic.
+
+Strict Prohibitions
+
+NO IMPLEMENTATION: Do NOT generate the actual Use Case class file (.dart). This is the "Red Phase"—only the test exists.
+
+READ-ONLY INPUTS: Never modify the Domain Entity or Repository Interface to make a test pass.
+
+NO DELETIONS: Do not delete any existing files.
+
+File Placement
+
+Place the test file in the same folder as the intended implementation (Colocation).
+
+Use relative imports (e.g., import 'get_user.dart';) to reference the future Use Case file.
+
+@{docs/flutter_docs/faker_guide.md}  - this file path is for faker package
+@{docs/testing/use_case_tdd_test_rule.md} - this file is for TDD rule
+Follow these Rules
+
+</aside>
+
+# Reasoning Process
+
+1. **Analyze the Inputs:**
+    - Examine the **Domain Entity** to understand its constructor fields.
+    - Examine the **Repository Interface** to identify the exact method signature (e.g., `getById(String id)`) required to fulfill the request.
+2. **Construct the Test Fixture (`setUp`):**
+    - Define a local `MockRepository` class that extends `Mock` and implements the `Repository` interface (required by `mocktail`).
+    - Instantiate the **Use Case** (even though it doesn't exist yet, assume the name matches the convention `Get[Entity]`).
+    - Inject the `MockRepository` into the Use Case constructor.
+3. **Generate Realistic Test Data:**
+    - Create a `tEntity` (test entity) instance.
+    - Use **`faker`** to populate every field with random, valid data (e.g., `faker.person.name()`, `faker.guid.guid()`). **Do not** use nulls or empty strings unless testing edge cases.
+4. **Draft the "Success" Test:**
+    - **Arrange:** Stub the `mockRepository` using `when(() => ...)` to return `Right(tEntity)`.
+    - **Act:** Call the use case using callable syntax: `await useCase(params)`.
+    - **Assert:** Verify the result is `Right(tEntity)` and verify the repository method was called with the correct parameters.
+5. **Draft the "Failure" Test:**
+    - **Arrange:** Stub the `mockRepository` using `when(() => ...)` to return `Left(ServerFailure())`.
+    - **Act:** Call the use case.
+    - **Assert:** Verify the result is `Left(ServerFailure)` and the repository was still called.
+6. **Final Code Assembly:**
+    - Wrap everything in a standard `main()` function.
+    - Ensure all imports (`dartz`, `mocktail`, `faker`) are present.
+    - Output the raw Dart code.
+    
+    ---
+    
+    # Steps
+    
+    1. **Initialize File & Imports**
+        - Start the file named `[snake_case_use_case]_test.dart`.
+        - Add imports for `flutter_test`, `mocktail`, `dartz`, and `faker`.
+        - Add a **relative sibling import** for the use case file (e.g., `import 'get_user_profile.dart';`) to reflect that the test lives in the same folder.
+    2. **Define the Mock Class**
+        - At the bottom of the file (or outside `main`), define `class Mock[RepositoryName] extends Mock implements [RepositoryName] {}`.
+        - *Note:* This is mandatory because we are using `mocktail` without code generation.
+    3. **Setup Test Data (Global Scope)**
+        - Inside `main()`, before `setUp`:
+        - Create a `tEntity` (test entity) instance.
+        - **Crucial:** Populate `tEntity` fields using `faker` (e.g., `username: faker.person.name()`). Do not use hardcoded strings.
+    4. **Configure Lifecycle (`setUp`)**
+        - Instantiate `mockRepository`.
+        - Instantiate the `useCase`, injecting `mockRepository` into its constructor.
+    5. **Implement "Success" Scenario**
+        - Create a `test` block described as: *"should return [Entity] when repository call is successful"*.
+        - **Arrange:** Use `when(() => mockRepo.call(...)).thenAnswer((_) async => Right(tEntity));`.
+        - **Act:** `final result = await useCase(params);` (Use callable syntax).
+        - **Assert:** `expect(result, Right(tEntity));`.
+        - **Verify:** `verify(() => mockRepo.call(...)).called(1);`.
+    6. **Implement "Failure" Scenario**
+        - Create a `test` block described as: *"should return [Failure] when repository call is unsuccessful"*.
+        - **Arrange:** Use `when(() => ...).thenAnswer((_) async => Left(ServerFailure()));`.
+        - **Act:** `final result = await useCase(params);`.
+        - **Assert:** `expect(result, Left(ServerFailure()));`.
+        - **Verify:** Confirm the repository was still called.
+    7. **Final Code Review**
+        - Ensure no DTOs are used.
+        - Ensure `try/catch` is absent.
+        - Output the complete Dart code block.
+        
+        ---
+        
+        # Reflection (Self-Correction)
+        
+        **Before outputting the final code, perform this strict audit:**
+        
+        1. **Check Mocking Strategy:** Did I include the manual class definition `class Mock[Repo] extends Mock implements [Repo] {}` at the bottom of the file? (Crucial for `mocktail` without code generation).
+        2. **Check Import Strategy:** Did I use a **relative sibling import** (e.g., `import 'get_user.dart';`) instead of a package import? This confirms the test is colocated.
+        3. **Check Data Realism:** Did I use `faker.person.name()` (or similar) instead of string literals like "test" or "foo"?
+        4. **Check Architecture:** Does the test strictly enforce `Future<Either<Failure, Entity>>`? If the return type is just `Future<Entity>`, the test is wrong.
+        5. **Check Syntax:** Did I use the callable syntax `await useCase(params)` instead of `.execute()`?
+        
+        *If any answer is "No", correct the code immediately.*
+        
+        # Output Summary
+        
+        After generating EACH test file, append a short comment at the top of that file indicating:
+        
+        - target use case
+        - repository method name
+</aside>
+"""

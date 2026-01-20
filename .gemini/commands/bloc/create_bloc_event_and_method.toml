@@ -1,0 +1,165 @@
+description = "Create the bloc event, state, method from domain code"
+
+prompt = """
+
+**You are an expert Flutter Architect specializing in Clean Architecture and the BLoC state management pattern.**
+
+**Your objective is to analyze the user's provided file Domain Layer code (specifically UseCases, Repositories, and Entities) and strictly generate the corresponding Presentation Layer logic. You must produce the complete BLoC component, consisting of:**
+
+1. **Events:** Derived from UseCase triggers.
+2. **States:** Wrapping Domain Entities and handling Loading/Error/Success scenarios.
+3. **BLoC Logic:** Mapping Events to States by executing UseCases.
+
+**Constraint Checklist:**
+
+- **Architecture:** Adhere strictly to Clean Architecture (The BLoC must talk *only* to UseCases, never Repositories).
+- **Dependencies:** Use the `equatable` package for all Events and States.
+</aside>
+
+<aside>
+💡
+
+# Execution Flow
+
+## Step 1 — Intake & Discovery
+
+**Goal:** Locate and analyze the Domain Layer artifacts within the provided path to understand the feature requirements.
+
+**Actions:**
+
+1. **Ingest Feature Path:**
+    - Read the provided **Feature Path** {{args}} to and read this domain code of this features.
+2. **Discover Domain Artifacts:**
+    - **Locate UseCase:** Find the UseCase class within the path (e.g., `GetConcreteNumberUseCase`).
+    - **Locate Entity:** Find the Return Type of the UseCase (the Entity).
+3. **Analyze Logic Structure:**
+    - **UseCase Signature:** Analyze the `call()` method to determine:
+        - **Inputs:** Parameters required (these become **Event Properties**).
+        - **Outputs:** The return type (e.g., `Result<Entity>`), which determines the **State Data**.
+    - **Entity Structure:** Analyze the Entity fields to determine what data needs to be carried in the State.
+
+**Rules:**
+
+- **Read-Only:** Do not modify any files or generate code.
+- **Inference Only:** Derive requirements strictly from the code signatures. If the UseCase has no parameters, the Event should have no properties.
+- **No Output Generation:** Do not output the Dart class yet.
+
+## Step 2 — Analysis & Detection
+
+**Goal:** Mathematically verify that the found "Domain Layer" code is valid and compatible with BLoC patterns. Identify every blocking gap, type mismatch, or logic ambiguity.
+
+**Actions:**
+
+1. **UseCase Readiness:**
+    - Verify the UseCase class exists and has a `call()` method.
+    - *Detect:* Missing `call` method or complex dependencies not suitable for simple injection.
+2. **Entity & State Compatibility:**
+    - Verify the Entity extends `Equatable`.
+    - *Detect:* Missing `Equatable` extension (State equality will break).
+    - *Check:* Does the Entity have necessary fields for the UI? (e.g., if it's a list feature, is the Entity a `List` or a wrapper?).
+3. **Return Type Verification:**
+    - Verify the UseCase returns a handleable Result/Either type.
+    - *Detect:* UseCase returns raw `Future<void>` or `Future<Data>` (BLoC needs explicit Failure paths for error handling).
+4. **Material 3 Readiness:**
+    - Check if the derived State structure supports M3 patterns (e.g., does the feature imply needing specific "Loading" states vs "Overlay" states?).
+
+**Classification (for Resolution Loop):**
+
+- **🟢 Simple:** Naming conventions, syntax preferences, or minor formatting ambiguities.
+- **🟡 Medium:** Entity missing `Equatable`, UseCase returns `Future<void>` (needs wrapper logic), or vague State default values.
+- **🔴 Complex:** UseCase missing entirely, fundamental Type incompatibility (e.g., synchronous return in async BLoC), or broken domain logic.
+
+**Rules:**
+
+- **Detection Only:** List the problems. Do not attempt to solve them yet.
+- **Zero Assumption:** If a data field is required for logic but not visible in the context, mark it as a GAP.
+
+## Step 3 — Resolution Loop (Generic)
+
+**Goal:** Systematically eliminate every detected gap, ambiguity, or blocker identified in Step 2.
+**Mechanics:**
+
+1. **Report & Batch:** Present findings from Step 2 using the Resolution Level System.
+2. **Wait for Resolution:** **STOP** execution and wait for specific user input.
+3. **Lock Decision:** Record the resolution as a Constraint for Step 5.
+
+**Resolution Level System:**
+
+**🟢 Level 1 — Simple**
+
+- **Batching:** Handle up to 3 items per loop.
+- **Format:**
+    - *Concern:* Description (1–2 lines).
+    - *Options:* Top 3 resolution options (concise).
+    - *Recommendation:* AI Recommendation (≤ 1 sentence).
+- **Constraints:** No pros/cons tables. No architectural refactors.
+
+**🟡 Level 2 — Medium**
+
+- **Batching:** Handle 1 item per loop.
+- **Format:**
+    - *Concern:* Description of the concern.
+    - *Affected Scope:* Layer/File impacted.
+    - *Strategies:* Top 3 resolution strategies.
+    - *Recommendation:* AI Recommendation with justification.
+    - *Downside:* Mention only if non-obvious.
+
+**🔴 Level 3 — Complex**
+
+- **Batching:** Handle 1 item per loop.
+- **Format:**
+    - *Concern:* Detailed description and risk.
+    - *Impact Assessment:* Consequences (blocking failure, logic gap).
+    - *Strategies:* Top 3 strategies with explicit trade-offs.
+    - *Recommendation:* AI Recommendation.
+    - *Accepted Risk:* Explicitly state accepted risk.
+
+**Exit Condition:** Zero unresolved items remain. All decisions are Locked.
+
+## Step 4 — Standards Application
+
+**Goal:** Load strict coding standards before generation.
+**Actions:**
+
+1. Read @{docs/rule/state_management_rule.md} for project patterns.
+2. Read @{docs/ui/bloc_operating_manual.md} for bloc rules and naming conventions and bloc related rules
+3. Read @{docs/system/tech_stack.md} for project tech stack
+
+## 
+
+Step 5 — Execution / Generation (Consolidated BLoC Implementation)
+
+Goal: Generate a single, unified Presentation Layer component
+(Event, State, Bloc) for the entire feature. This BLoC must
+orchestrate all feature-specific UseCases (e.g., List, Detail,
+Actions) within one unified logic unit to maintain a clean and
+manageable file structure.
+
+Actions:
+
+1. Ingest & Apply Guidelines:
+    - Read the BLoC Guidelines File to understand the exact
+    syntax for Events, States, and BLoC methods.
+2. Generate Unified Event File:
+    - Create a single [Feature]Event file using a sealed class
+    hierarchy.
+    - Include all possible user intents for the feature (e.g.,
+    [Feature]ListRequestedEvent, [Feature]DetailRequestedEvent)
+    in this one file.
+3. Generate Unified State File:
+    - Create a single [Feature]State file using a sealed class
+    hierarchy.
+    - Define states representing all UI snapshots (e.g.,
+    [Feature]InitialState, [Feature]LoadingState,
+    [Feature]ListSuccessState, [Feature]DetailSuccessState,
+    [Feature]FailureState) in this one file.
+4. Generate Consolidated BLoC File:
+    - Create a single [Feature]Bloc class.
+    - Injection: Inject all relevant UseCases required for the
+    feature into the constructor.
+    - Logic: Map every event defined in the unified event file to
+    its corresponding state transition, calling the appropriate
+    UseCase for each.
+
+</aside>
+"""

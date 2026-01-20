@@ -1,0 +1,10 @@
+{
+  "ui": {
+    "footer": {
+      "hideModelInfo": false
+    }
+  },
+  "experimental": {
+    "skills": true
+  }
+}

@@ -123,14 +123,16 @@ These rules may only be violated if the user explicitly asks for:
 *   **Rule**: ALL text styles must use context extensions.
 *   **Usage**: `style: context.headlineMedium`, `style: context.bodyLarge`.
 *   **Forbidden**: `TextStyle(fontSize: ...)`
+*   **📖 Full Guide**: [Typography AI Guide](./typography_ai_guide.md)
 
 ### 8.2 Density Tokens (Spacing, Radius, Sizes)
-*   **Source**: `package:portfolio/core/theme/density/density_extensions.dart`
+*   **Source**: `package:portfolio/core/theme/density/density.dart`
 *   **Rule**: ALL spatial values (padding, margin, radius, icon sizes) must use density tokens.
 *   **Usage**:
     *   Spacing: `context.spacing.md`, `context.spacing.lg`
-    *   Radius: `context.radius.md`, `context.radius.full`
+    *   Radius: `context.radius.md`, `context.radius.lg`
     *   Sizes: `context.sizes.iconMd`
+*   **📖 Full Guide**: [Density Tokens AI Guide](./density_tokens_ai_guide.md)
 
 ### 8.3 Button System
 *   **Source**: `package:core_ui_kit`
@@ -178,7 +180,7 @@ import 'package:core_ui_kit/core_ui_kit.dart';
 *   Use `BlocConsumer` when both rebuilding and side effects are needed.
 
 
-### 9.4 Forbidden
+### 9.3 Forbidden
 *   `setState()` for business logic.
 *   Direct state mutation.
 *   BLoC logic inside widgets.

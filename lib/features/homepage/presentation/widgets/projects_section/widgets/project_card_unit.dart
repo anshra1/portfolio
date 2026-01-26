@@ -181,7 +181,12 @@ class _ProjectDetails extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Tags
-          _ProjectTags(tags: project.tags),
+          SizedBox(
+            height: 28,
+            child: ClipRect(
+              child: _ProjectTags(tags: project.tags),
+            ),
+          ),
           const SizedBox(height: 24),
 
           // Buttons

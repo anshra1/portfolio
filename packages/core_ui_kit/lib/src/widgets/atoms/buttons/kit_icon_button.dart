@@ -6,7 +6,7 @@ class KitIconButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData icon;
   final String? tooltip;
-  final Color? color;
+
   final Color? backgroundColor;
   final Color? foregroundColor;
   final double? iconSize;
@@ -18,7 +18,6 @@ class KitIconButton extends StatelessWidget {
     required this.icon,
     this.foregroundColor,
     this.tooltip,
-    this.color,
     this.backgroundColor,
     this.iconSize,
     this.padding = const EdgeInsets.all(8.0),
@@ -27,23 +26,19 @@ class KitIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final effectiveColor = foregroundColor ?? 
+    theme.colorScheme.onSurfaceVariant;
 
     return IconButton(
       onPressed: onPressed,
-      icon: Icon(
-        icon,
-        size: iconSize ?? 20.0,
-        color: foregroundColor ?? theme.colorScheme.onSurfaceVariant,
-      ),
+      icon: Icon(icon, size: iconSize ?? 20.0),
       padding: padding,
       tooltip: tooltip,
-      color: color ?? theme.colorScheme.onSurfaceVariant,
       style: IconButton.styleFrom(
         backgroundColor: backgroundColor,
-        hoverColor: (color ?? theme.colorScheme.onSurfaceVariant).withValues(alpha: 0.08),
-        highlightColor: (color ?? theme.colorScheme.onSurfaceVariant).withValues(
-          alpha: 0.12,
-        ),
+        foregroundColor: effectiveColor,
+        hoverColor: effectiveColor.withValues(alpha: 0.08),
+        highlightColor: effectiveColor.withValues(alpha: 0.12),
       ),
     );
   }

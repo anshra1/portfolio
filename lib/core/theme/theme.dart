@@ -61,7 +61,10 @@ class AppTheme {
       ),
 
       // 2. Typography
-      textTheme: AppTypography.textTheme,
+      textTheme: AppTypography.textTheme.apply(
+        bodyColor: AppColors.secondary,
+        displayColor: AppColors.secondary,
+      ),
 
       // 3. Component Themes
 

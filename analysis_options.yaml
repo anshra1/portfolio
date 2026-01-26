@@ -20,8 +20,8 @@ bloc:
     - prefer_void_public_cubit_methods       # Cubit methods should be one-way (void)
     
     # 🔌 USAGE PATTERNS
-    - avoid_build_context_extensions         # Don't use context.read inside BLoC
-    - prefer_build_context_extensions        # Do use context.read inside UI
+            # Don't use context.read inside BLoC
+           # Do use context.read inside UI
 
     # ❌ DISABLED RULES (Intentional)
     # - prefer_bloc: We want the freedom to use Cubit for simple states.

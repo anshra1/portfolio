@@ -65,7 +65,7 @@ class ArticleCardUnit extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
 
                   // Meta (Date • Read Time)
                   Text(
@@ -79,30 +79,37 @@ class ArticleCardUnit extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   // Tags
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: data.hashtags.map((tag) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          "#$tag",
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      );
-                    }).toList(),
+                  SizedBox(
+                    height: 28,
+                    child: ClipRect(
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: data.hashtags.map((tag) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              "#$tag",
+                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10,
+                                    letterSpacing: 0.5,
+                                  ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
 
                   const Spacer(),
 

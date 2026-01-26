@@ -35,8 +35,10 @@ class _HeroSocialLinkActionState extends State<HeroSocialLinkAction> {
         icon: widget.icon,
         tooltip: widget.tooltipLabel,
         iconSize: 24, // Standard size per request
-        backgroundColor: _isHovered ? widget.brandColor : Colors.transparent,
-        color: _isHovered ? Colors.white : theme.colorScheme.onSurfaceVariant,
+        backgroundColor: Colors.transparent,
+        foregroundColor: _isHovered
+            ? widget.brandColor
+            : theme.colorScheme.onSurfaceVariant,
       ),
     );
   }

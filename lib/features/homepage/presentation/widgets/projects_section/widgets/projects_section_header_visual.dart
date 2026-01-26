@@ -1,5 +1,6 @@
 import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProjectsSectionHeaderVisual extends StatelessWidget {
   const ProjectsSectionHeaderVisual({super.key});
@@ -8,9 +9,9 @@ class ProjectsSectionHeaderVisual extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'My Flutter Creations',
-      style: context.headlineLarge.copyWith(
-        fontWeight: FontWeight.w900,
-        //   color: Theme.of(context).colorScheme.onSurface,
+      style: GoogleFonts.poppins(
+        textStyle: context.headlineLarge,
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
     );

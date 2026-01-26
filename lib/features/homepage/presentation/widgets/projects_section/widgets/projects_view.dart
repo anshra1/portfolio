@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:portfolio/app/app_router.dart';
 import 'package:portfolio/core/presentation/widgets/layouts/responsive_grid_layout.dart';
 import 'package:portfolio/features/homepage/presentation/mappers/project_mapper.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/project_card_unit.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/skeleton/projects_skeleton_visual.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/project_card_unit.dart';
 import 'package:portfolio/features/projects/presentation/bloc/projects_bloc.dart';
 
 /// View widget that listens to [ProjectsBloc] and projects state to UI.
@@ -22,7 +24,9 @@ class ProjectsView extends StatelessWidget {
                 .map(
                   (p) => ProjectCardUnit(
                     project: mapProjectToDisplayModel(p),
-                    onDownloadPressed: () {},
+                    onDownloadPressed: () async {
+                      await context.pushNamed(RouteName.projectDetailPage, extra: p.id);
+                    },
                   ),
                 )
                 .toList(),

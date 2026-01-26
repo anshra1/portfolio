@@ -2,7 +2,7 @@ import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/app/app_router.dart';
 import 'package:portfolio/app/bootstrap.dart';
-import 'package:portfolio/core/theme/app_theme.dart';
+import 'package:portfolio/core/theme/theme.dart';
 
 Future<void> main() async {
   await bootstrap(() => const MyApp());
@@ -16,16 +16,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final ThemeMode _themeMode = ThemeMode.light;
-
   @override
   Widget build(BuildContext context) {
     return ScreenSizeDetector(
       child: MaterialApp.router(
         title: 'Portfolio & Talker Demo',
-        themeMode: _themeMode,
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
+        theme: AppTheme.lightTheme,
         routerConfig: appRouter,
       ),
     );

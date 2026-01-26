@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density.dart';
+import 'package:portfolio/core/ds/density_context.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/learnings_header_visual.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/learnings_view.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/view_all_learnings_action.dart';

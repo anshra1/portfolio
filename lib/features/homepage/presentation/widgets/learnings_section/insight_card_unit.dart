@@ -1,6 +1,6 @@
 import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density_context.dart';
+import 'package:portfolio/core/ds/density_context.dart';
 import 'package:portfolio/features/homepage/presentation/models/insight_view_model.dart';
 
 class InsightCardUnit extends StatefulWidget {

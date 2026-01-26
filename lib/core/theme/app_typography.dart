@@ -1,105 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/theme.dart' show MaterialTheme;
+import 'package:portfolio/core/theme/app_colors.dart';
 
-/// Centralized definition of application typography.
-///
-/// This works with the static [MaterialTheme] class to provide
-/// a consistent type scale.
 class AppTypography {
-  const AppTypography._();
+  // Private constructor
+  AppTypography._();
 
-  /// The base TextTheme used by the application keys mapped to
-  /// Material Design 3 roles.
-  static const TextTheme base = TextTheme(
-    displayLarge: TextStyle(
-      fontSize: 57,
-      height: 1.12,
-      letterSpacing: -0.25,
-      fontWeight: FontWeight.w400,
-    ),
-    displayMedium: TextStyle(
-      fontSize: 45,
-      height: 1.16,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w400,
-    ),
-    displaySmall: TextStyle(
-      fontSize: 36,
-      height: 1.22,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w400,
-    ),
-    headlineLarge: TextStyle(
-      fontSize: 32,
-      height: 1.25,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w400,
-    ),
-    headlineMedium: TextStyle(
-      fontSize: 28,
-      height: 1.29,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w400,
-    ),
-    headlineSmall: TextStyle(
-      fontSize: 24,
-      height: 1.33,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w400,
-    ),
-    titleLarge: TextStyle(
-      fontSize: 22,
-      height: 1.27,
-      letterSpacing: 0,
-      fontWeight: FontWeight.w400,
-    ),
-    titleMedium: TextStyle(
-      fontSize: 16,
-      height: 1.5,
-      letterSpacing: 0.15,
-      fontWeight: FontWeight.w500,
-    ),
-    titleSmall: TextStyle(
-      fontSize: 14,
-      height: 1.43,
-      letterSpacing: 0.1,
-      fontWeight: FontWeight.w500,
-    ),
-    bodyLarge: TextStyle(
-      fontSize: 16,
-      height: 1.5,
-      letterSpacing: 0.5,
-      fontWeight: FontWeight.w400,
-    ),
-    bodyMedium: TextStyle(
-      fontSize: 14,
-      height: 1.43,
-      letterSpacing: 0.25,
-      fontWeight: FontWeight.w400,
-    ),
-    bodySmall: TextStyle(
-      fontSize: 12,
-      height: 1.33,
-      letterSpacing: 0.4,
-      fontWeight: FontWeight.w400,
-    ),
-    labelLarge: TextStyle(
-      fontSize: 14,
-      height: 1.43,
-      letterSpacing: 0.1,
-      fontWeight: FontWeight.w500,
-    ),
-    labelMedium: TextStyle(
-      fontSize: 12,
-      height: 1.33,
-      letterSpacing: 0.5,
-      fontWeight: FontWeight.w500,
-    ),
-    labelSmall: TextStyle(
-      fontSize: 11,
-      height: 1.45,
-      letterSpacing: 0.5,
-      fontWeight: FontWeight.w500,
-    ),
-  );
+  static TextTheme get textTheme {
+    // Using standard Flutter typography (San Francisco on iOS, Roboto on Android, etc.)
+    const baseTextTheme = Typography.englishLike2021;
+
+    return baseTextTheme.copyWith(
+      displayLarge: baseTextTheme.displayLarge?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.w800,
+        letterSpacing: -0.025,
+      ),
+      displayMedium: baseTextTheme.displayMedium?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.bold,
+        letterSpacing: -0.025,
+      ),
+      displaySmall: baseTextTheme.displaySmall?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.bold,
+      ),
+      headlineLarge: baseTextTheme.headlineLarge?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.bold,
+      ),
+      headlineMedium: baseTextTheme.headlineMedium?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.w600,
+      ),
+      headlineSmall: baseTextTheme.headlineSmall?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.w600,
+      ),
+      titleLarge: baseTextTheme.titleLarge?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.bold,
+      ),
+      titleMedium: baseTextTheme.titleMedium?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.w600,
+      ),
+      titleSmall: baseTextTheme.titleSmall?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.w500,
+      ),
+      bodyLarge: baseTextTheme.bodyLarge?.copyWith(
+        color: AppColors.gray600,
+        fontSize: 16,
+      ),
+      bodyMedium: baseTextTheme.bodyMedium?.copyWith(
+        color: AppColors.gray600,
+        fontSize: 14,
+      ),
+      bodySmall: baseTextTheme.bodySmall?.copyWith(
+        color: AppColors.gray400,
+        fontSize: 12,
+      ),
+      labelLarge: baseTextTheme.labelLarge?.copyWith(
+        color: AppColors.secondary,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
 }

@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/theme.dart' show MaterialTheme;
 
-/// Centralized definition of application seed colors.
-///
-/// DEPRECATED: This class is no longer used by the new [MaterialTheme] system.
-/// Refer to [MaterialTheme] in `lib/core/theme/theme.dart` for color definitions.
-@Deprecated('Use MaterialTheme in theme.dart instead')
 class AppColors {
-  const AppColors._();
+  // Private constructor
+  AppColors._();
 
-  // Primary: A nice purple from homepage.html (#8B5CF6)
-  static const primary = Color(0xFF8B5CF6);
+  // ---------------------------------------------------------------------------
+  // Core Color Palette
+  // ---------------------------------------------------------------------------
+  /// **Primary**: #8B5CF6 - Main brand color (Violet 500)
+  /// Used for: Main buttons, active states, key highlights.
+  static const Color primary = Color(0xFF8B5CF6);
 
-  // Secondary: Deep purple for monochromatic harmony (#6D28D9 - violet-700)
-  static const secondary = Color(0xFF6D28D9);
+  /// **Secondary**: #111827 - Dark contrast color (Gray 900)
+  /// Used for: High-contrast elements, dark backgrounds, high-emphasis text.
+  static const Color secondary = Color(0xFF111827);
 
-  // Tertiary: Pink for complementary accents (#F472B6 - pink-400)
-  static const tertiary = Color(0xFFF472B6);
+  /// **Tertiary**: #F3E8FF - Accent/Decorative color (Purple 100)
+  /// Used for: Subtle backgrounds, tags, decorative elements.
+  static const Color tertiary = Color(0xFFF3E8FF);
 
-  // Neutral: Dark background color (#111827 - gray-900)
-  static const neutral = Color(0xFF111827);
+  /// **Neutral**: #F7F8FA - Main background color
+  /// Used for: Scaffolds, app backgrounds.
+  static const Color neutral = Color(0xFFF7F8FA);
 
-  // Neutral Variant: Mid-tone gray for outlines/surfaces (#4B5563 - gray-600)
-  static const neutralVariant = Color(0xFF4B5563);
+  /// **Neutral Variant**: #9CA3AF - Muted/Outline color (Gray 400)
+  /// Used for: Borders, disabled states, low-emphasis text/icons.
+  static const Color neutralVariant = Color(0xFF9CA3AF);
 
-  // Error: Standard red (#EF4444 - red-500)
-  static const error = Color(0xFFEF4444);
+  /// **Error**: #EF4444 - Semantic error color (Red 500)
+  /// Used for: Validation errors, destructive actions.
+  static const Color error = Color(0xFFEF4444);
 
-  // Additional semantic colors
-  static const success = Color(0xFF10B981); // emerald-500
-  static const warning = Color(0xFFF59E0B); // amber-500
-  static const info = Color(0xFF3B82F6); // blue-500
+  // ---------------------------------------------------------------------------
+  // Additional Surface/Helper Colors
+  // ---------------------------------------------------------------------------
+  static const Color surfaceWhite = Colors.white;
+  static const Color gray600 = Color(0xFF4B5563);
+  static const Color gray400 = Color(0xFF9CA3AF);
+  static const Color gray300 = Color(0xFFD1D5DB);
+  static const Color gray200 = Color(0xFFE5E7EB);
 }

@@ -1,33 +1,91 @@
 import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:portfolio/core/di/injection.dart';
+import 'package:portfolio/features/articles/domain/entities/article_filter.dart';
+import 'package:portfolio/features/articles/presentation/bloc/articles_bloc.dart';
+import 'package:portfolio/features/articles/presentation/bloc/articles_event.dart';
+import 'package:portfolio/features/articles/presentation/bloc/articles_state.dart';
 import 'package:portfolio/features/homepage/presentation/layouts/mobile_layout.dart';
 import 'package:portfolio/features/homepage/presentation/layouts/tablet_layout.dart';
 import 'package:portfolio/features/homepage/presentation/layouts/web_layout.dart';
+import 'package:portfolio/features/projects/domain/entities/project_filter.dart';
+import 'package:portfolio/features/projects/presentation/bloc/projects_bloc.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ScreenSizeBuilder(
-        breakpoints: const BreakpointConfiguration(
-          compact: 380,
-          medium: 768,
-          expanded: 1024,
-          large: 1280,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ProjectsBloc>(
+          create: (_) => getIt<ProjectsBloc>()
+            ..add(
+              const ProjectsListRequestedEvent(
+                page: 1,
+                filter: ProjectFilter(),
+              ),
+            ),
         ),
-        builder: (context, size) {
-          if (size.isExpanded) {
-            return const WebLayout();
-          }
-
-          if (size.isMedium) {
-            return const TabletLayout();
-          }
-
-          return const MobileLayout();
-        },
+        BlocProvider<ArticlesBloc>(
+          create: (_) => getIt<ArticlesBloc>()
+            ..add(
+              const ArticlesListRequestedEvent(
+                page: 1,
+                filter: ArticleFilter(),
+              ),
+            ),
+        ),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<ProjectsBloc, ProjectsState>(
+            listener: (context, state) {
+              if (state is ProjectsFailureState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.message)),
+                );
+              }
+            },
+          ),
+          BlocListener<ArticlesBloc, ArticlesState>(
+            listener: (context, state) {
+              if (state is ArticlesFailureState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.failure.message)),
+                );
+              }
+            },
+          ),
+        ],
+        child: ScreenSizeBuilder(
+          builder: (context, size) {
+            return Scaffold(
+              body: Builder(
+                builder: (context) {
+                  if (size.isDesktop) {
+                    return const WebLayout();
+                  }
+                  if (size.isTablet) {
+                    return const TabletLayout();
+                  }
+                  return const MobileLayout();
+                },
+              ),
+              floatingActionButton: size.isMobile
+                  ? FloatingActionButton(
+                      onPressed: () {
+                        //
+                        // TODO: Mailto action
+                      },
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: const Icon(Icons.mail, color: Colors.white),
+                    )
+                  : null,
+            );
+          },
+        ),
       ),
     );
   }

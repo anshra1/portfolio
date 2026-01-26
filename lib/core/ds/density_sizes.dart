@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density_mode.dart';
+import 'package:portfolio/core/ds/density_mode.dart';
 
 /// Density-aware size tokens for icons, avatars, and components.
 ///
@@ -14,6 +14,7 @@ class DensitySizes {
     required this.avatarSm,
     required this.avatarMd,
     required this.avatarLg,
+    required this.maxContainerWidth,
   });
 
   /// Comfortable sizes for mobile/touch.
@@ -23,7 +24,8 @@ class DensitySizes {
       iconLg = 32,
       avatarSm = 40,
       avatarMd = 56,
-      avatarLg = 72;
+      avatarLg = 72,
+      maxContainerWidth = 1152;
 
   /// Compact sizes for desktop/web.
   const DensitySizes.compact()
@@ -32,7 +34,8 @@ class DensitySizes {
       iconLg = 24,
       avatarSm = 32,
       avatarMd = 40,
-      avatarLg = 56;
+      avatarLg = 56,
+      maxContainerWidth = 1152;
 
   /// Factory that selects values based on [DensityMode].
   factory DensitySizes.fromMode(DensityMode mode) {
@@ -53,6 +56,9 @@ class DensitySizes {
   final double avatarMd;
   final double avatarLg;
 
+  // Layout
+  final double maxContainerWidth;
+
   /// Linearly interpolate between two [DensitySizes] instances.
   static DensitySizes lerp(DensitySizes a, DensitySizes b, double t) {
     return DensitySizes._(
@@ -62,6 +68,8 @@ class DensitySizes {
       avatarSm: a.avatarSm + (b.avatarSm - a.avatarSm) * t,
       avatarMd: a.avatarMd + (b.avatarMd - a.avatarMd) * t,
       avatarLg: a.avatarLg + (b.avatarLg - a.avatarLg) * t,
+      maxContainerWidth:
+          a.maxContainerWidth + (b.maxContainerWidth - a.maxContainerWidth) * t,
     );
   }
 
@@ -74,8 +82,17 @@ class DensitySizes {
           iconLg == other.iconLg &&
           avatarSm == other.avatarSm &&
           avatarMd == other.avatarMd &&
-          avatarLg == other.avatarLg;
+          avatarLg == other.avatarLg &&
+          maxContainerWidth == other.maxContainerWidth;
 
   @override
-  int get hashCode => Object.hash(iconSm, iconMd, iconLg, avatarSm, avatarMd, avatarLg);
+  int get hashCode => Object.hash(
+    iconSm,
+    iconMd,
+    iconLg,
+    avatarSm,
+    avatarMd,
+    avatarLg,
+    maxContainerWidth,
+  );
 }

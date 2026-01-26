@@ -4,5 +4,5 @@ class AssetConstants {
   static const String articleContentBasePath = 'database/articles/content/';
 
   // Projects
-  static const String projectsDbPath = 'assets/data/projects.json';
+  static const String projectsDbPath = 'database/project/projects.json';
 }

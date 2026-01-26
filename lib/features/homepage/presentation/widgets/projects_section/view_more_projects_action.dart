@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/core/presentation/widgets/buttons/portfolio_outline_button.dart';
-import 'package:portfolio/core/presentation/widgets/buttons/portfolio_outline_button.dart';
 
 class ViewMoreProjectsAction extends StatelessWidget {
   const ViewMoreProjectsAction({required this.onPressed, super.key});

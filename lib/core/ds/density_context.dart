@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/app_density_tokens.dart';
-import 'package:portfolio/core/theme/density/density_mode.dart';
-import 'package:portfolio/core/theme/density/density_radius.dart';
-import 'package:portfolio/core/theme/density/density_sizes.dart';
-import 'package:portfolio/core/theme/density/density_spacing.dart';
+import 'package:portfolio/core/ds/app_density_tokens.dart';
+import 'package:portfolio/core/ds/density_mode.dart';
+import 'package:portfolio/core/ds/density_radius.dart';
+import 'package:portfolio/core/ds/density_sizes.dart';
+import 'package:portfolio/core/ds/density_spacing.dart';
 
 /// Provides density token access via [BuildContext].
 ///

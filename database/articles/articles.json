@@ -4,21 +4,32 @@
     "displayTier": "hero",
     "publishedAt": "2024-01-20T09:00:00.000Z",
     "title": "Introduction to Clean Architecture",
-    "readTime": "5 min",
+    "readTime": "5 min read",
     "tags": ["Architecture", "Flutter", "Best Practices"],
     "summary": "Understand the core principles of Clean Architecture and why it matters for scalable apps.",
-    "contentPath": "assets/data/articles/content/clean_architecture_intro.md",
-    "coverImageAsset": "assets/images/articles/clean_arch_cover.png"
+    "contentPath": "database/articles/content/clean_architecture_intro.md",
+    "coverImageAsset": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80"
   },
   {
-    "id": "a_002_image_test",
+    "id": "a_002_state_management",
+    "displayTier": "hero",
+    "publishedAt": "2024-01-18T10:00:00.000Z",
+    "title": "State Management Patterns in Flutter",
+    "readTime": "7 min read",
+    "tags": ["Flutter", "BLoC", "Riverpod"],
+    "summary": "A deep dive into state management options and when to use each approach.",
+    "contentPath": "database/articles/content/state_management.md",
+    "coverImageAsset": "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&q=80"
+  },
+  {
+    "id": "a_003_responsive_design",
     "displayTier": "standard",
-    "publishedAt": "2024-01-21T10:00:00.000Z",
-    "title": "Markdown Image Test",
-    "readTime": "2 min",
-    "tags": ["Testing", "Images", "Markdown"],
-    "summary": "A sample article to verify that images load correctly from local assets.",
-    "contentPath": "assets/data/articles/content/image_test.md",
-    "coverImageAsset": "assets/images/articles/test_image.png"
+    "publishedAt": "2024-01-10T14:00:00.000Z",
+    "title": "Building Responsive Flutter Apps",
+    "readTime": "4 min read",
+    "tags": ["Flutter", "UI/UX", "Responsive"],
+    "summary": "Learn how to create adaptive layouts that work beautifully across all screen sizes.",
+    "contentPath": "database/articles/content/responsive_design.md",
+    "coverImageAsset": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80"
   }
 ]

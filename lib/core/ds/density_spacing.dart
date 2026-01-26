@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/density/density_mode.dart';
+import 'package:portfolio/core/ds/density_mode.dart';
 
 /// Density-aware spacing tokens.
 ///

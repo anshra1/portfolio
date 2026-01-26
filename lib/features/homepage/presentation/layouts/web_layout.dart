@@ -4,7 +4,7 @@ import 'package:portfolio/features/homepage/presentation/widgets/about_section/a
 import 'package:portfolio/features/homepage/presentation/widgets/expertise_section/expertise_section.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/section/hero_section.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/learnings_section.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_section.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/projects_section/section/projects_section.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/site_footer/site_footer.dart';
 
 class WebLayout extends StatelessWidget {

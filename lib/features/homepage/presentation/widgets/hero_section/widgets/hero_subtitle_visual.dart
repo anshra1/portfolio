@@ -1,27 +1,20 @@
 import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio/core/theme/app_colors.dart';
+import 'package:portfolio/core/widgets/responsive/responsive_width_wrapper.dart';
 
 class HeroSubtitleVisual extends StatelessWidget {
   const HeroSubtitleVisual({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
+    return ResponsiveWidthWrapper(
+      child: Text(
+        'Building robust, intuitive, and beautiful cross-platform applications. Explore my journey from elegant UI to powerful backend integrations.',
         style: context.titleMedium.copyWith(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
-        children: const [
-          TextSpan(text: 'Building robust, intuitive, and beautiful '),
-          TextSpan(
-            text: 'cross-platform applications',
-            style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
-          ),
-          TextSpan(text: '. Explore my journey...'),
-        ],
+        textAlign: TextAlign.center,
       ),
-      textAlign: TextAlign.center,
     );
   }
 }

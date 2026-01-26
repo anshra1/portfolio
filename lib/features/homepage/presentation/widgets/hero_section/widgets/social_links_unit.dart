@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/core/ds/density_context.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_social_link_action.dart';
 
@@ -7,28 +8,30 @@ class SocialLinksUnit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Icons are using standard Material Icons as placeholders for generic social icons
-    // In a real app, use font_awesome_flutter or custom SVGs
+    // Icons are using FontAwesome Icons
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         const HeroSocialLinkAction(
-          icon: Icons.code, // GitHub placeholder
+          icon: FontAwesomeIcons.github,
           url: 'https://github.com',
-          label: 'GitHub',
+          tooltipLabel: 'GitHub',
+          brandColor: Colors.black,
         ),
-        SizedBox(width: context.spacing.lg),
+        SizedBox(width: context.spacing.md),
         const HeroSocialLinkAction(
-          icon: Icons.work, // LinkedIn placeholder
+          icon: FontAwesomeIcons.linkedin,
           url: 'https://linkedin.com',
-          label: 'LinkedIn',
+          tooltipLabel: 'LinkedIn',
+          brandColor: Color(0xFF0077B5),
         ),
-        SizedBox(width: context.spacing.lg),
+        SizedBox(width: context.spacing.md),
         const HeroSocialLinkAction(
-          icon: Icons.article, // Medium placeholder
+          icon: FontAwesomeIcons.medium,
           url: 'https://medium.com',
-          label: 'Medium',
+          tooltipLabel: 'Medium',
+          brandColor: Colors.black,
         ),
       ],
     );

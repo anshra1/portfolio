@@ -58,3 +58,24 @@ KitPrimaryButton(
   child: Text("Save Changes"),
 )
 ```
+
+### 10. KitSvgButton
+Standardized SVG button that accepts an asset path. Useful for custom icons or brand logos (e.g., social icons).
+
+## Advanced Usage
+
+### Handling Hover Effects
+For complex hover interactions (like changing background color on hover), wrap the button in a `MouseRegion` and manage state locally. This keeps the core button components simple and focused on their primary role.
+
+```dart
+MouseRegion(
+  onEnter: (_) => setState(() => _isHovered = true),
+  onExit: (_) => setState(() => _isHovered = false),
+  child: KitIconButton(
+    onPressed: () {},
+    icon: Icon(Icons.home),
+    backgroundColor: _isHovered ? brandColor : Colors.transparent,
+    color: _isHovered ? Colors.white : theme.colorScheme.onSurface,
+  ),
+)
+```

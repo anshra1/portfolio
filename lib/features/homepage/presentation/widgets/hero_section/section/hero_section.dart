@@ -5,6 +5,7 @@ import 'package:portfolio/features/homepage/presentation/widgets/hero_section/wi
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_subtitle_visual.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_title_visual.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/social_links_unit.dart';
+
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});
 
@@ -35,20 +36,20 @@ class HeroSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     HeroPrimaryAction(onPressed: () {}),
-                    SizedBox(height: context.spacing.md),
+                    SizedBox(height: context.spacing.lg),
                     HeroSecondaryAction(onPressed: () {}),
                   ],
                 );
               }
 
-              return Wrap(
-                spacing: context.spacing.md,
-                runSpacing: context.spacing.md,
-                alignment: WrapAlignment.center,
-                children: [
-                  HeroPrimaryAction(onPressed: () {}),
-                  HeroSecondaryAction(onPressed: () {}),
-                ],
+              return Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    HeroPrimaryAction(onPressed: () {}),
+                    HeroSecondaryAction(onPressed: () {}),
+                  ],
+                ),
               );
             },
           ),

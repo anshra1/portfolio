@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio/core/presentation/widgets/layouts/responsive_grid_layout.dart';
 import 'package:portfolio/features/homepage/presentation/mappers/project_mapper.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/project_card_unit.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_skeleton_visual.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/project_card_unit.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/projects_section/skeleton/projects_skeleton_visual.dart';
 import 'package:portfolio/features/projects/presentation/bloc/projects_bloc.dart';
 
 /// View widget that listens to [ProjectsBloc] and projects state to UI.

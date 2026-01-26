@@ -31,6 +31,7 @@ export 'src/widgets/atoms/buttons/kit_outline_button.dart';
 export 'src/widgets/atoms/buttons/kit_primary_button.dart';
 export 'src/widgets/atoms/buttons/kit_secondary_button.dart';
 export 'src/widgets/atoms/buttons/kit_social_button.dart';
+export 'src/widgets/atoms/buttons/kit_svg_button.dart';
 export 'src/widgets/atoms/buttons/kit_tertiary_button.dart';
 export 'src/widgets/atoms/inputs/kit_text_field.dart';
 export 'src/widgets/atoms/loaders/kit_loader.dart';

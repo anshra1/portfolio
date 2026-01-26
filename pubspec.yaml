@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.10.4
 
 workspace:
   - packages/core_ui_kit
@@ -23,6 +23,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_gen: ^5.12.0
   flutter_getit: ^3.0.1
+  font_awesome_flutter: ^10.12.0
   fpdart: ^1.2.0
   freezed_annotation: ^3.1.0
   get_it: ^7.7.0

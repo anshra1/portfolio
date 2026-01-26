@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_section_header_visual.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/projects_view.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/view_more_projects_action.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/projects_section_header_visual.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/projects_view.dart';
+import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/view_more_projects_action.dart';
 
 /// Section container that composes the projects header, view, and action.
 /// Does NOT listen to state — delegates to [ProjectsView].

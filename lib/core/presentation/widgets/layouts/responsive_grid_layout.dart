@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 class ResponsiveGridLayout extends StatelessWidget {
   const ResponsiveGridLayout({
     required this.children,
+    this.limitOnMobile = true,
     super.key,
   });
+
   final List<Widget> children;
+  final bool limitOnMobile;
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +25,14 @@ class ResponsiveGridLayout extends StatelessWidget {
           crossAxisCount = 2;
         }
 
-        // Specific logic from HTML: "Project 3 (HIDDEN ON MOBILE)"
-        // "Mobile" here likely means the 1-column view.
-        // HTML: <div class="hidden md:flex ..."> for 3rd item.
-        // So if crossAxisCount == 1, we show only 2 items.
-        // If we have more than 2 items, and we are in 1-column mode, take 2.
-
-        final visibleChildren = (crossAxisCount == 1 && children.length > 2)
+        final visibleChildren =
+            (limitOnMobile && crossAxisCount == 1 && children.length > 2)
             ? children.take(2).toList()
             : children;
 
         if (crossAxisCount == 1) {
-          // 1 Column: Just a column with spacing
           return Column(
-            spacing: 32, // gap-8 = 32px
+            spacing: 32,
             children: visibleChildren,
           );
         } else {

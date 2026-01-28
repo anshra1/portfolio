@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:portfolio/app/app_router.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/projects_section_header_visual.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/projects_view.dart';
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/view_more_projects_action.dart';
@@ -28,7 +30,7 @@ class ProjectsSection extends StatelessWidget {
               const SizedBox(height: 16),
               ViewMoreProjectsAction(
                 onPressed: () {
-                  debugPrint('Show More Projects clicked');
+                  context.pushNamed(RouteName.projectListPage);
                 },
               ),
             ],

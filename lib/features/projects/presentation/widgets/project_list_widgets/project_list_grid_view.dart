@@ -8,9 +8,8 @@ import 'package:portfolio/features/homepage/presentation/widgets/projects_sectio
 import 'package:portfolio/features/homepage/presentation/widgets/projects_section/widgets/project_card_unit.dart';
 import 'package:portfolio/features/projects/presentation/bloc/projects_bloc.dart';
 
-/// View widget that listens to [ProjectsBloc] and projects state to UI.
-class ProjectsView extends StatelessWidget {
-  const ProjectsView({super.key});
+class ProjectListGridView extends StatelessWidget {
+  const ProjectListGridView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +19,7 @@ class ProjectsView extends StatelessWidget {
           ProjectsInitialState() ||
           ProjectsLoadingState() => const ProjectsSkeletonVisual(),
           ProjectsListSuccessState(:final projects) => ResponsiveGridLayout(
+            limitOnMobile: false, // Show all projects vertically on mobile
             children: projects
                 .map(
                   (p) => GestureDetector(
@@ -43,7 +43,9 @@ class ProjectsView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 48),
               child: Text(
                 'Error loading projects: $message',
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
               ),
             ),
           ),

@@ -2,13 +2,6 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class ProjectViewModel {
-  final String id;
-  final String title;
-  final String description;
-  final String imageUrl;
-  final List<String> techStack;
-  final String? appType;
-
   const ProjectViewModel({
     required this.id,
     required this.title,
@@ -17,4 +10,10 @@ class ProjectViewModel {
     required this.techStack,
     this.appType,
   });
+  final String id;
+  final String title;
+  final String description;
+  final String imageUrl;
+  final List<String> techStack;
+  final String? appType;
 }

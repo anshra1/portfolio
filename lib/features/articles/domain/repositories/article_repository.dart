@@ -11,5 +11,5 @@ abstract interface class ArticleRepository {
 
   ResultFuture<Article> getArticleDetail(String articleId);
 
-  ResultFuture<List<Article>> getRecommendedArticles();
+//  ResultFuture<List<Article>> getRecommendedArticles();
 }

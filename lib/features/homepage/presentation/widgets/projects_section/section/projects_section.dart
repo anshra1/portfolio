@@ -29,8 +29,8 @@ class ProjectsSection extends StatelessWidget {
               const ProjectsView(),
               const SizedBox(height: 16),
               ViewMoreProjectsAction(
-                onPressed: () {
-                  context.pushNamed(RouteName.projectListPage);
+                onPressed: () async {
+                  await context.pushNamed(RouteName.projectListPage);
                 },
               ),
             ],

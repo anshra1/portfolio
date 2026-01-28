@@ -11,10 +11,7 @@ The `core_ui_kit` provides a production-grade, "Scale-Ready" responsive architec
     * [ScreenSizeDetector](#screensizedetector)
     * [ScreenSizeBuilder](#screensizebuilder-global)
     * [ResponsiveLayoutBuilder](#responsivelayoutbuilder-local)
-4. [Responsive Typography](#4-responsive-typography)
-    * [ResponsiveTextStyle](#responsivetextstyle)
-    * [ResponsiveTokens](#responsivetokens)
-5. [Implementation Guide](#5-implementation-guide)
+4. [Implementation Guide](#4-implementation-guide)
 
 ---
 
@@ -33,7 +30,7 @@ The system distinguishes between two types of responsiveness:
 
 To enable the responsive system, wrap your application in a `ScreenSizeDetector`. This is typically done in `main.dart`.
 
-For responsive typography, you can also inject the responsive text theme.
+
 
 ```dart
 // lib/main.dart
@@ -46,13 +43,12 @@ class MyApp extends StatelessWidget {
     return ScreenSizeDetector(
       child: Builder(
         builder: (context) {
-          // 2. (Optional) Generate responsive text theme
-          final responsiveTheme = ResponsiveTokens.m3().toTextTheme(context);
+
           
           return MaterialApp.router(
             theme: ThemeData(
               useMaterial3: true,
-              textTheme: responsiveTheme, // Auto-scaling text
+
             ),
             // ... router config
           );
@@ -131,39 +127,7 @@ return Container(padding: padding, ...);
 
 ---
 
-## 4. Responsive Typography
-
-The system solves the "Mobile vs Desktop" font size problem using `ResponsiveTextStyle` and `ResponsiveTokens`.
-
-### ResponsiveTextStyle
-A style that automatically scales based on the window size class.
-
-```dart
-final bodyStyle = ResponsiveTextStyle(
-  base: TextStyle(fontSize: 16), // Mobile size
-  // Automatically scales up ~10-20% on Tablet/Desktop
-);
-
-Text('Hello', style: bodyStyle.resolve(context));
-```
-
-### ResponsiveTokens
-Provides all 15 Material Design 3 styles (Display, Headline, Body, etc.) pre-configured with auto-scaling.
-
-**Usage with Extensions:**
-If you set up `ResponsiveTypographyProvider` or inject it into `ThemeData`, you can use standard shortcuts:
-
-```dart
-// Standard Flutter way (if injected into Theme)
-Text('Headline', style: Theme.of(context).textTheme.headlineLarge);
-
-// Direct Extension way (if using ResponsiveTypographyProvider)
-Text('Headline', style: context.headlineLarge);
-```
-
----
-
-## 5. Implementation Guide
+## 4. Implementation Guide
 
 ### Folder Structure Pattern
 For major features, separate layouts into dedicated files to keep code clean.

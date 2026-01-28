@@ -56,10 +56,8 @@ Future<void> configureDependencies() async {
         getProjects: getIt<GetProjects>(),
         getProjectDetail: getIt<GetProjectDetail>(),
       ),
-    );
-
-  // --- Articles Feature ---
-  getIt
+    )
+    // --- Articles Feature ---
     ..registerLazySingleton<ArticlesRemoteDataSource>(
       () => ArticlesRemoteDataSourceImpl(
         assetBundle: rootBundle,

@@ -60,35 +60,35 @@ This widget naming system works in conjunction with the UI architectural rules. 
 
 ## Architectural Overview
 
-### Four-Layer Architecture
+### Three-Layer Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  Layer 1: _page (Screen Entry Point)                   │
-│  - Routing & DI setup                                   │
-│  - Composes layouts                                     │
+│  Infrastructure (Router & Config)                       │
+│  - GoRouter definitions                                 │
+│  - BlocProvider setup (Route-scoped or Global)          │
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│  Layer 2: _layout (Responsive Structure)                │
-│  - Breakpoint logic                                     │
-│  - Component sizing & spacing                           │
-│  - Arranges components                                  │
+│  Layer 1: The Page (`_page` / `_page_view`)             │
+│  - Screen Entry Point                                   │
+│  - Defines Macro-Layout (Scaffold, Row, Column)         │
+│  - Composes Local Widgets                               │
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│  Layer 3: Components (Pure Building Blocks)             │
-│  - _visual, _unit (Display)                             │
-│  - _action (Intent triggers)                            │
-│  - _control (Local state)                               │
-│  - _input (Controller quarantine)                       │
+│  Layer 2: Local Widgets (Private to Page)               │
+│  - Located in `pages/feature/widgets/`                  │
+│  - Specific to the feature (e.g., `SearchInputBar`)     │
+│  - Can use `_layout` internally for micro-structure     │
+│  - Types: `_unit`, `_visual`, `_action`, `_control`     │
+│  - Modifier: `_view` (if listening to state)            │
 └─────────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────────┐
-│  Optional: _view (Data Connector)                       │
-│  - Wraps components when external state is needed       │
-│  - Listens to state (BlocBuilder, Consumer)             │
-│  - Added LAST after UI is designed with components      │
+│  Layer 3: Shared & Core Widgets                         │
+│  - `features/shared_widgets/` (Feature-wide reuse)      │
+│  - `core/widgets/` (App-wide reuse - Atomic Design)     │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -96,13 +96,14 @@ This widget naming system works in conjunction with the UI architectural rules. 
 
 | Concern | Layer Responsible |
 |---------|------------------|
-| **State Listening** | `_view` only |
-| **Breakpoint Logic** | `_layout` only |
-| **Routing** | `_page` only |
+| **Dependency Injection** | Infrastructure (Router) |
+| **State Listening** | `_view` modifier only |
+| **Breakpoint Logic** | `_layout` widgets only |
+| **Routing** | `_page` (via Router config) |
 | **Visual Styling** | Components only |
 | **User Interaction** | Components only |
 
-**Critical Rule:** Components never listen to state. Views never control layout. Layouts never listen to state. Pages never define styles.
+**Critical Rule:** Components never listen to state. Layouts never listen to state. Pages never define styles.
 
 ---
 
@@ -289,8 +290,8 @@ Every widget **class and file** MUST follow:
 | Suffix | Category | Purpose |
 | --- | --- | --- |
 | `_page` | Page | Screen entry point |
-| `_layout` | Responsive Layout | Breakpoint‑specific arrangement |
-| `_view` | State Projection | Listens to state, projects to components |
+| `_layout` | Component Layout | Internal structure & constraints |
+| `_view` | State Projection | **MODIFIER:** Added if listening to state |
 
 #### Components
 
@@ -301,7 +302,7 @@ Every widget **class and file** MUST follow:
 | `_action` | User Action | Triggers logic layer intent |
 | `_control` | Local Control | Ephemeral UI state only |
 | `_input` | Controller Adapter | Owns UI controllers |
-| `_section` | Section Container | Top-level section composing other widgets |
+
 
 ---
 
@@ -453,73 +454,34 @@ class ProfileStatRowUnit extends StatelessWidget {
 
 ---
 
-### 4.2b Section Container — `_section`
 
-**Definition:** A high-level composite widget that defines a major area of the page (e.g. Hero, Footer).
 
-**Purpose:** Groups multiple smaller components (`_visual`, `_action`, `_unit`) into a coherent block.
+### 4.3 State-Connected Modifier — `_view`
 
-**Rules:**
-✅ **Allowed:**
-- Compose multiple widgets
-- Use `context` (Theme, Breakpoints via Layouts)
+**Definition:** The `_view` suffix is a **modifier** added to any widget name when it directly listens to state (e.g., `BlocBuilder`).
 
-❌ **Forbidden:**
-- Business Logic (use `_view` if it needs to listen to BLoC)
-- Complex Layout Logic (delegate to `_layout` if complex)
+**Naming:** `[widget_name]_[original_suffix]_view.dart` (e.g., `order_list_unit_view.dart`) or simply `[widget_name]_view.dart` if it acts as a standalone connector.
 
-**Examples:**
-```dart
-// ✅ VALID
-class HeroSection extends StatelessWidget {
-  const HeroSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        HeroTitleVisual(),
-        HeroActionsLayout(),
-      ],
-    );
-  }
-}
-```
-
----
-
-### 4.3 State‑Driven Widgets — `_view`
-
-**Definition:** Logical sections of a page that **listen to state** and project it into UI structure.
-
-**Key Concept:** A `_page` composes **multiple `_view` widgets**, where each `_view` represents a distinct logical area.
+**Purpose:** explicitly signals that a widget is **connected to the Business Logic Layer**.
 
 **Rules:**
 
 ✅ **Allowed:**
 - Listen to state (BlocBuilder, Consumer, Selector, etc.)
 - Conditional rendering based on state
-- List building (ListView.builder)
 - Compose `_unit`, `_visual`, `_action`, `_control`
 - Use `context`
-- Minimal route/ID parameters
 
 ❌ **Forbidden:**
 - Callbacks as parameters (use slot pattern or compose `_action` directly)
 - Local mutation (no `setState`)
 - Controllers (that's `_input`)
-- Nested `_view` widgets (keep hierarchy flat)
-
-**Granularity Rule:**
-
-- **Minimum:** Header, List, Section level (not individual widgets)
-- **Maximum:** Full‑screen sections
-- **Test:** If it doesn't have independent state, it's probably a `_unit`
 
 **Examples:**
 
 ```dart
-// ✅ VALID - Focused section
+// ✅ VALID - A Unit modified with View (UserProfileHeaderUnitView)
+// It fetches data via BlocBuilder and then displays it.
 class UserProfileHeaderView extends StatelessWidget {
   const UserProfileHeaderView({super.key});
   
@@ -531,11 +493,11 @@ class UserProfileHeaderView extends StatelessWidget {
           return CircularProgressIndicator();
         }
         
+        // Composes Units
         return Column(
           children: [
             UserAvatarUnit(imageUrl: state.avatarUrl),
             UserNameUnit(name: state.name),
-            UserEmailUnit(email: state.email),
           ],
         );
       },
@@ -543,7 +505,7 @@ class UserProfileHeaderView extends StatelessWidget {
   }
 }
 
-// ✅ VALID - List section
+// ✅ VALID - Standalone View connecting a list
 class OrdersListView extends StatelessWidget {
   const OrdersListView({super.key});
   
@@ -551,18 +513,12 @@ class OrdersListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OrdersBloc, OrdersState>(
       builder: (context, state) {
-        if (state.orders.isEmpty) {
-          return EmptyOrdersVisual();
-        }
-        
         return ListView.builder(
           itemCount: state.orders.length,
           itemBuilder: (context, index) {
-            final orderVM = OrderViewModel.fromDomain(state.orders[index]);
-            
             return OrderCardUnit(
-              viewModel: orderVM,
-              actionSlot: OrderDetailsAction(orderId: orderVM.orderId),
+              viewModel: OrderViewModel.fromDomain(state.orders[index]),
+              actionSlot: OrderDetailsAction(orderId: state.orders[index].id),
             );
           },
         );
@@ -570,29 +526,12 @@ class OrdersListView extends StatelessWidget {
     );
   }
 }
-
-// ❌ INVALID - Too granular (should be _unit)
-class UserAvatarView extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
-      builder: (context, state) => CircleAvatar(backgroundImage: NetworkImage(state.avatarUrl)),
-    );
-  }
-}
-
-// ✅ VALID - Nested _view widgets are allowed
-// Each _view is an independent data connector
-class DashboardMainView extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DashboardHeaderView(), // ✅ Independent data connector for UserBloc
-        DashboardChartsView(), // ✅ Independent data connector for AnalyticsBloc
-      ],
-    );
-  }
-}
 ```
+
+**File Examples:**
+- `login_form_view.dart`
+- `orders_list_unit_view.dart`
+- `user_profile_header_view.dart`
 
 **Multi‑State Pattern:**
 
@@ -891,93 +830,93 @@ class EmailInput extends StatefulWidget {
 
 ---
 
-### 4.7 Responsive Layout — `_layout`
+### 4.7 Component-Level Layout — `_layout`
 
-**Definition:** Breakpoint‑specific arrangement of widgets.
+**Definition:** A structural widget that handles the internal arrangement and constraints of a component.
 
-**Purpose:** Handle responsive/adaptive UI without polluting `_page` or `_view`.
+**Purpose:** Decides *where* things go (structure) without knowing *what* they are (content).
 
 **Layout Scope:**
-
-`_layout` widgets can exist at two levels:
-
-| Scope | Location | Purpose | Example |
-|-------|----------|---------|--------|
-| **Page-level** | `page_layout/` | How the entire page arranges | `home_page_web_layout.dart` |
-| **Component-level** | `widgets/widget_layout/` | How a component arranges internally | `order_card_expanded_layout.dart` |
-
-> **Key Principle:** Components remain size-agnostic. The **parent layout** decides which component layout variant to use.
+Used inside `_unit`, `_control`, or `_section` to arrange their internal "atoms".
 
 **Rules:**
 
 ✅ **Allowed:**
-- Arrange components and `_view` widgets
-- Breakpoint‑specific composition
-- Responsive sizing/positioning
+- Arrange slots (Widgets passed as params)
+- Use `Column`, `Row`, `Stack`, `LayoutBuilder`
+- Handle spacing (`Padding`, `SizedBox`) and alignment
 
 ❌ **Forbidden:**
-- State listening (use `_view` wrapper instead)
+- Creating leaf widgets (`Text`, `Image`) - strictly consumes slots
+- State listening
 - Business logic
-- Heavy rendering (delegate to `_view`)
 
 **Examples:**
 
 ```dart
-// ✅ VALID - Responsive layout
-class HomeLayoutWeb extends StatelessWidget {
-  const HomeLayoutWeb({super.key});
+// ✅ VALID - Pure structure (Component Layout)
+class ProjectCardLayout extends StatelessWidget {
+  final Widget imageSlot;
+  final Widget contentSlot;
   
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: HomeHeroView(),
-        ),
-        Expanded(
-          flex: 3,
-          child: HomeProjectsView(),
-        ),
-        Expanded(
-          flex: 1,
-          child: HomeSidebarView(),
-        ),
-      ],
-    );
-  }
-}
+  const ProjectCardLayout({
+    super.key,
+    required this.imageSlot,
+    required this.contentSlot,
+  });
 
-class HomeLayoutMobile extends StatelessWidget {
-  const HomeLayoutMobile({super.key});
-  
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        HomeHeroView(),
-        HomeProjectsView(),
-        // Sidebar omitted on mobile
+        AspectRatio(aspectRatio: 16/9, child: imageSlot),
+        Padding(padding: EdgeInsets.all(16), child: contentSlot),
       ],
     );
   }
 }
 
-// ❌ INVALID - State listening (should be _view)
-class HomeLayoutWeb extends StatelessWidget {
+// ✅ VALID - Structural Utility (Wrapper)
+class ResponsiveWidthWrapper extends StatelessWidget {
+  final Widget child;
+  final double mobileWidthFactor;
+  
+  const ResponsiveWidthWrapper({
+    required this.child,
+    this.mobileWidthFactor = 1.0,
+  });
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>( // ❌ Should be in _view
-      builder: (context, state) { ... },
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Pure layout logic
+        return FractionallySizedBox(
+          widthFactor: constraints.maxWidth < 600 ? mobileWidthFactor : 0.5,
+          child: child,
+        );
+      },
+    );
+  }
+}
+
+// ❌ INVALID - Creates content (should be _unit)
+class BadLayout extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text("Hello"), // ❌ Layouts should not create Text
+        Icon(Icons.home), // ❌ Layouts should not create Icons
+      ],
     );
   }
 }
 ```
 
 **File Examples:**
-- `home_layout_web.dart`
-- `home_layout_tablet.dart`
-- `home_layout_mobile.dart`
-- `dashboard_layout_desktop.dart`
+- `article_card_layout.dart`
+- `responsive_width_wrapper.dart`
 
 ---
 
@@ -986,116 +925,65 @@ class HomeLayoutWeb extends StatelessWidget {
 **Definition:** Top‑level composition root and screen entry point.
 
 **Responsibilities:**
-- Dependency Injection (BlocProvider, etc.)
 - Initial intents/events
 - Scaffold/AppBar setup
-- Compose multiple `_view` widgets
+- Compose multiple `_view` widgets or local components
 - Route parameter handling
-- Responsive layout switching
+- Responsive layout switching (Macro-Layout)
 
 **Constraints:**
 - No business rules
 - No data access
-- No state listening (delegate to `_view`)
+- No state listening (unless using `_page_view`)
 - Should be thin
 
-**Architecture:**
-```
-_page (entry)
-  ↓
-  • DI setup
-  • Initial events
-  • Scaffold
-  ↓
-Multiple _view widgets (sections)
-  ↓
-_unit + _visual + _action + _control
+
 ```
 
 **Examples:**
 
 ```dart
-// ✅ VALID - Thin page
+// ✅ VALID - Standard Page
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
   
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc()
-        ..add(LoginPageOpened()),
-      child: Scaffold(
-        appBar: AppBar(title: Text('Login')),
-        body: LoginFormView(), // Delegates to _view
-      ),
-    );
-  }
-}
-
-// ✅ VALID - Multiple views
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => UserBloc()..add(UserLoaded())),
-        BlocProvider(create: (_) => AnalyticsBloc()..add(AnalyticsLoaded())),
-      ],
-      child: Scaffold(
-        appBar: AppBar(title: Text('Dashboard')),
-        body: Column(
-          children: [
-            UserProfileHeaderView(),  // _view #1
-            StatisticsView(),          // _view #2
-            RecentActivityView(),      // _view #3
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ✅ VALID - Responsive switching
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth > 1200) {
-            return HomeLayoutWeb();
-          } else if (constraints.maxWidth > 600) {
-            return HomeLayoutTablet();
-          } else {
-            return HomeLayoutMobile();
-          }
-        },
-      ),
+      appBar: AppBar(title: Text('Login')),
+      body: LoginFormView(), // Delegates to _view
     );
   }
 }
 
-// ❌ INVALID - Fat page with rendering logic
-class DashboardPage extends StatelessWidget {
+// ✅ VALID - Page listening to state (_page_view)
+class DashboardPageView extends StatelessWidget {
+  const DashboardPageView({super.key});
+  
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DashboardBloc(),
-      child: Scaffold(
-        body: BlocBuilder<DashboardBloc, DashboardState>( // ❌ Should be in _view
-          builder: (context, state) {
-            if (state.isLoading) return CircularProgressIndicator();
-            return Column(children: [...]);
-          },
-        ),
-      ),
+    return BlocBuilder<DashboardBloc, DashboardState>(
+       builder: (context, state) {
+         if (state.isLoading) return CircularProgressIndicator();
+         return Scaffold(
+           appBar: AppBar(title: Text('Dashboard')),
+           body: Column(
+             children: [
+               UserProfileHeaderView(),
+               StatisticsView(),
+             ],
+           ),
+         );
+       }
     );
   }
 }
 ```
+
+**File Examples:**
+- `login_page.dart`
+- `home_page.dart`
+- `dashboard_page_view.dart`
 
 **File Examples:**
 - `login_page.dart`
@@ -1115,8 +1003,7 @@ For detailed folder organization, see:
 | Widget Type | Folder |
 |-------------|--------|
 | `_page` | `pages/` |
-| `_layout` (page-level) | `page_layout/` |
-| `_layout` (component-level) | `widgets/widget_layout/` |
+| `_layout` (component-level)
 | `_view` | `widgets/views/` |
 | `_visual` | `widgets/visuals/` |
 | `_unit` | `widgets/units/` |
@@ -1273,10 +1160,6 @@ START: I need to create a widget
 Is it a screen entry point?
   YES → _page
   NO ↓
-  
-Is it a responsive/breakpoint variant?
-  YES → _layout
-  NO ↓
 
 Does it accept ANY parameters?
   NO → _visual
@@ -1295,11 +1178,11 @@ Does interaction affect logic layer?
   YES → _action
 
 ─────────────────────────────────────
-AFTER UI IS BUILT:
+AFTER WIDGET IS NAMED:
 ─────────────────────────────────────
-Does this component need external state?
-  YES → Wrap with _view (data connector)
-  NO → Keep as pure component
+Does it need to listen to State (BLoC)?
+  YES → Append `_view` suffix (e.g. `_unit_view`)
+  NO → Keep original suffix
 ```
 
 ---
@@ -1308,9 +1191,9 @@ Does this component need external state?
 
 ### Layers (Broad Scope)
 
-- `_page` → Screen entry point, routing, DI setup, composes sections
-- `_layout` → Breakpoint-aware, arranges views/components responsively
-- `_view` → State listener, projects logic state to UI components
+- `_page` → Screen entry point, routing, macro-layout (Scaffold/Column/Row)
+- `_layout` → Component-level structure, constraints, and arrangement
+- `_view` → **Modifier** signaling a connection to state (BLoC)
 
 ### Components (Pure Building Blocks)
 
@@ -1328,33 +1211,26 @@ Does this component need external state?
 **Allowed Composition Paths:**
 
 ```
-_page
+_page (or _page_view)
   ↓
-  └─ _layout (responsive)
+  └─ Local Widgets (Sections, Views, Units)
        ↓
-       └─ Components
+       └─ Components (using _layout internally)
             ├─ _visual
             ├─ _unit
             ├─ _control
             ├─ _action
             └─ _input
 
-Components can be wrapped with _view when external state is needed.
-_view widgets can contain other _view widgets (independent data connectors).
-
-_unit
-  ↓
-  ├─ _visual
-  ├─ _unit (nested units OK)
-  └─ widget slots (any type)
+* Any component can have the `_view` modifier if it listens to state.
 ```
 
 **Forbidden Compositions:**
 
 - ❌ `_visual` → anything (must be self-contained)
 - ❌ `_action` → `_action` (no nested actions)
-- ❌ `_unit` → `_view` (units can't listen to state directly — use slots)
-- ❌ `_layout` → state listening (use `_view` wrapper if layout decision needs state)
+- ❌ `_unit` → `_view` (units can't listen to state directly — use slots or rename to `_unit_view`)
+- ❌ `_layout` → state listening (use `_view` modifier on the parent widget)
 
 ---
 

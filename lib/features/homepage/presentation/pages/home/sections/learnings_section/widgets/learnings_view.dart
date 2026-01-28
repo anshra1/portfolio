@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:portfolio/features/articles/presentation/bloc/articles_bloc.dart';
 import 'package:portfolio/features/articles/presentation/bloc/articles_state.dart';
 import 'package:portfolio/features/homepage/presentation/mappers/article_mapper.dart';
-import 'package:portfolio/features/homepage/presentation/pages/home/sections/learnings_section/learnings_grid_layout.dart';
-import 'package:portfolio/features/homepage/presentation/pages/home/sections/learnings_section/learnings_skeleton_visual.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/learnings_section/widgets/learnings_skeleton_visual.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/learnings_section/widgets/learnings_grid_layout.dart';
 
 /// View widget that listens to [ArticlesBloc] and projects state to UI.
 class LearningsView extends StatelessWidget {

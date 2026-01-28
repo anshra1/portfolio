@@ -108,6 +108,39 @@ class ProductFeedbackSection extends StatelessWidget {
 }
 ```
 
+## 4. Formal Definition of `_section`
+
+**Definition:** A high-level composite widget that defines a major area of the page (e.g. Hero, Footer).
+
+**Purpose:** Groups multiple smaller components (`_visual`, `_action`, `_unit`) into a coherent block.
+
+**Rules:**
+✅ **Allowed:**
+- Compose multiple widgets
+- Use `context` (Theme, Breakpoints via Layouts)
+
+❌ **Forbidden:**
+- Business Logic (use `_view` if it needs to listen to BLoC)
+- Complex Layout Logic (delegate to `_layout` if complex)
+
+**Examples:**
+```dart
+// ✅ VALID
+class HeroSection extends StatelessWidget {
+  const HeroSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        HeroTitleVisual(),
+        HeroActionsLayout(),
+      ],
+    );
+  }
+}
+```
+
 ---
 
 **See also:**

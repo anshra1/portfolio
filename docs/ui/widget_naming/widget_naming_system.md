@@ -1106,7 +1106,9 @@ class DashboardPage extends StatelessWidget {
 
 ## 5. Folder Structure
 
-For detailed folder organization, see: **[Widget Folder Structure](widget_folder_structure.md)**
+For detailed folder organization, see:
+- **[Page-Based Widget Structure](page_based_widget_structure.md)** (Pages & Layouts)
+- **[Section-Based Widget Structure](section_based_widget_structure.md)** (Sections & Components)
 
 **Quick Summary:**
 

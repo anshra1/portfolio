@@ -2,7 +2,7 @@ import 'package:core_ui_kit/core_ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/features/homepage/presentation/models/project_display_model.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_social_link_action.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/hero_section/widgets/hero_social_link_action.dart';
 
 class ProjectCardUnit extends StatefulWidget {
   const ProjectCardUnit({

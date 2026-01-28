@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/core/ds/density_context.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_social_link_action.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/hero_section/widgets/hero_social_link_action.dart';
 
 class SocialLinksUnit extends StatelessWidget {
   const SocialLinksUnit({super.key});

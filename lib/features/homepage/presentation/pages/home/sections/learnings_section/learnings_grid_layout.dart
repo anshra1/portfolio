@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:portfolio/app/app_router.dart';
 import 'package:portfolio/core/presentation/widgets/layouts/responsive_grid_layout.dart';
 import 'package:portfolio/features/homepage/presentation/models/insight_view_model.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/insight_card_unit.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/read_insight_action.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/learnings_section/insight_card_unit.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/learnings_section/read_insight_action.dart';
 
 class LearningsGridLayout extends StatelessWidget {
   const LearningsGridLayout({

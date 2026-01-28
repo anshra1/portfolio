@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/core/ds/density_context.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_primary_action.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_secondary_action.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_subtitle_visual.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/hero_title_visual.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/widgets/social_links_unit.dart';
-
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/hero_section/widgets/hero_subtitle_visual.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/hero_section/widgets/hero_title_visual.dart';
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});
 

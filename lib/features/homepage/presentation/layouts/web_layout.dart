@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/core/ds/density_context.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/about_section/about_section.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/expertise_section/expertise_section.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/hero_section/section/hero_section.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/learnings_section/learnings_section.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/projects_section/section/projects_section.dart';
-import 'package:portfolio/features/homepage/presentation/widgets/site_footer/site_footer.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/about_section/about_section.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/expertise_section/expertise_section.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/hero_section/hero_section.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/learnings_section/learnings_section.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/projects_section/projects_section.dart';
+import 'package:portfolio/features/homepage/presentation/pages/home/sections/site_footer/site_footer.dart';
 
 class WebLayout extends StatelessWidget {
   const WebLayout({super.key});
